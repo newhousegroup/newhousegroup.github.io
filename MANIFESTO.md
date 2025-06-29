@@ -1,26 +1,14 @@
-<link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
-<style>
-  * {
-    font-family: 'Raleway', Arial, sans-serif;
-  }
-
-  h1 {
-    font-weight: 700;
-  }
-</style>
-
 <h1>Hello, we're Newhouse.</h1>
 
-<p>
 Here at Newhouse, we believe every idea deserves a new house. Not a clean, polished house — but a new house that's never complete. A new house that's always under construction. A new house that hums at midnight, its whose doors always open.
-<br><br>
+
 In our new house, nothing stays still. Chairs become ladders, tables become stages, and closets are full of whiteboards. Someone’s always pacing, someone’s always laughing, and someone’s always saying, “This new house needs more fire.” And so we give it more. 
-<br><br>
+
 Our new house doesn’t ask “why,” it asks “why not.” It's what makes Newhouse, Newhouse.
-<br><br>
+
 Sometimes, the power goes out in the new house. That’s okay. We light it up with glowing screens and wild thoughts. 
-<br><br>
+
 In our new house, we're constantly building, growing and developing. But in that process, our new house becomes more than just a new house. It becomes a new <i>home</i>.
-<br><br>
+
 <b>Welcome.</b>
-</p>
+
