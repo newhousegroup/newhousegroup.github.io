@@ -153,7 +153,7 @@ const group = list.filter(w => w[0].toLowerCase().startsWith(l));
 
 searchEl.oninput=()=>{
   const q=searchEl.value.toLowerCase();
-  render(dictionary.filter(w=>w[0].includes(q)||w[1].toLowerCase().includes(q)));
+  render(dictionary.filter(w=>w[0].toLowerCase().includes(q)||w[1].toLowerCase().includes(q)));
 };
 
 render(dictionary);
