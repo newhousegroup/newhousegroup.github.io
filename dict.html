@@ -12,6 +12,14 @@
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+  :root {
+  --scroll-offset: 0px;
+}
+
+section {
+  scroll-margin-top: var(--scroll-offset);
+}
+
 body {
   margin: 0;
   background: #f4f4f4;
@@ -149,7 +157,27 @@ searchEl.oninput=()=>{
 };
 
 render(dictionary);
+
+  function updateScrollOffset() {
+  const header = document.querySelector("header");
+  const alphabet = document.getElementById("alphabet");
+
+  const offset =
+    (header?.offsetHeight || 0) +
+    (alphabet?.offsetHeight || 0) +
+    8; // small breathing room
+
+  document.documentElement.style.setProperty(
+    "--scroll-offset",
+    offset + "px"
+  );
+}
+
+window.addEventListener("load", updateScrollOffset);
+window.addEventListener("resize", updateScrollOffset);
 </script>
+
+  
 
 </body>
 </html>
