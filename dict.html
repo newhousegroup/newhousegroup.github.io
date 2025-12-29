@@ -39,6 +39,11 @@ header input {
   font-size: 1rem;
 }
 
+  #top {
+    position:sticky;
+    top:0;
+  }
+
 #alphabet {
   display: flex;
   flex-wrap: wrap;
@@ -79,14 +84,14 @@ section h2 {
 </head>
 
 <body>
-
+<div id="top">
 <header>
   <h1>Zamœlis Diksonri</h1>
   <p>Newhouse Jamalese Dictionary</p>
   <input id="search" placeholder="Search Jamalese or English…">
 </header>
 
-<nav id="alphabet"></nav>
+<nav id="alphabet"></nav></div>
 <main id="dictionary"></main>
 
   <script src="https://newhs.cc/words.js"></script>
