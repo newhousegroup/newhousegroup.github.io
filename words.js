@@ -111,7 +111,7 @@ const dictionary = [
   ["i","I"],
   ["id","it"],
   ["if","if"],
-  ["igso", "jigsaw, puzzle"]
+  ["igso", "jigsaw, puzzle"],
   ["iiti","eight"],
   ["ik","I'm"],
   ["ikonos","economy"],
@@ -156,7 +156,7 @@ const dictionary = [
   ["kontis","contest"],
   ["korri","curry"],
   ["korrot","correction"],
-  ["kostii", "complete, done"]
+  ["kostii", "complete, done"],
   ["kœll","cool"],
   ["Kristian","Christian"],
   ["krosi","nearby"],
@@ -238,7 +238,7 @@ const dictionary = [
   ["otdatid","updated"],
   ["ottimmo","utmost"],
 
-  ["Œlog", "journey, long path"],
+  ["œlog", "journey, long path"],
 
   ["radi","red"],
   ["radiz","radish"],
