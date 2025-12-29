@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Jamalese Translator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+/* ---------- Global ---------- */
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #0b0e1a;
+    --card: #151a33;
+    --text: #f1f3ff;
+    --muted: #aab;
+    --accent: #7c8cff;
+    --border: #2b2f55;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: radial-gradient(circle at top, #121633, #070914);
+    color: var(--text);
+}
+
+/* ---------- Layout ---------- */
+.container {
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 20px;
+}
+
+.card {
+    background: linear-gradient(145deg, #151a33, #10142b);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+}
+
+/* ---------- Header ---------- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+/* ---------- Dark Toggle ---------- */
+.toggle-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+}
+
+.switch {
+    position: relative;
+    width: 52px;
+    height: 26px;
+}
+
+.switch input {
+    opacity: 0;
+}
+
+.slider {
+    position: absolute;
+    inset: 0;
+    background: #444;
+    border-radius: 26px;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+input:checked + .slider {
+    background: var(--accent);
+}
+
+input:checked + .slider::before {
+    transform: translateX(26px);
+}
+
+/* ---------- Controls ---------- */
+.controls {
+    margin-bottom: 16px;
+}
+
+select {
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    font-size: 14px;
+}
+
+/* ---------- Two Pane System (FIXED) ---------- */
+.panes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.pane {
+    display: flex;
+    flex-direction: column;
+    height: 260px; /* 🔑 hard sync height */
+}
+
+textarea {
+    flex: 1;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: #0e1228;
+    color: var(--text);
+    resize: none;              /* 🔑 disable resizing */
+    outline: none;
+}
+
+.output-box {
+    flex: 1;
+    padding: 14px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.06);
+    font-size: 18px;
+    overflow-y: auto;
+    word-break: break-word;
+}
+
+.direction {
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+/* ---------- Copy Button ---------- */
+.copy-btn {
+    margin-top: 10px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: #0e1228;
+    color: var(--text);
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+    margin-top: 22px;
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 700px) {
+    .panes {
+        grid-template-columns: 1fr;
+    }
+
+    .pane {
+        height: 220px;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<div class="card">
+
+<header>
+    <h1>Jamalese Translator</h1>
+    <div class="toggle-wrap">
+        🌞
+        <label class="switch">
+            <input type="checkbox" id="darkToggle" checked>
+            <span class="slider"></span>
+        </label>
+        🌙
+    </div>
+</header>
+
+<div class="controls">
+    <select id="mode">
+        <option value="auto">Auto-detect</option>
+        <option value="jam-en">Jamalese → English</option>
+        <option value="en-jam">English → Jamalese</option>
+    </select>
+</div>
+
+<div class="panes">
+    <div class="pane">
+        <textarea id="input" placeholder="Type text here..."></textarea>
+    </div>
+
+    <div class="pane">
+        <div class="output-box">
+            <div class="direction" id="direction"></div>
+            <div id="result"></div>
+        </div>
+        <button class="copy-btn" onclick="copyResult()">📋 Copy translation</button>
+    </div>
+</div>
+
+<div class="footer">
+    <span>
+        View the full dictionary at
+        <a href="https://newhs.cc/dict" target="_blank">https://newhs.cc/dict</a>
+    </span>
+    <span>
+        Jamalese Translator v1.0 • Created by
+        <a href="https://github.com/nadfd" target="_blank"><b>nadfd</b></a>
+    </span>
+</div>
+
+</div>
+</div>
+
+<script src="jamToEng.js"></script>
+<script src="engToJam.js"></script>
+
+<script>
+/* ---------- Dark Mode ---------- */
+const toggle = document.getElementById("darkToggle");
+toggle.checked = localStorage.getItem("dark") !== "false";
+
+function applyDark() {
+    document.body.style.background = toggle.checked
+        ? "radial-gradient(circle at top, #121633, #070914)"
+        : "#f4f6fb";
+    localStorage.setItem("dark", toggle.checked);
+}
+toggle.addEventListener("change", applyDark);
+applyDark();
+
+/* ---------- Translation ---------- */
+function tokenize(text) {
+    return text.toLowerCase().trim().split(/\s+/);
+}
+
+function detectLanguage(words) {
+    let jam = 0, eng = 0;
+    words.forEach(w => {
+        if (jamToEng[w]) jam++;
+        if (engToJam[w]) eng++;
+    });
+    return jam >= eng ? "jam" : "eng";
+}
+
+function translateWithPhrases(words, dict) {
+    const result = [];
+    const keys = Object.keys(dict);
+    const maxLen = Math.max(...keys.map(k => k.split(" ").length));
+    let i = 0;
+
+    while (i < words.length) {
+        let matched = false;
+        for (let size = Math.min(maxLen, words.length - i); size > 0; size--) {
+            const chunk = words.slice(i, i + size).join(" ");
+            if (dict[chunk]) {
+                let val = dict[chunk];
+                if (Array.isArray(val)) val = val[0];
+                result.push(val);
+                i += size;
+                matched = true;
+                break;
+            }
+        }
+        if (!matched) {
+            result.push(words[i]);
+            i++;
+        }
+    }
+    return result.join(" ");
+}
+
+function translateText() {
+    const text = document.getElementById("input").value;
+    const result = document.getElementById("result");
+    const dir = document.getElementById("direction");
+    if (!text.trim()) {
+        result.textContent = "";
+        dir.textContent = "";
+        return;
+    }
+
+    const words = tokenize(text);
+    const mode = document.getElementById("mode").value;
+
+    if (mode === "auto") {
+        const d = detectLanguage(words);
+        if (d === "jam") {
+            result.textContent = translateWithPhrases(words, jamToEng);
+            dir.textContent = "Jamalese → English (auto)";
+        } else {
+            result.textContent = translateWithPhrases(words, engToJam);
+            dir.textContent = "English → Jamalese (auto)";
+        }
+    } else if (mode === "jam-en") {
+        result.textContent = translateWithPhrases(words, jamToEng);
+        dir.textContent = "Jamalese → English";
+    } else {
+        result.textContent = translateWithPhrases(words, engToJam);
+        dir.textContent = "English → Jamalese";
+    }
+}
+
+document.getElementById("input").addEventListener("input", translateText);
+document.getElementById("mode").addEventListener("change", translateText);
+
+/* ---------- Copy ---------- */
+function copyResult() {
+    const t = document.getElementById("result").innerText;
+    if (t) navigator.clipboard.writeText(t);
+}
+</script>
+
+</body>
+</html>
