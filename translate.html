@@ -328,7 +328,7 @@ toggle.addEventListener("change", applyDark);
 applyDark();
 
 /* ---------- Translation ---------- */
-function tokenize(text) {
+function tokenize(text) { 
     return text.toLowerCase().trim().split(/\s+/);
 }
 
@@ -368,6 +368,86 @@ function translateWithPhrases(words, dict) {
     return result.join(" ");
 }
 
+function negation(text) {
+    // NEGATION
+    
+  // Normalize apostrophes
+  text = text.replace(/’/g, "'");
+
+  const irregulars = {
+    "won't": "not will",
+    "can't": "not can",
+    "ain't": "not am"
+  };
+
+  for (const [from, to] of Object.entries(irregulars)) {
+    const re = new RegExp(`\\b${from}\\b`, "gi");
+    text = text.replace(re, to);
+  }
+
+  text = text.replace(/\b(\w+)n't\b/gi, "not $1"); 
+
+  return text;
+}
+
+function splitSentences(text) {
+    const abbreviations = [
+        "e.g", "i.e", "mr", "mrs", "ms", "dr", "prof", "sr", "jr", "vs"
+    ];
+
+    const result = [];
+    let buffer = "";
+    let depth = 0;
+
+    for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        buffer += ch;
+
+        // Track parentheses
+        if (ch === "(") depth++;
+        if (ch === ")" && depth > 0) depth--;
+
+        if (depth > 0) continue;
+
+        // Handle ellipses (...)
+        if (ch === "." && text.slice(i).match(/^\.+/)) {
+            const dots = text.slice(i).match(/^\.+/)[0];
+            buffer += dots.slice(1);
+            i += dots.length - 1;
+            continue;
+        }
+
+        // Sentence-ending punctuation
+        if (ch === "." || ch === "?" || ch === "!") {
+            const prev = buffer.slice(0, -1).trim().toLowerCase();
+            const lastWord = prev.split(/\s+/).pop();
+
+            if (abbreviations.includes(lastWord)) continue;
+
+            let sentence = buffer.trim();
+
+            // 🔹 Insert %Q% marker if this sentence is a question
+            if (/[a-z0-9]\?/i.test(sentence)) {
+                sentence = "%Q% " + sentence;
+            }
+
+            if (sentence) result.push(sentence);
+            buffer = "";
+        }
+    }
+
+    // Remainder
+    if (buffer.trim()) {
+        let sentence = buffer.trim();
+        if (/[a-z0-9]\?/i.test(sentence)) {
+            sentence = "%Q% " + sentence;
+        }
+        result.push(sentence);
+    }
+
+    return result;
+}
+
 function translateText() {
     const text = document.getElementById("input").value;
     const result = document.getElementById("result");
@@ -378,25 +458,44 @@ function translateText() {
         return;
     }
 
-    const words = tokenize(text);
-    const mode = document.getElementById("mode").value;
+    const sentences = splitSentencesSmart(text);
+const mode = document.getElementById("mode").value;
+
+const outputs = sentences.map(s => {
+    let sentenceText = s.text;
+    let translated = "";
 
     if (mode === "auto") {
-        const d = detectLanguage(words);
+        const wordsForDetect = tokenize(sentenceText);
+        const d = detectLanguage(wordsForDetect);
+
         if (d === "jam") {
-            result.textContent = translateWithPhrases(words, jamToEng);
-            dir.textContent = "Jamalese → English (auto)";
+            translated = translateWithPhrases(wordsForDetect, jamToEng);
         } else {
-            result.textContent = translateWithPhrases(words, engToJam);
-            dir.textContent = "English → Jamalese (auto)";
+            sentenceText = negation(sentenceText);
+            translated = translateWithPhrases(tokenize(sentenceText), engToJam);
+            translated = translated.replace(/\%Q\%/g, "mi");
         }
-    } else if (mode === "jam-en") {
-        result.textContent = translateWithPhrases(words, jamToEng);
-        dir.textContent = "Jamalese → English";
-    } else {
-        result.textContent = translateWithPhrases(words, engToJam);
-        dir.textContent = "English → Jamalese";
+    } 
+    else if (mode === "jam-en") {
+        translated = translateWithPhrases(tokenize(sentenceText), jamToEng);
+    } 
+    else {
+        sentenceText = negation(sentenceText);
+        translated = translateWithPhrases(tokenize(sentenceText), engToJam);
+        translated = translated.replace(/\%Q\%/g, "mi");
     }
+
+    return translated;
+});
+
+result.textContent = outputs.join(" ");
+dir.textContent =
+    mode === "auto"
+        ? "Auto detect"
+        : mode === "jam-en"
+        ? "Jamalese → English"
+        : "English → Jamalese";
 }
 
 document.getElementById("input").addEventListener("input", translateText);
