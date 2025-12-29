@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Zamœlis Diksonri</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #f4f4f4;
+  color: #222;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  background: #1e1e1e;
+  color: white;
+  padding: 1rem;
+  z-index: 10;
+}
+
+header h1 {
+  margin: 0 0 0.5rem 0;
+}
+
+header input {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+}
+
+#alphabet {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.8rem;
+  background: #ddd;
+}
+
+#alphabet button {
+  border: none;
+  background: white;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#alphabet button:hover {
+  background: #bbb;
+}
+
+section {
+  padding: 1rem;
+}
+
+section h2 {
+  margin-bottom: 0.4rem;
+  border-bottom: 2px solid #ccc;
+}
+
+.word {
+  padding: 0.35rem 0;
+}
+
+.word strong {
+  font-size: 1.05rem;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Zamœlis Diksonri - Jamalese Dictionary</h1>
+  <input id="search" placeholder="Search Jamalese or English…">
+</header>
+
+<nav id="alphabet"></nav>
+<main id="dictionary"></main>
+
+<script>
+// =====================
+// JAMALESE ALPHABET
+// =====================
+const alphabet = ["a","b","d","f","g","h","i","k","l","m","n","o","œ","r","s","t","w","z"];
+
+// =====================
+// DICTIONARY (ALL WORDS)
+// =====================
+const dictionary = [
+  ["a","a"],
+  ["add","add, addition"],
+  ["ainii","any"],
+  ["Amikka","America, the United States"],
+  ["and","and"],
+  ["andrstan","understand"],
+  ["aniwœn","anyone"],
+  ["arro","air"],
+  ["arroflia","plane, aeroplane"],
+  ["arss","arse, bottom"],
+  ["azol","apple"],
+  ["azonom","astronomy"],
+
+  ["bagir","bag, backpack"],
+  ["bai","bye, goodbye"],
+  ["bakk","back (informal)"],
+  ["band","music band"],
+  ["bas","pass"],
+  ["basik","basic"],
+  ["bii","be"],
+  ["biolot","biology"],
+  ["blonat","planet"],
+  ["blœ","blue"],
+  ["Boddist","Buddhist"],
+  ["Bodisnatzrs","Bodysnatchers (band)"],
+  ["bost","burst"],
+  ["bœk","back"],
+  ["Britia","Britain"],
+  ["Britiz","British"],
+  ["bro","bro"],
+  ["brœd","bread"],
+  ["bwas","place, location"],
+
+  ["dai","day"],
+  ["dat","that"],
+  ["di","the"],
+  ["did","did"],
+  ["dira","ten"],
+  ["diksonri","dictionary"],
+  ["dis","this"],
+  ["dizital","digital"],
+  ["do","do"],
+  ["dodd","jump"],
+  ["dog","dog"],
+  ["donn","down"],
+  ["dos","two"],
+  ["drink","drink"],
+
+  ["faarr","far"],
+  ["fiind","friend"],
+  ["fim","five"],
+  ["fisi","body, physical"],
+  ["fisiks","physics"],
+  ["flaim","fire, flame"],
+  ["flia","fly"],
+  ["fliat","flight"],
+  ["fokos","focus"],
+  ["fol","multiply, -fold"],
+  ["fon","phone"],
+  ["fostiwit","festival"],
+  ["for","for"],
+  ["fœr","four"],
+  ["from","from"],
+  ["fridom","freedom"],
+  ["frœk","frog"],
+
+  ["gako","nine"],
+  ["gaii","gay, lesbian (informal)"],
+  ["gais","guys"],
+  ["gali","hundred"],
+  ["gamm","game"],
+  ["gati","gay, lesbian (formal)"],
+  ["giid","guide"],
+  ["git","get, bring"],
+  ["gœdidag","good day"],
+  ["gœdimorgin","good morning"],
+  ["gœdisiz","good night"],
+  ["gœlli","LGBTQ+"],
+  ["gratol","grateful, thankful"],
+  ["grœ","grow"],
+
+  ["haab","have"],
+  ["habibi","friend"],
+  ["hallœ","hello"],
+  ["hai","hi"],
+  ["haos","house"],
+  ["haz","him"],
+  ["hiirr","here"],
+  ["hiiz","his"],
+  ["hiz","he"],
+  ["hobiz","happy"],
+  ["hobisiz","happiness"],
+  ["hœ","how"],
+
+  ["i","I"],
+  ["id","it"],
+  ["if","if"],
+  ["iiti","eight"],
+  ["ik","I'm"],
+  ["ikonos","economy"],
+  ["ikonoset","economic"],
+  ["iksban","expand"],
+  ["iksit","excite"],
+  ["iksitid","excited"],
+  ["iksimit","excitement"],
+  ["ikt","eat"],
+  ["imii","me, my, myself"],
+  ["in","in"],
+  ["indizandis","independence (informal)"],
+  ["Inland","England"],
+  ["Inlish","English"],
+  ["innowi","innovation"],
+  ["intirnaizono","international"],
+  ["is","is"],
+  ["ist","is (alt)"],
+  ["issra","independent"],
+  ["isst","east"],
+  ["issranis","independence"],
+  ["it","it"],
+  ["itoldai","yesterday"],
+  ["itt","eat"],
+  ["iz","its"],
+
+  ["labt","laptop"],
+  ["laii","lie"],
+  ["lah","yes"],
+  ["lasœksan","congratulations"],
+  ["le","the (less common)"],
+  ["Kabo","Cambodia"],
+  ["kal","call"],
+  ["kammo","camp"],
+  ["kan","night"],
+  ["Kanaada","Canada"],
+  ["kimistri","chemistry"],
+  ["kobkradd","frog"],
+  ["kold","cold"],
+  ["kommbotar","computer"],
+  ["kommbotat","computation, computational"],
+  ["konna","gonna"],
+  ["kontinœ","continue"],
+  ["kontinœli","continuous"],
+  ["kontis","contest"],
+  ["korri","curry"],
+  ["korrot","correction"],
+  ["kœll","cool"],
+  ["Kristian","Christian"],
+  ["krosi","nearby"],
+
+  ["liif","life"],
+  ["liik","like"],
+  ["ligind","legend"],
+  ["ligindo","legendary"],
+  ["liwisi","revision"],
+  ["low","low, little"],
+  ["lowin","reduce"],
+  ["loz","love"],
+
+  ["maazik","magic"],
+  ["maazikal","magical"],
+  ["math","math"],
+  ["mathi","mathematical"],
+  ["mathi narizbikkolim","prestigious mathematical olympiad"],
+  ["mi","question indicator"],
+  ["mian","mean"],
+  ["midt","meet"],
+  ["midttaab","meetup"],
+  ["midwi","middle"],
+  ["midwidai","midday"],
+  ["midwikan","midnight"],
+  ["mika","cloud"],
+  ["milk","milk"],
+  ["Mislim","Islam, Muslim"],
+  ["mobilfon","smartphone"],
+  ["monniz","money"],
+  ["mœrnin","morning"],
+
+  ["nai","no, not"],
+  ["naifol","divide"],
+  ["naigi","negative"],
+  ["naiwi","black"],
+  ["narizbikk","prestigious"],
+  ["narizbikkolim","prestigious contest"],
+  ["nasœksan","enjoyable"],
+  ["naizon","nation"],
+  ["naizono","national"],
+  ["NGL","not gonna lie"],
+  ["niida","need"],
+  ["nidi","subtract"],
+  ["niw","new"],
+  ["niwbi","newbie"],
+  ["NKL","not gonna lie"],
+  ["nol","none"],
+  ["nott","north"],
+
+  ["ob","up"],
+  ["od","old"],
+  ["of","of"],
+  ["ok","okay"],
+  ["okaii","okay"],
+  ["oktaldai","day before yesterday"],
+  ["olimmna","Olympics"],
+  ["ond","and"],
+  ["onn","on"],
+  ["orwiti","orbit"],
+  ["ot","or"],
+  ["otdatid","updated"],
+  ["ottimmo","utmost"],
+
+  ["radi","red"],
+  ["radiz","radish"],
+  ["rados","radius"],
+  ["riliks","relax"],
+  ["rilozi","religion"],
+  ["rirondai","day after tomorrow"],
+  ["risti","rest"],
+  ["risz","rizz (singular)"],
+  ["riiwo","revolve"],
+  ["riwisi","revision"],
+  ["rizbik","respect"],
+  ["robzil","picture"],
+  ["rondai","tomorrow"],
+  ["rœn","tree"],
+
+  ["Saandai","Sunday"],
+  ["saats","south"],
+  ["sai","left"],
+  ["salo","right"],
+  ["samad","smart"],
+  ["samid","summit"],
+  ["Satirndai","Saturday"],
+  ["saz","her"],
+  ["shatin","chatting"],
+  ["sid","she"],
+  ["siid","hers"],
+  ["siiz","science"],
+  ["siizi","scientific"],
+  ["siiz narizbikk olimmna","prestigious science olympiad"],
+  ["sikma","sigma"],
+  ["siks","six"],
+  ["siks-sion","six seven (slang)"],
+  ["Singabora","Singapore"],
+  ["sion","seven"],
+  ["siro","zero"],
+  ["sitmir","statement"],
+  ["skœl","school"],
+  ["snatz","snatch"],
+  ["snazr","snatcher"],
+  ["sord","sorry"],
+  ["sœitar","super"],
+  ["sœksana","merry"],
+  ["sœt","should"],
+  ["star","star"],
+  ["stato","statue"],
+  ["stil","still"],
+  ["stillwassir","still water"],
+  ["ston","stone"],
+
+  ["tabfon","tablet"],
+  ["takk","take"],
+  ["tamminno","million"],
+  ["tanno","thousand"],
+  ["taz","them"],
+  ["tirbrik","relieved"],
+  ["Tirr","Earth"],
+  ["tisti","exam"],
+  ["Thailand","Thailand"],
+  ["thikk","thick"],
+  ["tishir","teacher"],
+  ["ti","yes"],
+  ["tiz","they"],
+  ["tiiz","theirs"],
+  ["to","to"],
+  ["toldai","today"],
+  ["tri","three"],
+
+  ["wii","we"],
+  ["wiid","wide"],
+  ["wiir","wire"],
+  ["wiirnai","wireless"],
+  ["wik","week"],
+  ["wikiin","weekend"],
+  ["win","win"],
+  ["wirsin","version"],
+  ["wœn","one"],
+  ["want","want"],
+  ["was","what"],
+  ["wassir","water"],
+  ["wisst","west"],
+  ["wit","white"],
+  ["witt","with"],
+  ["wiz","hope"],
+  ["wizif","hopeful"],
+  ["woniit","unite"],
+  ["woniiti","unity"],
+
+  ["za","yes"],
+  ["zad","them (non-binary)"],
+  ["zam","charm"],
+  ["zas","just"],
+  ["zamœl","jamal"],
+  ["zamœlin","jamaling"],
+  ["Zamœlis","Jamalese"],
+  ["zid","they (non-binary)"],
+  ["ziid","their (non-binary)"],
+  ["zill","chill"],
+  ["zilod","yellow"]
+];
+
+// =====================
+// SORT + RENDER
+// =====================
+const rank = Object.fromEntries(alphabet.map((l,i)=>[l,i]));
+dictionary.sort((a,b)=>{
+  const x=a[0], y=b[0];
+  for(let i=0;i<Math.min(x.length,y.length);i++){
+    if(rank[x[i]]!==rank[y[i]]) return (rank[x[i]]??999)-(rank[y[i]]??999);
+  }
+  return x.length-y.length;
+});
+
+const dictEl = document.getElementById("dictionary");
+const alphaEl = document.getElementById("alphabet");
+const searchEl = document.getElementById("search");
+
+alphabet.forEach(l=>{
+  const b=document.createElement("button");
+  b.textContent=l;
+  b.onclick=()=>document.getElementById("sec-"+l)?.scrollIntoView({behavior:"smooth"});
+  alphaEl.appendChild(b);
+});
+
+function render(list){
+  dictEl.innerHTML="";
+  alphabet.forEach(l=>{
+    const group=list.filter(w=>w[0].startsWith(l));
+    if(!group.length) return;
+    const s=document.createElement("section");
+    s.id="sec-"+l;
+    s.innerHTML="<h2>"+l+"</h2>";
+    group.forEach(w=>{
+      s.innerHTML+=`<div class="word"><strong>${w[0]}</strong> — ${w[1]}</div>`;
+    });
+    dictEl.appendChild(s);
+  });
+}
+
+searchEl.oninput=()=>{
+  const q=searchEl.value.toLowerCase();
+  render(dictionary.filter(w=>w[0].includes(q)||w[1].toLowerCase().includes(q)));
+};
+
+render(dictionary);
+</script>
+
+</body>
+</html>
