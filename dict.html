@@ -414,12 +414,15 @@ const dictionary = [
 // SORT + RENDER
 // =====================
 const rank = Object.fromEntries(alphabet.map((l,i)=>[l,i]));
-dictionary.sort((a,b)=>{
-  const x=a[0], y=b[0];
-  for(let i=0;i<Math.min(x.length,y.length);i++){
-    if(rank[x[i]]!==rank[y[i]]) return (rank[x[i]]??999)-(rank[y[i]]??999);
+dictionary.sort((a, b) => {
+  const x = a[0].toLowerCase();
+  const y = b[0].toLowerCase();
+  for (let i = 0; i < Math.min(x.length, y.length); i++) {
+    if (rank[x[i]] !== rank[y[i]]) {
+      return (rank[x[i]] ?? 999) - (rank[y[i]] ?? 999);
+    }
   }
-  return x.length-y.length;
+  return x.length - y.length;
 });
 
 const dictEl = document.getElementById("dictionary");
@@ -428,7 +431,7 @@ const searchEl = document.getElementById("search");
 
 alphabet.forEach(l=>{
   const b=document.createElement("button");
-  b.textContent=l;
+  b.textContent=l.toUpperCase();
   b.onclick=()=>document.getElementById("sec-"+l)?.scrollIntoView({behavior:"smooth"});
   alphaEl.appendChild(b);
 });
@@ -436,11 +439,11 @@ alphabet.forEach(l=>{
 function render(list){
   dictEl.innerHTML="";
   alphabet.forEach(l=>{
-    const group=list.filter(w=>w[0].startsWith(l));
+const group = list.filter(w => w[0].toLowerCase().startsWith(l));
     if(!group.length) return;
     const s=document.createElement("section");
     s.id="sec-"+l;
-    s.innerHTML="<h2>"+l+"</h2>";
+    s.innerHTML="<h2>"+l.toUpperCase()+"</h2>";
     group.forEach(w=>{
       s.innerHTML+=`<div class="word"><strong>${w[0]}</strong> — ${w[1]}</div>`;
     });
