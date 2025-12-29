@@ -187,7 +187,6 @@ const dictionary = [
   ["math","math"],
   ["mathi","mathematical"],
   ["mathi narizbikkolim","prestigious mathematical olympiad"],
-  ["mi","question indicator"],
   ["mian","mean"],
   ["midt","meet"],
   ["midttaab","meetup"],
