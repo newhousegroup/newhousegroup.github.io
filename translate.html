@@ -328,8 +328,17 @@ toggle.addEventListener("change", applyDark);
 applyDark();
 
 /* ---------- Translation ---------- */
-function tokenize(text) { 
-    return text.toLowerCase().trim().split(/\s+/);
+function tokenize(text) {
+  return text
+    .toLowerCase()
+    // put spaces around punctuation
+    .replace(/([?.!,])/g, " $1 ")
+    .trim()
+    .split(/\s+/);
+}
+
+function detokenize(text) {
+  return text.replace(/\s+([?.!,])/g, "$1");
 }
 
 function detectLanguage(words) {
@@ -365,91 +374,101 @@ function translateWithPhrases(words, dict) {
             i++;
         }
     }
-    return result.join(" ");
+    return detokenize(result.join(" "));
 }
 
-function negation(text) {
-    // NEGATION
-    
-  // Normalize apostrophes
+function prep(text) {
+  // Normalize curly apostrophes
   text = text.replace(/’/g, "'");
 
-  const irregulars = {
+  // --- Apostrophe irregulars ---
+  const irregularApostrophe = {
     "won't": "not will",
     "can't": "not can",
     "ain't": "not am"
   };
 
-  for (const [from, to] of Object.entries(irregulars)) {
-    const re = new RegExp(`\\b${from}\\b`, "gi");
-    text = text.replace(re, to);
+  for (const [from, to] of Object.entries(irregularApostrophe)) {
+    text = text.replace(
+      new RegExp(`\\b${from}\\b`, "gi"),
+      to
+    );
   }
 
-  text = text.replace(/\b(\w+)n't\b/gi, "not $1"); 
+  // --- No-apostrophe negations (explicit whitelist) ---
+  const manualNoApostrophe = {
+    "dont": "not do",
+    "didnt": "not did",
+    "doesnt": "not does",
+    "isnt": "not is",
+    "arent": "not are",
+    "wasnt": "not was",
+    "werent": "not were",
+    "havent": "not have",
+    "hasnt": "not has",
+    "hadnt": "not had",
+    "cant": "not can",
+    "wont": "not will",
+    "shouldnt": "not should",
+    "wouldnt": "not would",
+    "couldnt": "not could",
+    "mustnt": "not must",
+    "mightnt": "not might"
+  };
+
+  for (const [from, to] of Object.entries(manualNoApostrophe)) {
+    text = text.replace(
+      new RegExp(`\\b${from}\\b`, "gi"),
+      to
+    );
+  }
+
+  // --- Swap "AUX not" → "not AUX" ---
+  text = text.replace(
+    /\b(do|does|did|is|are|was|were|have|has|had|can|will|shall|should|would|could|might|must|may)\s+not\b/gi,
+    "not $1"
+  );
+
+  // --- Apostrophe-based negation (safe) ---
+  text = text.replace(
+    /\b(\w+)n't\b/gi,
+    "not $1"
+  );
 
   return text;
 }
 
-function splitSentences(text) {
-    const abbreviations = [
-        "e.g", "i.e", "mr", "mrs", "ms", "dr", "prof", "sr", "jr", "vs"
-    ];
+function jamPrep(text) {
+  // Swap "nai AUX" → "AUX not"
+  text = text.replace(
+    /\bnai\s+(do|does|did|is|are|was|were|have|has|had|can|will|shall|should|would|could|might|must|may)\b/gi,
+    "$1 not"
+  );
 
-    const result = [];
-    let buffer = "";
-    let depth = 0;
+  return text;
+}
 
-    for (let i = 0; i < text.length; i++) {
-        const ch = text[i];
-        buffer += ch;
+function jamPrep(text) {
+  // Swap "nai AUX" → "AUX not"
+  text = text.replace(
+    /\bnai\s+(do|does|did|is|are|was|were|have|has|had|can|will|shall|should|would|could|might|must|may)\b/gi,
+    "$1 not"
+  );
 
-        // Track parentheses
-        if (ch === "(") depth++;
-        if (ch === ")" && depth > 0) depth--;
+  return text;
+}function jamPrep(text) {
+  // Swap "nai AUX" → "AUX not"
+  text = text.replace(
+    /\bnai\s+(do|does|did|is|are|was|were|have|has|had|can|will|shall|should|would|could|might|must|may)\b/gi,
+    "$1 not"
+  );
 
-        if (depth > 0) continue;
-
-        // Handle ellipses (...)
-        if (ch === "." && text.slice(i).match(/^\.+/)) {
-            const dots = text.slice(i).match(/^\.+/)[0];
-            buffer += dots.slice(1);
-            i += dots.length - 1;
-            continue;
-        }
-
-        // Sentence-ending punctuation
-        if (ch === "." || ch === "?" || ch === "!") {
-            const prev = buffer.slice(0, -1).trim().toLowerCase();
-            const lastWord = prev.split(/\s+/).pop();
-
-            if (abbreviations.includes(lastWord)) continue;
-
-            let sentence = buffer.trim();
-
-            // 🔹 Insert %Q% marker if this sentence is a question
-            if (/[a-z0-9]\?/i.test(sentence)) {
-                sentence = "%Q% " + sentence;
-            }
-
-            if (sentence) result.push(sentence);
-            buffer = "";
-        }
-    }
-
-    // Remainder
-    if (buffer.trim()) {
-        let sentence = buffer.trim();
-        if (/[a-z0-9]\?/i.test(sentence)) {
-            sentence = "%Q% " + sentence;
-        }
-        result.push(sentence);
-    }
-
-    return result;
+  return text;
 }
 
 function translateText() {
-    const text = document.getElementById("input").value;
+    const inp = document.getElementById("input").value;
+    const text = (detectLanguage(tokenize(inp)) === "jam") ? jamPrep(inp) : prep(inp);
     const result = document.getElementById("result");
     const dir = document.getElementById("direction");
     if (!text.trim()) {
@@ -458,44 +477,25 @@ function translateText() {
         return;
     }
 
-    const sentences = splitSentencesSmart(text);
-const mode = document.getElementById("mode").value;
-
-const outputs = sentences.map(s => {
-    let sentenceText = s.text;
-    let translated = "";
+    const words = tokenize(text);
+    const mode = document.getElementById("mode").value;
 
     if (mode === "auto") {
-        const wordsForDetect = tokenize(sentenceText);
-        const d = detectLanguage(wordsForDetect);
-
+        const d = detectLanguage(words);
         if (d === "jam") {
-            translated = translateWithPhrases(wordsForDetect, jamToEng);
+            result.textContent = translateWithPhrases(words, jamToEng);
+            dir.textContent = "Zamœlis → English (auto)";
         } else {
-            sentenceText = negation(sentenceText);
-            translated = translateWithPhrases(tokenize(sentenceText), engToJam);
-            translated = translated.replace(/\%Q\%/g, "mi");
+            result.textContent = translateWithPhrases(words, engToJam);
+            dir.textContent = "English → Zamœlis (auto)";
         }
-    } 
-    else if (mode === "jam-en") {
-        translated = translateWithPhrases(tokenize(sentenceText), jamToEng);
-    } 
-    else {
-        sentenceText = negation(sentenceText);
-        translated = translateWithPhrases(tokenize(sentenceText), engToJam);
-        translated = translated.replace(/\%Q\%/g, "mi");
+    } else if (mode === "jam-en") {
+        result.textContent = translateWithPhrases(words, jamToEng);
+        dir.textContent = "Zamœlis → English";
+    } else {
+        result.textContent = translateWithPhrases(words, engToJam);
+        dir.textContent = "English → Zamœlis";
     }
-
-    return translated;
-});
-
-result.textContent = outputs.join(" ");
-dir.textContent =
-    mode === "auto"
-        ? "Auto detect"
-        : mode === "jam-en"
-        ? "Jamalese → English"
-        : "English → Jamalese";
 }
 
 document.getElementById("input").addEventListener("input", translateText);
