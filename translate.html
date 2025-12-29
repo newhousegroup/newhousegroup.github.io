@@ -239,8 +239,8 @@ textarea {
 
 <div class="footer">
     <span>
-        View the full dictionary at
-        <a href="https://newhs.cc/dict" target="_blank">https://newhs.cc/dict</a>
+        Powered by
+        <a href="https://newhs.cc/dict" target="_blank">the Newhouse Jamalese Dictionary</a>
     </span>
     <span>
         Jamalese Translator v1.0 • Created by
@@ -251,10 +251,69 @@ textarea {
 </div>
 </div>
 
-<script src="jamToEng.js"></script>
-<script src="engToJam.js"></script>
+    <script src="https://newhs.cc/words.js"></script>
 
 <script>
+  const engToJam = {};
+
+  for (const [jam, engRaw] of dictionary) {
+
+    // 1. Split by commas
+    const parts = engRaw.split(",");
+
+    for (let part of parts) {
+
+      // 2. Remove annotations in parentheses
+      part = part.replace(/\s*\(.*?\)\s*/g, "");
+
+      // 3. Normalize
+      part = part.trim().toLowerCase();
+
+      // Skip empty results
+      if (!part) continue;
+
+      // 4. Initialize bucket
+      if (!engToJam[part]) {
+        engToJam[part] = [];
+      }
+
+      // 5. Avoid duplicates
+      if (!engToJam[part].includes(jam)) {
+        engToJam[part].push(jam);
+      }
+    }
+  }
+
+
+  const jamToEng = {};
+
+  for (const [jam, engRaw] of dictionary) {
+
+    // 1. Split by commas
+    const parts = engRaw.split(",");
+
+    const meanings = [];
+
+    for (let part of parts) {
+
+      // 2. Strip annotations in parentheses
+      part = part.replace(/\s*\(.*?\)\s*/g, "");
+
+      // 3. Normalize
+      part = part.trim().toLowerCase();
+
+      if (!part) continue;
+
+      meanings.push(part);
+    }
+
+    // 4. Deduplicate meanings
+    jamToEng[jam] = [...new Set(meanings)];
+  }
+
+
+
+    
 /* ---------- Dark Mode ---------- */
 const toggle = document.getElementById("darkToggle");
 toggle.checked = localStorage.getItem("dark") !== "false";
