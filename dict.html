@@ -164,8 +164,7 @@ render(dictionary);
 
   const offset =
     (header?.offsetHeight || 0) +
-    (alphabet?.offsetHeight || 0) +
-    8; // small breathing room
+    (alphabet?.offsetHeight || 0);
 
   document.documentElement.style.setProperty(
     "--scroll-offset",
