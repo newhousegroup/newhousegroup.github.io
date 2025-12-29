@@ -330,11 +330,19 @@ applyDark();
 /* ---------- Translation ---------- */
 function tokenize(text) {
   return text
-    .toLowerCase()
-    // put spaces around punctuation
     .replace(/([?.!,])/g, " $1 ")
     .trim()
-    .split(/\s+/);
+    .split(/\s+/)
+    .map(tok => ({
+      raw: tok,
+      lower: tok.toLowerCase(),
+      case:
+        tok === tok.toUpperCase() && /[A-Z]/.test(tok)
+          ? "upper"
+          : tok[0] === tok[0]?.toUpperCase()
+          ? "capital"
+          : "lower"
+    }));
 }
 
 function detokenize(text) {
@@ -348,6 +356,22 @@ function detectLanguage(words) {
         if (engToJam[w]) eng++;
     });
     return jam >= eng ? "jam" : "eng";
+}
+
+function applyCase(word, type) {
+  if (type === "upper") return word.toUpperCase();
+  if (type === "capital") return word[0].toUpperCase() + word.slice(1);
+  return word;
+}
+
+function rebuild(translatedText, tokens) {
+  const out = translatedText.split(" ");
+
+  return out.map((w, i) => {
+    const t = tokens[i];
+    if (!t) return w;
+    return applyCase(w, t.case);
+  }).join(" ");
 }
 
 function translateWithPhrases(words, dict) {
@@ -448,24 +472,6 @@ function jamPrep(text) {
   return text;
 }
 
-function jamPrep(text) {
-  // Swap "nai AUX" → "AUX not"
-  text = text.replace(
-    /\bnai\s+(do|does|did|is|are|was|were|have|has|had|can|will|shall|should|would|could|might|must|may)\b/gi,
-    "$1 not"
-  );
-
-  return text;
-}function jamPrep(text) {
-  // Swap "nai AUX" → "AUX not"
-  text = text.replace(
-    /\bnai\s+(do|does|did|is|are|was|were|have|has|had|can|will|shall|should|would|could|might|must|may)\b/gi,
-    "$1 not"
-  );
-
-  return text;
-}
-
 function translateText() {
     const inp = document.getElementById("input").value;
     const text = (detectLanguage(tokenize(inp)) === "jam") ? jamPrep(inp) : prep(inp);
@@ -477,23 +483,28 @@ function translateText() {
         return;
     }
 
-    const words = tokenize(text);
+const tokens = tokenize(text);
+const words = tokens.map(t => t.lower);
     const mode = document.getElementById("mode").value;
 
     if (mode === "auto") {
         const d = detectLanguage(words);
         if (d === "jam") {
-            result.textContent = translateWithPhrases(words, jamToEng);
+const translated = translateWithPhrases(words, jamToEng);
+result.textContent = rebuild(translated, tokens);
             dir.textContent = "Zamœlis → English (auto)";
         } else {
-            result.textContent = translateWithPhrases(words, engToJam);
+const translated = translateWithPhrases(words, engToJam);
+result.textContent = rebuild(translated, tokens);
             dir.textContent = "English → Zamœlis (auto)";
         }
     } else if (mode === "jam-en") {
-        result.textContent = translateWithPhrases(words, jamToEng);
+const translated = translateWithPhrases(words, jamToEng);
+result.textContent = rebuild(translated, tokens);
         dir.textContent = "Zamœlis → English";
     } else {
-        result.textContent = translateWithPhrases(words, engToJam);
+const translated = translateWithPhrases(words, engToJam);
+result.textContent = rebuild(translated, tokens);
         dir.textContent = "English → Zamœlis";
     }
 }
