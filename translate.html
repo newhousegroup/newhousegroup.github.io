@@ -333,16 +333,22 @@ function tokenize(text) {
     .replace(/([?.!,])/g, " $1 ")
     .trim()
     .split(/\s+/)
-    .map(tok => ({
-      raw: tok,
-      lower: tok.toLowerCase(),
-      case:
-        tok === tok.toUpperCase() && /[A-Z]/.test(tok)
-          ? "upper"
-          : tok[0] === tok[0]?.toUpperCase()
-          ? "capital"
-          : "lower"
-    }));
+    .map(tok => {
+      const isPunct = /^[?.!,]$/.test(tok);
+
+      let type = "lower";
+      if (!isPunct) {
+        if (tok === tok.toUpperCase() && /[A-Z]/.test(tok)) type = "upper";
+        else if (tok[0] === tok[0]?.toUpperCase()) type = "capital";
+      }
+
+      return {
+        raw: tok,
+        lower: tok.toLowerCase(),
+        case: type,
+        punct: isPunct
+      };
+    });
 }
 
 function detokenize(text) {
@@ -363,7 +369,7 @@ function applyCase(word, type) {
   if (type === "capital") return word[0].toUpperCase() + word.slice(1);
   return word;
 }
-
+/*
 function rebuild(translatedText, tokens) {
   const out = translatedText.split(" ");
 
@@ -373,32 +379,53 @@ function rebuild(translatedText, tokens) {
     return applyCase(w, t.case);
   }).join(" ");
 }
+*/
+function translateWithPhrases(tokens, dict) {
+  const result = [];
+  const words = tokens.map(t => t.lower);
 
-function translateWithPhrases(words, dict) {
-    const result = [];
-    const keys = Object.keys(dict);
-    const maxLen = Math.max(...keys.map(k => k.split(" ").length));
-    let i = 0;
+  const keys = Object.keys(dict);
+  const maxLen = Math.max(...keys.map(k => k.split(" ").length));
 
-    while (i < words.length) {
-        let matched = false;
-        for (let size = Math.min(maxLen, words.length - i); size > 0; size--) {
-            const chunk = words.slice(i, i + size).join(" ");
-            if (dict[chunk]) {
-                let val = dict[chunk];
-                if (Array.isArray(val)) val = val[0];
-                result.push(val);
-                i += size;
-                matched = true;
-                break;
-            }
-        }
-        if (!matched) {
-            result.push(words[i]);
-            i++;
-        }
+  let i = 0;
+
+  while (i < tokens.length) {
+
+    // --- punctuation passes through untouched ---
+    if (tokens[i].punct) {
+      result.push(tokens[i].raw);
+      i++;
+      continue;
     }
-    return detokenize(result.join(" "));
+
+    let matched = false;
+
+    // --- phrase matching ---
+    for (let size = Math.min(maxLen, tokens.length - i); size > 0; size--) {
+      const chunk = words.slice(i, i + size).join(" ");
+
+      if (dict[chunk]) {
+        let val = dict[chunk];
+        if (Array.isArray(val)) val = val[0];
+
+        // 🔑 casing comes from FIRST word of phrase
+        val = applyCase(val, tokens[i].case);
+
+        result.push(val);
+        i += size;
+        matched = true;
+        break;
+      }
+    }
+
+    // --- fallback: single word ---
+    if (!matched) {
+      result.push(applyCase(words[i], tokens[i].case));
+      i++;
+    }
+  }
+
+  return detokenize(result.join(" "));
 }
 
 function prep(text) {
@@ -484,27 +511,27 @@ function translateText() {
     }
 
 const tokens = tokenize(text);
-const words = tokens.map(t => t.lower);
+
     const mode = document.getElementById("mode").value;
 
     if (mode === "auto") {
-        const d = detectLanguage(words);
+const d = detectLanguage(tokens.map(t => t.lower));
         if (d === "jam") {
-const translated = translateWithPhrases(words, jamToEng);
-result.textContent = rebuild(translated, tokens);
+const translated = translateWithPhrases(tokens, jamToEng);
+result.textContent = translated;
             dir.textContent = "Zamœlis → English (auto)";
         } else {
-const translated = translateWithPhrases(words, engToJam);
-result.textContent = rebuild(translated, tokens);
+const translated = translateWithPhrases(tokens, engToJam);
+result.textContent = translated;
             dir.textContent = "English → Zamœlis (auto)";
         }
     } else if (mode === "jam-en") {
-const translated = translateWithPhrases(words, jamToEng);
-result.textContent = rebuild(translated, tokens);
+const translated = translateWithPhrases(tokens, jamToEng);
+result.textContent = translated;
         dir.textContent = "Zamœlis → English";
     } else {
-const translated = translateWithPhrases(words, engToJam);
-result.textContent = rebuild(translated, tokens);
+const translated = translateWithPhrases(tokens, engToJam);
+result.textContent = translated;
         dir.textContent = "English → Zamœlis";
     }
 }
