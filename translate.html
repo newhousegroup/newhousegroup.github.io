@@ -256,6 +256,10 @@ textarea {
 <script>
   const engToJam = {};
 
+    const PRIORITY = {
+  yes: ["za", "lah", "ti"]
+};
+
   for (const [jam, engRaw] of dictionary) {
 
     // 1. Split by commas
@@ -406,7 +410,15 @@ function translateWithPhrases(tokens, dict) {
 
       if (dict[chunk]) {
         let val = dict[chunk];
-        if (Array.isArray(val)) val = val[0];
+
+if (Array.isArray(val)) {
+  // Apply priority if defined
+  if (PRIORITY[chunk]) {
+    val = PRIORITY[chunk].find(v => val.includes(v)) || val[0];
+  } else {
+    val = val[0];
+  }
+}
 
         // 🔑 casing comes from FIRST word of phrase
         val = applyCase(val, tokens[i].case);
