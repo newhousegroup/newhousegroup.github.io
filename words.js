@@ -147,6 +147,7 @@ const dictionary = [
   ["Kanaada","Canada"],
   ["kimistri","chemistry"],
   ["kobkradd","frog"],
+  ["kobkradddodd", "frog jump, frog jumping"],
   ["kold","cold"],
   ["kommbotar","computer"],
   ["kommbotat","computation, computational"],
