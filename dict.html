@@ -1,182 +1,295 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zamœlis Diksonri</title>
-  <meta name="description" content="Jamalese Dictionary">
+<title>Jamalese Translator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
+/* ---------- Global ---------- */
 * {
-  box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    box-sizing: border-box;
 }
 
-  :root {
-  --scroll-offset: 0px;
+html {
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-section {
-  scroll-margin-top: var(--scroll-offset);
+/* ---------- THEMES ---------- */
+:root {
+    --bg: #0b0e1a;
+    --card: #151a33;
+    --text: #f1f3ff;
+    --muted: #aab;
+    --accent: #7c8cff;
+    --border: #2b2f55;
+    --input: #0e1228;
+    --output: rgba(255,255,255,0.06);
 }
 
+html[data-theme="light"] {
+    --bg: #f4f6fb;
+    --card: #ffffff;
+    --text: #111;
+    --muted: #555;
+    --accent: #4a5cff;
+    --border: #ddd;
+    --input: #f5f6fa;
+    --output: #f1f2f7;
+}
+
+/* ---------- Body ---------- */
 body {
-  margin: 0;
-  background: #f4f4f4;
-  color: #222;
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
+/* ---------- Layout ---------- */
+.container {
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 20px;
+}
+
+.card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    transition: background-color 0.4s ease;
+}
+
+/* ---------- Header ---------- */
 header {
-  position: sticky;
-  top: 0;
-  background: #1e1e1e;
-  color: white;
-  padding: 1rem;
-  z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-header h1 {
-  margin: 0 0 0.5rem 0;
+h1 {
+    margin: 0;
+    font-size: 28px;
 }
 
-header input {
-  width: 100%;
-  padding: 0.6rem;
-  border-radius: 6px;
-  border: none;
-  font-size: 1rem;
+/* ---------- Dark Toggle ---------- */
+.toggle-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
 }
 
-  #top {
-    position:sticky;
-    top:0;
-  }
-
-#alphabet {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 0.4rem;
-  padding: 0.8rem;
-  background: #ddd;
-  overflow-x: scroll;
+.switch {
+    position: relative;
+    width: 52px;
+    height: 26px;
 }
 
-#alphabet button {
-  border: none;
-  background: white;
-  padding: 0.4rem 0.6rem;
-  border-radius: 4px;
-  cursor: pointer;
+.switch input {
+    opacity: 0;
 }
 
-#alphabet button:hover {
-  background: #bbb;
+.slider {
+    position: absolute;
+    inset: 0;
+    background: #aaa;
+    border-radius: 26px;
+    transition: background 0.3s;
 }
 
-section {
-  padding: 1rem;
+.slider::before {
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
 }
 
-section h2 {
-  margin-bottom: 0.4rem;
-  border-bottom: 2px solid #ccc;
+input:checked + .slider {
+    background: var(--accent);
 }
 
-.word {
-  padding: 0.35rem 0;
+input:checked + .slider::before {
+    transform: translateX(26px);
 }
 
-.word strong {
-  font-size: 1.05rem;
+/* ---------- Controls ---------- */
+.controls {
+    margin-bottom: 16px;
+}
+
+select {
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--input);
+    color: var(--text);
+    font-size: 14px;
+    transition: background-color 0.4s, color 0.4s, border-color 0.4s;
+}
+
+/* ---------- Two Pane System ---------- */
+.panes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.pane {
+    display: flex;
+    flex-direction: column;
+    height: 260px;
+}
+
+textarea {
+    flex: 1;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--input);
+    color: var(--text);
+    resize: none;
+    outline: none;
+    transition: background-color 0.4s, color 0.4s, border-color 0.4s;
+}
+
+.output-box {
+    flex: 1;
+    padding: 14px;
+    border-radius: 14px;
+    background: var(--output);
+    font-size: 18px;
+    overflow-y: auto;
+    word-break: break-word;
+    transition: background-color 0.4s;
+}
+
+.direction {
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+/* ---------- Copy Button ---------- */
+.copy-btn {
+    margin-top: 10px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--input);
+    color: var(--text);
+    cursor: pointer;
+    transition: background-color 0.4s, color 0.4s, border-color 0.4s;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+    margin-top: 22px;
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 700px) {
+    .panes {
+        grid-template-columns: 1fr;
+    }
+
+    .pane {
+        height: 220px;
+    }
 }
 </style>
 </head>
 
 <body>
-<div id="top">
+
+<div class="container">
+<div class="card">
+
 <header>
-  <center><p><b>Zamœlis Diksonri</b><br>Newhouse Jamalese Dictionary</p></center>
-  <input id="search" placeholder="Search Jamalese or English…">
+    <h1>Jamalese Translator</h1>
+    <div class="toggle-wrap">
+        🌞
+        <label class="switch">
+            <input type="checkbox" id="darkToggle">
+            <span class="slider"></span>
+        </label>
+        🌙
+    </div>
 </header>
 
-<nav id="alphabet"></nav></div>
-<main id="dictionary"></main>
+<div class="controls">
+    <select id="mode">
+        <option value="auto">Auto-detect</option>
+        <option value="jam-en">Zamœlis → English</option>
+        <option value="en-jam">English → Zamœlis</option>
+    </select>
+</div>
 
-  <script src="https://newhs.cc/words.js"></script>
+<div class="panes">
+    <div class="pane">
+        <textarea id="input" placeholder="Type text here..."></textarea>
+    </div>
+
+    <div class="pane">
+        <div class="output-box">
+            <div class="direction" id="direction"></div>
+            <div id="result"></div>
+        </div>
+        <button class="copy-btn" onclick="copyResult()">📋 Copy translation</button>
+    </div>
+</div>
+
+<div class="footer">
+    <span>
+        Powered by
+        <a href="https://newhs.cc/dict" target="_blank">Newhouse Jamalese Dictionary</a>
+    </span>
+    <span>
+        Created by
+        <a href="https://github.com/nadfd" target="_blank">nadfd</a>
+    </span>
+</div>
+
+</div>
+</div>
+
+<script src="https://newhs.cc/words.js"></script>
+
 <script>
-// =====================
-// JAMALESE ALPHABET
-// =====================
-const alphabet = ["a","b","d","f","g","h","i","k","l","m","n","o","œ","r","s","t","w","z"];
+/* ---------- Dark Mode ---------- */
+const toggle = document.getElementById("darkToggle");
+const root = document.documentElement;
 
+const saved = localStorage.getItem("theme") || "dark";
+root.setAttribute("data-theme", saved);
+toggle.checked = saved === "dark";
 
-// =====================
-// SORT + RENDER
-// =====================
-const rank = Object.fromEntries(alphabet.map((l,i)=>[l,i]));
-dictionary.sort((a, b) => {
-  const x = a[0].toLowerCase();
-  const y = b[0].toLowerCase();
-  for (let i = 0; i < Math.min(x.length, y.length); i++) {
-    if (rank[x[i]] !== rank[y[i]]) {
-      return (rank[x[i]] ?? 999) - (rank[y[i]] ?? 999);
-    }
-  }
-  return x.length - y.length;
+toggle.addEventListener("change", () => {
+    const theme = toggle.checked ? "dark" : "light";
+    root.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
 });
-
-const dictEl = document.getElementById("dictionary");
-const alphaEl = document.getElementById("alphabet");
-const searchEl = document.getElementById("search");
-
-alphabet.forEach(l=>{
-  const b=document.createElement("button");
-  b.textContent=l.toUpperCase();
-  b.onclick=()=>document.getElementById("sec-"+l)?.scrollIntoView({behavior:"smooth"});
-  alphaEl.appendChild(b);
-});
-
-function render(list){
-  dictEl.innerHTML="";
-  alphabet.forEach(l=>{
-const group = list.filter(w => w[0].toLowerCase().startsWith(l));
-    if(!group.length) return;
-    const s=document.createElement("section");
-    s.id="sec-"+l;
-    s.innerHTML="<h2>"+l.toUpperCase()+"</h2>";
-    group.forEach(w=>{
-      s.innerHTML+=`<div class="word"><strong>${w[0]}</strong> — ${w[1]}</div>`;
-    });
-    dictEl.appendChild(s);
-  });
-}
-
-searchEl.oninput=()=>{
-  const q=searchEl.value.toLowerCase();
-  render(dictionary.filter(w=>w[0].toLowerCase().includes(q)||w[1].toLowerCase().includes(q)));
-};
-
-render(dictionary);
-
-  function updateScrollOffset() {
-  const header = document.querySelector("header");
-  const alphabet = document.getElementById("alphabet");
-
-  const offset =
-    (header?.offsetHeight || 0) +
-    (alphabet?.offsetHeight || 0);
-
-  document.documentElement.style.setProperty(
-    "--scroll-offset",
-    offset + "px"
-  );
-}
-
-window.addEventListener("load", updateScrollOffset);
-window.addEventListener("resize", updateScrollOffset);
 </script>
-
-  
 
 </body>
 </html>
