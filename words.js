@@ -261,6 +261,7 @@ const dictionary = [
   ["riwisi","revision"],
   ["rizbik","respect"],
   ["robzil","picture"],
+  ["rolo", "revert, go back, switch back"],
   ["rondai","tomorrow"],
   ["Rœgil", "June"],
   ["rœla", "nearly"],
