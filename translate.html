@@ -432,8 +432,21 @@ if (Array.isArray(val)) {
 
     // --- fallback: single word ---
     if (!matched) {
-      result.push(applyCase(words[i], tokens[i].case));
-      i++;
+      let w = words[i];
+
+// plural fallback: orbits → orbit
+if (
+  w.endsWith("s") &&
+  dict[w.slice(0, -1)]
+) {
+  let val = dict[w.slice(0, -1)];
+  if (Array.isArray(val)) val = val[0];
+  result.push(applyCase(val, tokens[i].case));
+} else {
+  result.push(applyCase(w, tokens[i].case));
+}
+
+i++;
     }
   }
 
