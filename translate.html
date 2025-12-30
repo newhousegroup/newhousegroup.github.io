@@ -602,7 +602,12 @@ result.textContent = translated;
 document.getElementById("input").addEventListener("input", translateText);
 document.getElementById("mode").addEventListener("change", translateText);
 
+function copyResult() {
+    const t = document.getElementById("result").innerText;
+    if (t) navigator.clipboard.writeText(t);
+}
 
+    window.copyResult = copyResult;
 </script>
 
 </body>
