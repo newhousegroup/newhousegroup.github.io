@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <title>Jamalese Translator</title>
@@ -11,6 +11,11 @@
     box-sizing: border-box;
 }
 
+html {
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* ---------- THEMES ---------- */
 :root {
     --bg: #0b0e1a;
     --card: #151a33;
@@ -18,13 +23,28 @@
     --muted: #aab;
     --accent: #7c8cff;
     --border: #2b2f55;
+    --input: #0e1228;
+    --output: rgba(255,255,255,0.06);
 }
 
+html[data-theme="light"] {
+    --bg: #f4f6fb;
+    --card: #ffffff;
+    --text: #111;
+    --muted: #555;
+    --accent: #4a5cff;
+    --border: #ddd;
+    --input: #f5f6fa;
+    --output: #f1f2f7;
+}
+
+/* ---------- Body ---------- */
 body {
     margin: 0;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    background: radial-gradient(circle at top, #121633, #070914);
+    background: var(--bg);
     color: var(--text);
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* ---------- Layout ---------- */
@@ -35,10 +55,11 @@ body {
 }
 
 .card {
-    background: linear-gradient(145deg, #151a33, #10142b);
+    background: var(--card);
     border-radius: 20px;
     padding: 28px;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    transition: background-color 0.4s ease;
 }
 
 /* ---------- Header ---------- */
@@ -75,8 +96,9 @@ h1 {
 .slider {
     position: absolute;
     inset: 0;
-    background: #444;
+    background: #aaa;
     border-radius: 26px;
+    transition: background 0.3s;
 }
 
 .slider::before {
@@ -88,7 +110,7 @@ h1 {
     bottom: 3px;
     background: white;
     border-radius: 50%;
-    transition: 0.3s;
+    transition: transform 0.3s;
 }
 
 input:checked + .slider {
@@ -108,12 +130,13 @@ select {
     padding: 8px 14px;
     border-radius: 10px;
     border: 1px solid var(--border);
-    background: var(--card);
+    background: var(--input);
     color: var(--text);
     font-size: 14px;
+    transition: background-color 0.4s, color 0.4s, border-color 0.4s;
 }
 
-/* ---------- Two Pane System (FIXED) ---------- */
+/* ---------- Two Pane System ---------- */
 .panes {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -123,7 +146,7 @@ select {
 .pane {
     display: flex;
     flex-direction: column;
-    height: 260px; /* 🔑 hard sync height */
+    height: 260px;
 }
 
 textarea {
@@ -132,20 +155,22 @@ textarea {
     font-size: 16px;
     border-radius: 14px;
     border: 1px solid var(--border);
-    background: #0e1228;
+    background: var(--input);
     color: var(--text);
-    resize: none;              /* 🔑 disable resizing */
+    resize: none;
     outline: none;
+    transition: background-color 0.4s, color 0.4s, border-color 0.4s;
 }
 
 .output-box {
     flex: 1;
     padding: 14px;
     border-radius: 14px;
-    background: rgba(255,255,255,0.06);
+    background: var(--output);
     font-size: 18px;
     overflow-y: auto;
     word-break: break-word;
+    transition: background-color 0.4s;
 }
 
 .direction {
@@ -161,10 +186,10 @@ textarea {
     padding: 8px 14px;
     border-radius: 10px;
     border: 1px solid var(--border);
-    background: #0e1228;
+    background: var(--input);
     color: var(--text);
     cursor: pointer;
-    align-self: flex-start;
+    transition: background-color 0.4s, color 0.4s, border-color 0.4s;
 }
 
 /* ---------- Footer ---------- */
@@ -182,10 +207,6 @@ textarea {
     text-decoration: none;
 }
 
-.footer a:hover {
-    text-decoration: underline;
-}
-
 /* ---------- Mobile ---------- */
 @media (max-width: 700px) {
     .panes {
@@ -198,6 +219,7 @@ textarea {
 }
 </style>
 </head>
+
 <body>
 
 <div class="container">
@@ -208,7 +230,7 @@ textarea {
     <div class="toggle-wrap">
         🌞
         <label class="switch">
-            <input type="checkbox" id="darkToggle" checked>
+            <input type="checkbox" id="darkToggle">
             <span class="slider"></span>
         </label>
         🌙
@@ -251,311 +273,22 @@ textarea {
 </div>
 </div>
 
-    <script src="https://newhs.cc/words.js"></script>
+<script src="https://newhs.cc/words.js"></script>
 
 <script>
-  const engToJam = {};
-
-    const PRIORITY = {
-  yes: ["za", "lah", "ti"]
-};
-
-  for (const [jam, engRaw] of dictionary) {
-
-    // 1. Split by commas
-    const parts = engRaw.split(",");
-
-    for (let part of parts) {
-
-      // 2. Remove annotations in parentheses
-      part = part.replace(/\s*\(.*?\)\s*/g, "");
-
-      // 3. Normalize
-      part = part.trim().toLowerCase();
-
-      // Skip empty results
-      if (!part) continue;
-
-      // 4. Initialize bucket
-      if (!engToJam[part]) {
-        engToJam[part] = [];
-      }
-
-      // 5. Avoid duplicates
-      if (!engToJam[part].includes(jam)) {
-        engToJam[part].push(jam);
-      }
-    }
-  }
-
-
-  const jamToEng = {};
-
-  for (const [jam, engRaw] of dictionary) {
-
-    // 1. Split by commas
-    const parts = engRaw.split(",");
-
-    const meanings = [];
-
-    for (let part of parts) {
-
-      // 2. Strip annotations in parentheses
-      part = part.replace(/\s*\(.*?\)\s*/g, "");
-
-      // 3. Normalize
-      part = part.trim().toLowerCase();
-
-      if (!part) continue;
-
-      meanings.push(part);
-    }
-
-    // 4. Deduplicate meanings
-    jamToEng[jam] = [...new Set(meanings)];
-  }
-
-
-
-    
 /* ---------- Dark Mode ---------- */
 const toggle = document.getElementById("darkToggle");
-toggle.checked = localStorage.getItem("dark") !== "false";
+const root = document.documentElement;
 
-function applyDark() {
-    document.body.style.background = toggle.checked
-        ? "radial-gradient(circle at top, #121633, #070914)"
-        : "#f4f6fb";
-    localStorage.setItem("dark", toggle.checked);
-}
-toggle.addEventListener("change", applyDark);
-applyDark();
+const saved = localStorage.getItem("theme") || "dark";
+root.setAttribute("data-theme", saved);
+toggle.checked = saved === "dark";
 
-/* ---------- Translation ---------- */
-function tokenize(text) {
-  return text
-    .replace(/([?.!,])/g, " $1 ")
-    .trim()
-    .split(/\s+/)
-    .map(tok => {
-      const isPunct = /^[?.!,]$/.test(tok);
-
-      let type = "lower";
-      if (!isPunct) {
-        if (tok === tok.toUpperCase() && /[A-Z]/.test(tok)) type = "upper";
-        else if (tok[0] === tok[0]?.toUpperCase()) type = "capital";
-      }
-
-      return {
-        raw: tok,
-        lower: tok.toLowerCase(),
-        case: type,
-        punct: isPunct
-      };
-    });
-}
-
-function detokenize(text) {
-  return text.replace(/\s+([?.!,])/g, "$1");
-}
-
-function detectLanguage(words) {
-    let jam = 0, eng = 0;
-    words.forEach(w => {
-        if (jamToEng[w]) jam++;
-        if (engToJam[w]) eng++;
-    });
-    return jam >= eng ? "jam" : "eng";
-}
-
-function applyCase(word, type) {
-  if (type === "upper") return word.toUpperCase();
-  if (type === "capital") return word[0].toUpperCase() + word.slice(1);
-  return word;
-}
-/*
-function rebuild(translatedText, tokens) {
-  const out = translatedText.split(" ");
-
-  return out.map((w, i) => {
-    const t = tokens[i];
-    if (!t) return w;
-    return applyCase(w, t.case);
-  }).join(" ");
-}
-*/
-function translateWithPhrases(tokens, dict) {
-  const result = [];
-  const words = tokens.map(t => t.lower);
-
-  const keys = Object.keys(dict);
-  const maxLen = Math.max(...keys.map(k => k.split(" ").length));
-
-  let i = 0;
-
-  while (i < tokens.length) {
-
-    // --- punctuation passes through untouched ---
-    if (tokens[i].punct) {
-      result.push(tokens[i].raw);
-      i++;
-      continue;
-    }
-
-    let matched = false;
-
-    // --- phrase matching ---
-    for (let size = Math.min(maxLen, tokens.length - i); size > 0; size--) {
-      const chunk = words.slice(i, i + size).join(" ");
-
-      if (dict[chunk]) {
-        let val = dict[chunk];
-
-if (Array.isArray(val)) {
-  // Apply priority if defined
-  if (PRIORITY[chunk]) {
-    val = PRIORITY[chunk].find(v => val.includes(v)) || val[0];
-  } else {
-    val = val[0];
-  }
-}
-
-        // 🔑 casing comes from FIRST word of phrase
-        val = applyCase(val, tokens[i].case);
-
-        result.push(val);
-        i += size;
-        matched = true;
-        break;
-      }
-    }
-
-    // --- fallback: single word ---
-    if (!matched) {
-      result.push(applyCase(words[i], tokens[i].case));
-      i++;
-    }
-  }
-
-  return detokenize(result.join(" "));
-}
-
-function prep(text) {
-  // Normalize curly apostrophes
-  text = text.replace(/’/g, "'");
-
-  // --- Apostrophe irregulars ---
-  const irregularApostrophe = {
-    "won't": "not will",
-    "can't": "not can",
-    "ain't": "not am"
-  };
-
-  for (const [from, to] of Object.entries(irregularApostrophe)) {
-    text = text.replace(
-      new RegExp(`\\b${from}\\b`, "gi"),
-      to
-    );
-  }
-
-  // --- No-apostrophe negations (explicit whitelist) ---
-  const manualNoApostrophe = {
-    "dont": "not do",
-    "didnt": "not did",
-    "doesnt": "not does",
-    "isnt": "not is",
-    "arent": "not are",
-    "wasnt": "not was",
-    "werent": "not were",
-    "havent": "not have",
-    "hasnt": "not has",
-    "hadnt": "not had",
-    "cant": "not can",
-    "wont": "not will",
-    "shouldnt": "not should",
-    "wouldnt": "not would",
-    "couldnt": "not could",
-    "mustnt": "not must",
-    "mightnt": "not might"
-  };
-
-  for (const [from, to] of Object.entries(manualNoApostrophe)) {
-    text = text.replace(
-      new RegExp(`\\b${from}\\b`, "gi"),
-      to
-    );
-  }
-
-  // --- Swap "AUX not" → "not AUX" ---
-  text = text.replace(
-    /\b(do|does|did|is|are|was|were|have|has|had|can|will|shall|should|would|could|might|must|may)\s+not\b/gi,
-    "not $1"
-  );
-
-  // --- Apostrophe-based negation (safe) ---
-  text = text.replace(
-    /\b(\w+)n't\b/gi,
-    "not $1"
-  );
-
-  return text;
-}
-
-function jamPrep(text) {
-  // Swap "nai AUX" → "AUX not"
-  text = text.replace(
-    /\bnai\s+(do|does|did|is|are|was|were|have|has|had|can|will|shall|should|would|could|might|must|may)\b/gi,
-    "$1 not"
-  );
-
-  return text;
-}
-
-function translateText() {
-    const inp = document.getElementById("input").value;
-    const text = (detectLanguage(tokenize(inp)) === "jam") ? jamPrep(inp) : prep(inp);
-    const result = document.getElementById("result");
-    const dir = document.getElementById("direction");
-    if (!text.trim()) {
-        result.textContent = "";
-        dir.textContent = "";
-        return;
-    }
-
-const tokens = tokenize(text);
-
-    const mode = document.getElementById("mode").value;
-
-    if (mode === "auto") {
-const d = detectLanguage(tokens.map(t => t.lower));
-        if (d === "jam") {
-const translated = translateWithPhrases(tokens, jamToEng);
-result.textContent = translated;
-            dir.textContent = "Zamœlis → English (auto)";
-        } else {
-const translated = translateWithPhrases(tokens, engToJam);
-result.textContent = translated;
-            dir.textContent = "English → Zamœlis (auto)";
-        }
-    } else if (mode === "jam-en") {
-const translated = translateWithPhrases(tokens, jamToEng);
-result.textContent = translated;
-        dir.textContent = "Zamœlis → English";
-    } else {
-const translated = translateWithPhrases(tokens, engToJam);
-result.textContent = translated;
-        dir.textContent = "English → Zamœlis";
-    }
-}
-
-document.getElementById("input").addEventListener("input", translateText);
-document.getElementById("mode").addEventListener("change", translateText);
-
-/* ---------- Copy ---------- */
-function copyResult() {
-    const t = document.getElementById("result").innerText;
-    if (t) navigator.clipboard.writeText(t);
-}
+toggle.addEventListener("change", () => {
+    const theme = toggle.checked ? "dark" : "light";
+    root.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+});
 </script>
 
 </body>
