@@ -209,11 +209,10 @@ textarea {
     justify-content: center;
     font-size: 18px;
 
-    opacity: 0;
-    pointer-events: none;
+
 }
 
-.copy-btn.visible {
+.copy-btn {
     opacity: 1;
     pointer-events: auto;
 }
@@ -284,7 +283,7 @@ textarea {
             <div class="direction" id="direction"></div>
             <div id="result"></div>
         </div>
-        <button class="copy-btn" onclick="copyResult()">📋 Copy translation</button>
+        <button class="copy-btn" id="copy-btn" onclick="copyResult()">📋</button>
     </div>
 </div>
 
