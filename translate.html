@@ -562,9 +562,12 @@ function jamPrep(text) {
   return text;
 }
 
+    window.prep = prep;
+    window.jamPrep = jamPrep;
+
 function translateText() {
     const inp = document.getElementById("input").value;
-    const text = (detectLanguage(tokenize(inp)) === "jam") ? jamPrep(inp) : prep(inp);
+    const text = (detectLanguage(tokenize(inp).map(t => t.lower)) === "jam") ? jamPrep(inp) : prep(inp);
     const result = document.getElementById("result");
     const dir = document.getElementById("direction");
     if (!text.trim()) {
