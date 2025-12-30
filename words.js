@@ -159,6 +159,8 @@ const dictionary = [
   ["korrot","correction"],
   ["kostii", "complete, done"],
   ["kœll","cool"],
+  ["kœkk", "cook"],
+  ["kœkd", "cooked (expression)"],
   ["Kristian","Christian"],
   ["krosi","nearby"],
 
@@ -299,6 +301,7 @@ const dictionary = [
   ["ston","stone"],
 
   ["tabfon","tablet"],
+  ["taizœr siis", "type shii, type shit"],
   ["takk","take"],
   ["tamminno","million"],
   ["tanno","thousand"],
@@ -351,6 +354,7 @@ const dictionary = [
   ["zamœl","jamal"],
   ["zamœlin","jamaling"],
   ["Zamœlis","Jamalese"],
+  ["zi", "yes"],
   ["Zil", "July"],
   ["zid","they (non-binary)"],
   ["ziid","their (non-binary)"],
