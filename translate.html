@@ -6,25 +6,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-/* ---------- Global ---------- */
+/* ---------- Reset ---------- */
 * {
     box-sizing: border-box;
 }
 
+/* ---------- Theme Variables ---------- */
 :root {
-    --bg: #0b0e1a;
+    --bg: #f4f6fb;
+    --card: #ffffff;
+    --text: #111;
+    --muted: #555;
+    --accent: #4b5cff;
+    --border: #d6d9ee;
+    --input: #ffffff;
+}
+
+[data-theme="dark"] {
+    --bg: #070914;
     --card: #151a33;
     --text: #f1f3ff;
     --muted: #aab;
     --accent: #7c8cff;
     --border: #2b2f55;
+    --input: #0e1228;
 }
 
+/* ---------- Base ---------- */
 body {
     margin: 0;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    background: radial-gradient(circle at top, #121633, #070914);
+    background-color: var(--bg);
     color: var(--text);
+}
+
+/* ---------- Smooth Transitions ---------- */
+body,
+.card,
+textarea,
+.output-box,
+select,
+.copy-btn,
+header,
+.footer,
+.pane,
+h1 {
+    transition:
+        background-color 0.4s ease,
+        color 0.4s ease,
+        border-color 0.4s ease,
+        box-shadow 0.4s ease,
+        opacity 0.25s ease;
 }
 
 /* ---------- Layout ---------- */
@@ -35,10 +67,10 @@ body {
 }
 
 .card {
-    background: linear-gradient(145deg, #151a33, #10142b);
+    background-color: var(--card);
     border-radius: 20px;
     padding: 28px;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.35);
 }
 
 /* ---------- Header ---------- */
@@ -52,6 +84,7 @@ header {
 h1 {
     margin: 0;
     font-size: 28px;
+    color: var(--text);
 }
 
 /* ---------- Dark Toggle ---------- */
@@ -75,7 +108,7 @@ h1 {
 .slider {
     position: absolute;
     inset: 0;
-    background: #444;
+    background-color: #999;
     border-radius: 26px;
 }
 
@@ -86,13 +119,13 @@ h1 {
     width: 20px;
     left: 3px;
     bottom: 3px;
-    background: white;
+    background-color: white;
     border-radius: 50%;
-    transition: 0.3s;
+    transition: transform 0.3s;
 }
 
 input:checked + .slider {
-    background: var(--accent);
+    background-color: var(--accent);
 }
 
 input:checked + .slider::before {
@@ -108,12 +141,11 @@ select {
     padding: 8px 14px;
     border-radius: 10px;
     border: 1px solid var(--border);
-    background: var(--card);
+    background-color: var(--input);
     color: var(--text);
-    font-size: 14px;
 }
 
-/* ---------- Two Pane System (FIXED) ---------- */
+/* ---------- Panes ---------- */
 .panes {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -121,9 +153,10 @@ select {
 }
 
 .pane {
+    position: relative;
     display: flex;
     flex-direction: column;
-    height: 260px; /* 🔑 hard sync height */
+    height: 300px;
 }
 
 textarea {
@@ -132,39 +165,57 @@ textarea {
     font-size: 16px;
     border-radius: 14px;
     border: 1px solid var(--border);
-    background: #0e1228;
+    background-color: var(--input);
     color: var(--text);
-    resize: none;              /* 🔑 disable resizing */
-    outline: none;
+    resize: none;
 }
 
+/* ---------- Output ---------- */
 .output-box {
     flex: 1;
     padding: 14px;
+    padding-bottom: 54px;
     border-radius: 14px;
-    background: rgba(255,255,255,0.06);
+    background-color: rgba(0,0,0,0.04);
     font-size: 18px;
     overflow-y: auto;
-    word-break: break-word;
+}
+
+[data-theme="dark"] .output-box {
+    background-color: rgba(255,255,255,0.06);
 }
 
 .direction {
-    font-weight: bold;
-    margin-bottom: 8px;
     font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 6px;
     color: var(--muted);
 }
 
 /* ---------- Copy Button ---------- */
 .copy-btn {
-    margin-top: 10px;
-    padding: 8px 14px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 38px;
+    height: 38px;
     border-radius: 10px;
     border: 1px solid var(--border);
-    background: #0e1228;
+    background-color: var(--input);
     color: var(--text);
     cursor: pointer;
-    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+
+    opacity: 0;
+    pointer-events: none;
+}
+
+.copy-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 /* ---------- Footer ---------- */
@@ -193,7 +244,7 @@ textarea {
     }
 
     .pane {
-        height: 220px;
+        height: 260px;
     }
 }
 </style>
@@ -320,16 +371,17 @@ textarea {
     
 /* ---------- Dark Mode ---------- */
 const toggle = document.getElementById("darkToggle");
-toggle.checked = localStorage.getItem("dark") !== "false";
+const saved = localStorage.getItem("dark");
 
-function applyDark() {
-    document.body.style.background = toggle.checked
-        ? "radial-gradient(circle at top, #121633, #070914)"
-        : "#f4f6fb";
+document.documentElement.dataset.theme =
+    saved === null || saved === "true" ? "dark" : "light";
+toggle.checked = document.documentElement.dataset.theme === "dark";
+
+toggle.addEventListener("change", () => {
+    document.documentElement.dataset.theme = toggle.checked ? "dark" : "light";
     localStorage.setItem("dark", toggle.checked);
-}
-toggle.addEventListener("change", applyDark);
-applyDark();
+});
+
 
 /* ---------- Translation ---------- */
 function tokenize(text) {
@@ -432,21 +484,8 @@ if (Array.isArray(val)) {
 
     // --- fallback: single word ---
     if (!matched) {
-      let w = words[i];
-
-// plural fallback: orbits → orbit
-if (
-  w.endsWith("s") &&
-  dict[w.slice(0, -1)]
-) {
-  let val = dict[w.slice(0, -1)];
-  if (Array.isArray(val)) val = val[0];
-  result.push(applyCase(val, tokens[i].case));
-} else {
-  result.push(applyCase(w, tokens[i].case));
-}
-
-i++;
+      result.push(applyCase(words[i], tokens[i].case));
+      i++;
     }
   }
 
