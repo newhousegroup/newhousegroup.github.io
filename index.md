@@ -21,3 +21,8 @@ In our new house, we're constantly building, growing and developing. But in that
 
 <b>Welcome.</b>
 
+### [↗️ Monte Central](https://newhs.cc/montecentral)
+### [🏟️ Newhouse Arena](https://newhs.cc/arena)
+### [📕 Zamœlis Diksonri](https://newhs.cc/dict)
+### [📗 Zamœlis Translata](https://newhs.cc/translate)
+
