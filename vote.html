@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Tap & Go Voting</title>
+
+<style>
+  body {
+    margin: 0;
+    background: black;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 44px;
+    margin: 20px 0;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    padding: 30px;
+  }
+
+  button {
+    height: 150px;
+    font-size: 48px;
+    border-radius: 22px;
+    border: none;
+    background: #007aff;
+    color: white;
+    touch-action: manipulation;
+  }
+
+  button:active {
+    background: #005bbb;
+    transform: scale(0.96);
+  }
+
+  #status {
+    font-size: 30px;
+    height: 40px;
+    margin-top: 10px;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>TAP YOUR TEAM</h1>
+
+<div class="grid">
+  <button onclick="vote(0)">0</button>
+  <button onclick="vote(1)">1</button>
+  <button onclick="vote(2)">2</button>
+  <button onclick="vote(3)">3</button>
+  <button onclick="vote(4)">4</button>
+  <button onclick="vote(5)">5</button>
+  <button onclick="vote(6)">6</button>
+  <button onclick="vote(7)">7</button>
+  <button onclick="vote(8)">8</button>
+  <button onclick="vote(9)">9</button>
+</div>
+
+<div id="status"></div>
+
+<script>
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxHrP67m2cRCVlEJNmTJzs1gKj7BIgJ8cweEpVSlgUYGDbHd9RWqR3E3B02PA-rbhmw2w/exec";
+let locked = false;
+
+function vote(num) {
+  if (locked) return;
+  locked = true;
+
+  document.getElementById("status").innerText = "✓ Recorded";
+
+  fetch(WEB_APP_URL, {
+    method: "POST",
+    body: new URLSearchParams({ team: "Team " + num })
+  });
+
+  setTimeout(() => {
+    document.getElementById("status").innerText = "";
+    locked = false;
+  }, 800);
+}
+</script>
+
+</body>
+</html>
