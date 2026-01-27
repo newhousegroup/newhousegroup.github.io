@@ -230,7 +230,9 @@ Have you eaten your musket?
     </div>
   </div>
 
-<p style="margin: 30px; margin-left: 60px; margin-top:0" class="hint">© 2026 Made by Newhouse Labs</p>
+    <p id="safety" style="margin-left: 60px; margin-top:0; margin-bottom:5px;">Click for Minimal → Calm</p>
+<p style="margin-left: 60px; margin-top:0; margin-bottom:30px" class="hint">© 2026 Made by Newhouse Labs</p>
+
         
   <script>
     // --------- State ----------
@@ -545,6 +547,7 @@ $("toggleCalm").classList.remove("hidden");
     $("tidyPick").addEventListener("click", pickTidy);
 
     $("toggleCalm").addEventListener("click", ()=> setUltra(false));
+        $("safety").addEventListener("click", ()=> setUltra(false));
     $("toggleUltra").addEventListener("click", ()=> setUltra(true));
 
     $("closeOverlay").addEventListener("click", ()=>{
