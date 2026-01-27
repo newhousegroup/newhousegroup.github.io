@@ -65,6 +65,7 @@
     ul{ margin:10px 0 0 18px; color:var(--muted); }
     a{ color:#a8c8ff; }
   </style>
+  <script src="https://newhs.cc/words.js"></script>
 </head>
 <body>
   <div class="wrap">
@@ -131,7 +132,8 @@
           <button data-act="write">Boredom journal (3 min)</button>
           <button data-act="logic">Tiny logic (3 min)</button>
           <button data-act="tidy">Micro tidy (2 min)</button>
-          <button data-act="plan">One-step plan (3 min)</button>
+          <button data-act="plan">One-step plan (1 min)</button>
+          <button data-act="jamalese">Jamalese (3 min)</button>
         </div>
 
         <div class="divider"></div>
@@ -188,6 +190,28 @@
           <p class="hint">Keep it small. The point is to transition out of boredom.</p>
           <div class="pill" id="planOut" style="margin-top:10px;">Saved plan: —</div>
         </div>
+
+        <div id="panel_jamalese" class="panel hidden">
+  <p><b>🌍 Jamalese Corner</b></p>
+
+  <p>
+    <b>Word of the Day:</b>
+    <span id="wotdWord">—</span> —
+    <span id="wotdMeaning">—</span>
+  </p>
+
+  <div class="divider"></div>
+
+  <p><b>Guess this Jamalese word:</b></p>
+  <h3 id="guessWord">—</h3>
+
+  <div id="guessChoices" class="row"></div>
+
+  <p class="hint" id="guessResult"></p>
+  <p class="hint">Guesses this session: <span id="jamCount">0</span>/10</p>
+
+  <button id="nextJamalese">Generate question</button>
+</div>
       </div>
 
       <div class="card">
@@ -237,6 +261,12 @@ Have you eaten your musket?
 
         
   <script>
+    let jamCount = 0;
+const JAM_MAX = 10;
+let wotdIndex = null;
+let currentGuessWord = null;
+
+    
     // --------- State ----------
     const $ = (id) => document.getElementById(id);
 
@@ -364,6 +394,524 @@ $("timeLeft").textContent="00:00";
       updateCounters();
     }
 
+    function loadWordOfTheDay(){
+  wotdIndex = Math.floor(Math.random() * dictionary.length);
+  const w = dictionary[wotdIndex];
+  $("wotdWord").textContent = w[0];
+  $("wotdMeaning").textContent = w[1];
+}
+
+function loadJamaleseGuess(){
+  if (jamCount >= JAM_MAX){
+    $("guessWord").textContent = "Enough Jamalese for now 🌿";
+    $("guessChoices").innerHTML = "";
+    $("guessResult").textContent = "Try another calm activity.";
+    return;
+  }
+
+  let idx;
+  do {
+    idx = Math.floor(Math.random() * dictionary.length);
+  } while (idx === wotdIndex);
+
+  currentGuessWord = dictionary[idx];
+
+  $("guessWord").textContent = currentGuessWord[0];
+  $("guessResult").textContent = "";
+
+  let choices = [currentGuessWord[1]];
+
+  while (choices.length < 4){
+    const m = dictionary[Math.floor(Math.random()*dictionary.length)][1];
+    if (!choices.includes(m)) choices.push(m);
+  }
+
+  choices.sort(() => Math.random() - 0.5);
+
+  const box = $("guessChoices");
+  box.innerHTML = "";
+
+  choices.forEach(choice=>{
+    const btn = document.createElement("button");
+    btn.textContent = choice;
+
+    btn.onclick = ()=>{
+      $("guessResult").textContent =
+        "It means: " + currentGuessWord[1];
+
+      jamCount++;
+      $("jamCount").textContent = jamCount;
+
+btn.onclick = ()=>{
+  $("guessResult").textContent =
+    "It means: " + currentGuessWord[1];
+
+  jamCount++;
+  $("jamCount").textContent = jamCount;
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Newhouse Calm</title>
+  <style>
+    :root{
+      --bg:#0b0f14; --card:#111826; --text:#e7eefc; --muted:#9fb0cc;
+      --line:#22324a; --btn:#1a2638; --btn2:#182234; --ok:#1f7a4a;
+      --warn:#7a5a1f; --bad:#7a1f2a;
+      --radius:16px;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    body{ margin:0; background:linear-gradient(180deg,#0b0f14,#0a1220); color:var(--text); }
+    .wrap{ max-width:900px; margin:0 auto; padding:24px; }
+    h1{ font-size:22px; margin:0 0 6px; }
+    p{ margin:0 0 14px; color:var(--muted); line-height:1.4; }
+    .grid{ display:grid; gap:14px; grid-template-columns: 1fr; }
+    @media (min-width: 800px){ .grid{ grid-template-columns: 1.2fr 0.8fr; } }
+    .card{
+      background:rgba(17,24,38,.9);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    button, input, select, textarea{
+      background:var(--btn);
+      border:1px solid var(--line);
+      color:var(--text);
+      border-radius:12px;
+      padding:10px 12px;
+      font-size:14px;
+      outline:none;
+    }
+    button{ cursor:pointer; }
+    button:hover{ filter:brightness(1.08); }
+    button:active{ transform:translateY(1px); }
+    .primary{ background:linear-gradient(180deg,#1a2d46,#16253a); }
+    .stop{ background:linear-gradient(180deg,#3a1a22,#2a1218); border-color:#5a1f2a; }
+    .pill{ font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); color:var(--muted); }
+    .kpi{ display:flex; gap:10px; flex-wrap:wrap; }
+    .kpi .box{ flex:1; min-width:160px; background:rgba(0,0,0,.12); border:1px solid var(--line); border-radius:14px; padding:12px; }
+    .big{ font-size:20px; font-weight:700; margin-top:4px; }
+    .small{ font-size:12px; color:var(--muted); }
+    textarea{ width:100%; min-height:130px; resize:vertical; background:var(--btn2); }
+    .activity-title{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .hint{ font-size:12px; color:var(--muted); }
+    .divider{ height:1px; background:var(--line); margin:12px 0; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .hidden{ display:none !important; }
+    .overlay{
+      position:fixed; inset:0; background:rgba(0,0,0,.72);
+      display:flex; align-items:center; justify-content:center;
+      padding:18px;
+    }
+    .modal{
+      max-width:520px; width:100%;
+      background:var(--card); border:1px solid var(--line);
+      border-radius:18px; padding:18px;
+    }
+    .modal h2{ margin:0 0 8px; font-size:18px; }
+    ul{ margin:10px 0 0 18px; color:var(--muted); }
+    a{ color:#a8c8ff; }
+  </style>
+  <script src="https://newhs.cc/words.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="row" style="justify-content:space-between;">
+        <div>
+          <h1>Newhouse Calm</h1>
+          <p>Do small, wonderful things with Newhouse Calm.</p>
+        </div>
+        <span class="pill" id="modePill">Mode: calm</span>
+      </div>
+
+      <div class="kpi">
+        <div class="box">
+          <div class="small">Time left in this session</div>
+          <div class="big mono" id="timeLeft">10:00</div>
+        </div>
+        <div class="box">
+          <div class="small">Your stop rule</div>
+          <div class="big" id="stopRule">Stop when timer ends</div>
+        </div>
+        <div class="box">
+          <div class="small">Current activity</div>
+          <div class="big" id="activityName">Pick one</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="row">
+        <label class="hint">Session length</label>
+        <select id="sessionMins">
+<option value="3">3 min</option>
+          <option value="5">5 min</option>
+          <option value="10" selected>10 min</option>
+        </select>
+
+        <label class="hint">Stop rule</label>
+        <select id="stopRuleSel">
+          <option value="timer" selected>Stop when timer ends</option>
+          <option value="oneTask">Stop after 1 activity</option>
+          <option value="twoTasks">Stop after 2 activities</option>
+          <option value="threeTasks">Stop after 3 activities</option>
+        </select>
+
+        <button class="primary" id="startBtn">Start</button>
+        <button id="pauseBtn">Pause</button>
+        <button class="stop" id="stopBtn">Stop now</button>
+
+        <span class="pill" id="statusPill">Ready</span>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top:14px;">
+      <div class="card">
+        <div class="activity-title">
+          <h2 style="margin:0;font-size:16px;">Activities</h2>
+          <span class="pill"><span id="doneCount">0</span>/<span id="limitCount">∞</span> done</span>
+        </div>
+        <p class="hint">Pick one. The goal is to pass time gently.</p>
+
+        <div class="row" style="margin-top:8px;">
+          <button data-act="breath">Box breathing (2 min)</button>
+          <button data-act="write">Boredom journal (3 min)</button>
+          <button data-act="logic">Tiny logic (3 min)</button>
+          <button data-act="tidy">Micro tidy (2 min)</button>
+          <button data-act="plan">One-step plan (1 min)</button>
+          <button data-act="jamalese">Jamalese (3 min)</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div id="panel_breath" class="panel hidden">
+          <p><b>Box breathing:</b> inhale 4 → hold 4 → exhale 4 → hold 4. Repeat calmly.</p>
+          <div class="row">
+            <button id="breathStart" class="primary">Start 2-minute guide</button>
+            <span class="pill mono" id="breathPhase">idle</span>
+            <span class="pill mono" id="breathTimer">02:00</span>
+          </div>
+          <p class="hint" id="breathHint">Tip: keep shoulders relaxed, breathe quietly.</p>
+        </div>
+
+        <div id="panel_write" class="panel hidden">
+          <p><b>Boredom journal:</b> write on and on.</p>
+          <textarea id="journal" placeholder="What am I avoiding? What would make the next few minutes slightly better? One kind thing I can do for future-me? Write down anything..."></textarea>
+          <div class="row">
+            <button id="saveJournal">Save locally</button>
+            <button id="loadJournal">Load</button>
+            <span class="pill" id="journalStatus">Not saved</span>
+          </div>
+        </div>
+
+        <div id="panel_logic" class="panel hidden">
+          <p><b>Tiny logic:</b> answer slowly. No scoring.</p>
+          <p id="logicQ" class="mono" style="margin-top:10px;"></p>
+          <div class="row">
+            <input id="logicA" placeholder="your answer" style="flex:1; min-width:220px;" />
+            <button id="logicReveal">Reveal explanation</button>
+          </div>
+          <div id="logicExplain" class="hint" style="margin-top:10px;"></div>
+          <div class="row" style="margin-top:10px;">
+            <button id="logicNext">Another one</button>
+          </div>
+        </div>
+
+        <div id="panel_tidy" class="panel hidden">
+          <p><b>Micro tidy:</b> choose one tiny area and reset it.</p>
+          <div class="row">
+            <button class="primary" id="tidyPick">Give me an area</button>
+            <span class="pill" id="tidyArea">—</span>
+          </div>
+          <div class="divider"></div>
+          <p class="hint">Come back when done.</p>
+        </div>
+
+        <div id="panel_plan" class="panel hidden">
+          <p><b>One-step plan:</b> pick one thing you’ll do after this session ends.</p>
+          <div class="row"> 
+            <input id="planInput" placeholder="Example: do homework or something" style="flex:1; min-width:220px;" />
+            <button id="planSave">Save</button>
+          </div>
+          <p class="hint">Keep it small. The point is to transition out of boredom.</p>
+          <div class="pill" id="planOut" style="margin-top:10px;">Saved plan: —</div>
+        </div>
+
+        <div id="panel_jamalese" class="panel hidden">
+  <p><b>🌍 Jamalese Corner</b></p>
+
+  <p>
+    <b>Word of the Day:</b>
+    <span id="wotdWord">—</span> —
+    <span id="wotdMeaning">—</span>
+  </p>
+
+  <div class="divider"></div>
+
+  <p><b>Guess this Jamalese word:</b></p>
+  <h3 id="guessWord">—</h3>
+
+  <div id="guessChoices" class="row"></div>
+
+  <p class="hint" id="guessResult"></p>
+  <p class="hint">Guesses this session: <span id="jamCount">0</span>/10</p>
+
+  <button id="nextJamalese">Generate question</button>
+</div>
+      </div>
+
+      <div class="card">
+        <h2 style="margin:0;font-size:16px;">Infobar</h2>
+        <p class="hint">
+          This page intentionally avoids: random rewards, infinite feeds, streaks, flashy animations, points. Pass the time without dopamine.
+</p>
+
+        <div class="divider"></div>
+<button id="toggleCalm">Calm</button>
+<button id="toggleUltra">Minimal</button>
+        <div class="divider"></div>
+
+        <h3 style="margin:0 0 8px;font-size:14px;">Saved notes</h3>
+        <p class="hint mono" id="savedPreview">—</p>
+
+        <div class="divider"></div>
+        <p class="hint">
+          What does “bored” usually means for you? (tired? anxious? procrastinating?)
+        </p>
+<div class="divider"></div>
+<p class="hint">
+Have you eaten your musket?
+</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="overlay" class="overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h2>Session ended. Stop here.</h2>
+      <p class="hint">
+        Don’t start another one immediately. Stand up, drink water, or do your saved plan.
+      </p>
+      <ul>
+        <li>AI Tips: If you still feel bored, switch environments, rooms, tasks.</li>
+        <li>If you’re tired, sleep is recommended.</li>
+      </ul>
+      <div class="row" style="margin-top:14px;">
+        <button id="closeOverlay" class="stop">Close</button>
+      </div>
+    </div>
+  </div>
+
+    <p id="safety" style="margin-left: 60px; margin-top:0; margin-bottom:5px;">Click for Minimal → Calm</p>
+<p style="margin-left: 60px; margin-top:0; margin-bottom:30px" class="hint">© 2026 Made by Newhouse Labs</p>
+
+        
+  <script>
+    let jamCount = 0;
+const JAM_MAX = 10;
+let wotdIndex = null;
+let currentGuessWord = null;
+
+    
+    // --------- State ----------
+    const $ = (id) => document.getElementById(id);
+
+    let running = false;
+    let remainingMs = 10 * 60 * 1000;
+    let tick = null;
+
+    let stopMode = "timer"; // timer | oneTask | twoTasks
+    let taskLimit = Infinity;
+    let tasksDone = 0;
+
+    let currentAct = null;
+
+    // Breath guide
+    let breathTick = null;
+    let breathRemaining = 2 * 60;
+    let breathPhase = "idle"; // inhale hold exhale hold2
+
+    const logicBank = [
+      {
+        q: "If today is Wednesday, what day is 10 days from today?",
+        a: "Saturday",
+        e: "10 ≡ 3 (mod 7). Wednesday + 3 days = Saturday."
+      },
+      {
+        q: "You have 3 switches outside a room; one controls a lamp inside. You may enter the room once. How do you know which switch?",
+        a: "Use heat: turn one on for a while, off; turn another on; enter. On=second, warm=first, cold=third.",
+        e: "Classic reasoning puzzle: light + warmth give two bits of info."
+      },
+      {
+        q: "What’s the next number: 1, 2, 3, 5, 8, 13, ?",
+        a: "21",
+        e: "Each term is the sum of the previous two."
+      },
+      {
+        q: "If A implies B, and B is false, what can you say about A?",
+        a: "A must be false.",
+        e: "Contrapositive: A→B means ¬B→¬A."
+      },
+      {
+        q: "Rearrange: 'LISTEN' to make a word meaning 'quiet'.",
+        a: "SILENT",
+        e: "Anagram. Just notice it."
+      },
+      {
+        q: "Jamal",
+        a: "Jamal",
+        e: "Jamal"
+      }
+    ];
+    let logicIdx = 0;
+
+    const tidyAreas = [
+      "clear 10 items on your desk",
+      "throw away 3 pieces of trash",
+      "refill your water bottle",
+      "put 5 things back where they belong",
+      "wipe your screen / keyboard quickly",
+      "make a reminder / todo list"
+    ];
+
+    // --------- UI helpers ----------
+    function fmt(ms){
+      ms = Math.max(0, ms);
+      const total = Math.floor(ms/1000);
+      const m = String(Math.floor(total/60)).padStart(2,"0");
+      const s = String(total%60).padStart(2,"0");
+      return `${m}:${s}`;
+    }
+    function setStatus(text){
+      $("statusPill").textContent = text;
+    }
+    function setModePill(text){
+      $("modePill").textContent = `Mode: ${text}`;
+    }
+    function updateCounters(){
+      $("doneCount").textContent = tasksDone;
+      $("limitCount").textContent = (taskLimit === Infinity) ? "∞" : taskLimit;
+    }
+    function updateStopRuleLabel(){
+      const map = {
+        timer: "Stop when timer ends",
+        oneTask: "Stop after 1 activity",
+        twoTasks: "Stop after 2 activities",
+        threeTasks: "Stop after 3 activities"
+      };
+      $("stopRule").textContent = map[stopMode];
+    }
+    function showPanel(name){
+      for (const el of document.querySelectorAll(".panel")) el.classList.add("hidden");
+      $("panel_"+name).classList.remove("hidden");
+      currentAct = name;
+      $("activityName").textContent = ({
+        breath:"Box breathing",
+        write:"Boredom journal",
+        logic:"Tiny logic",
+        tidy:"Micro tidy",
+        plan:"One-step plan"
+      })[name] || "Pick one";
+    }
+    function endSession(){
+      stopEverything();
+      $("overlay").classList.remove("hidden");
+$("timeLeft").textContent="00:00";
+    }
+    function stopEverything(){
+      running = false;
+      clearInterval(tick); tick = null;
+      setStatus("Stopped");
+      $("pauseBtn").textContent = "Pause";
+      // breath
+      clearInterval(breathTick); breathTick=null;
+      breathPhase="idle"; $("breathPhase").textContent = "idle";
+      breathRemaining = 2*60; $("breathTimer").textContent = "02:00";
+    }
+
+    // --------- Session logic ----------
+    function applyStopMode(){
+      stopMode = $("stopRuleSel").value;
+      taskLimit = Infinity;
+      if (stopMode === "oneTask") taskLimit = 1;
+      if (stopMode === "twoTasks") taskLimit = 2;
+      if (stopMode === "threeTasks") taskLimit = 3;
+      updateStopRuleLabel();
+      updateCounters();
+    }
+
+    function loadWordOfTheDay(){
+  wotdIndex = Math.floor(Math.random() * dictionary.length);
+  const w = dictionary[wotdIndex];
+  $("wotdWord").textContent = w[0];
+  $("wotdMeaning").textContent = w[1];
+}
+
+function loadJamaleseGuess(){
+  if (jamCount >= JAM_MAX){
+    $("guessWord").textContent = "Enough Jamalese for now 🌿";
+    $("guessChoices").innerHTML = "";
+    $("guessResult").textContent = "Try another calm activity.";
+    return;
+  }
+
+  let idx;
+  do {
+    idx = Math.floor(Math.random() * dictionary.length);
+  } while (idx === wotdIndex);
+
+  currentGuessWord = dictionary[idx];
+
+  $("guessWord").textContent = currentGuessWord[0];
+  $("guessResult").textContent = "";
+
+  let choices = [currentGuessWord[1]];
+
+  while (choices.length < 4){
+    const m = dictionary[Math.floor(Math.random()*dictionary.length)][1];
+    if (!choices.includes(m)) choices.push(m);
+  }
+
+  choices.sort(() => Math.random() - 0.5);
+
+  const box = $("guessChoices");
+  box.innerHTML = "";
+
+  choices.forEach(choice=>{
+    const btn = document.createElement("button");
+    btn.textContent = choice;
+
+    btn.onclick = ()=>{
+  $("guessResult").textContent =
+    "It means: " + currentGuessWord[1];
+
+  jamCount++;
+  $("jamCount").textContent = jamCount;
+
+  disableGuessButtons();
+
+  // ONLY count as activity when finished all 10
+  if (jamCount >= JAM_MAX){
+    $("guessResult").textContent += " — Jamalese session complete 🌿";
+    countTaskDone();
+  }
+};
+
+    box.appendChild(btn);
+  });
+}
+
+function disableGuessButtons(){
+  document.querySelectorAll("#guessChoices button")
+    .forEach(b => b.disabled = true);
+}
+
     function startSession(){
       const mins = Number($("sessionMins").value);
       remainingMs = mins * 60 * 1000;
@@ -372,6 +920,10 @@ $("timeLeft").textContent="00:00";
       tasksDone = 0;
       applyStopMode();
       updateCounters();
+
+      jamCount = 0;
+$("jamCount").textContent = "0";
+loadJamaleseGuess();
 
       running = true;
       setStatus("Running");
@@ -531,6 +1083,8 @@ $("toggleCalm").classList.remove("hidden");
       }
     }
 
+    
+
     // --------- Wiring ----------
     $("startBtn").addEventListener("click", ()=>{
       startSession();
@@ -557,8 +1111,10 @@ $("toggleCalm").classList.remove("hidden");
     $("tidyPick").addEventListener("click", pickTidy);
 
     $("toggleCalm").addEventListener("click", ()=> setUltra(false));
-        $("safety").addEventListener("click", ()=> setUltra(false));
+    $("safety").addEventListener("click", ()=> setUltra(false));
     $("toggleUltra").addEventListener("click", ()=> setUltra(true));
+
+    $("nextJamalese").addEventListener("click", loadJamaleseGuess);
 
     $("closeOverlay").addEventListener("click", ()=>{
       $("overlay").classList.add("hidden");
@@ -570,6 +1126,238 @@ $("toggleCalm").classList.remove("hidden");
     updateCounters();
     refreshSavedPreview();
     loadLogic();
+    loadWordOfTheDay();
+  </script>
+</body>
+</html>
+
+
+    };
+
+    box.appendChild(btn);
+  });
+}
+
+function disableGuessButtons(){
+  document.querySelectorAll("#guessChoices button")
+    .forEach(b => b.disabled = true);
+}
+
+    function startSession(){
+      const mins = Number($("sessionMins").value);
+      remainingMs = mins * 60 * 1000;
+      $("timeLeft").textContent = fmt(remainingMs);
+
+      tasksDone = 0;
+      applyStopMode();
+      updateCounters();
+
+      jamCount = 0;
+$("jamCount").textContent = "0";
+loadJamaleseGuess();
+
+      running = true;
+      setStatus("Running");
+      clearInterval(tick);
+      tick = setInterval(()=>{
+        remainingMs -= 1000;
+        $("timeLeft").textContent = fmt(remainingMs);
+        if (remainingMs <= 0){
+          endSession();
+        }
+      }, 1000);
+    }
+
+    function togglePause(){
+      if (!tick && running){
+        // should not happen
+      }
+      if (!running) return;
+      if (tick){
+        clearInterval(tick); tick = null;
+        setStatus("Paused");
+        $("pauseBtn").textContent = "Resume";
+      } else {
+        setStatus("Running");
+        $("pauseBtn").textContent = "Pause";
+        tick = setInterval(()=>{
+          remainingMs -= 1000;
+          $("timeLeft").textContent = fmt(remainingMs);
+          if (remainingMs <= 0){
+            endSession();
+          }
+        }, 1000);
+      }
+    }
+
+    function countTaskDone(){
+      tasksDone += 1;
+      updateCounters();
+      if (tasksDone >= taskLimit){
+        endSession();
+      }
+    }
+
+    // --------- Breath ----------
+    function startBreathGuide(){
+      clearInterval(breathTick);
+      breathRemaining = 2*60;
+      const phases = [
+        ["inhale",4],
+        ["hold",4],
+        ["exhale",4],
+        ["hold",4]
+      ];
+      let p = 0, t = phases[0][1];
+      breathPhase = phases[0][0];
+      $("breathPhase").textContent = breathPhase;
+
+      breathTick = setInterval(()=>{
+        breathRemaining--;
+        $("breathTimer").textContent = fmt(breathRemaining*1000);
+
+        t--;
+        if (t <= 0){
+          p = (p+1) % phases.length;
+          breathPhase = phases[p][0];
+          t = phases[p][1];
+          $("breathPhase").textContent = breathPhase;
+        }
+        if (breathRemaining <= 0){
+          clearInterval(breathTick); breathTick=null;
+          $("breathPhase").textContent = "done";
+          countTaskDone();
+        }
+      }, 1000);
+    }
+
+    // --------- Logic ----------
+    function loadLogic(){
+      const item = logicBank[logicIdx % logicBank.length];
+      $("logicQ").textContent = item.q;
+      $("logicA").value = "";
+      $("logicExplain").textContent = "";
+    }
+    function revealLogic(){
+      const item = logicBank[logicIdx % logicBank.length];
+      $("logicExplain").textContent = `Expected: ${item.a}. Why: ${item.e}`;
+      countTaskDone();
+    }
+
+    // --------- Journal ----------
+    function saveJournal(){
+      localStorage.setItem("calmKit_journal", $("journal").value);
+      $("journalStatus").textContent = "Saved";
+      refreshSavedPreview();
+      countTaskDone();
+    }
+    function loadJournal(){
+      $("journal").value = localStorage.getItem("calmKit_journal") || "";
+      $("journalStatus").textContent = "Loaded";
+      refreshSavedPreview();
+    }
+
+    // --------- Plan ----------
+    function savePlan(){
+      const v = $("planInput").value.trim();
+      if (!v) return;
+      localStorage.setItem("calmKit_plan", v);
+      $("planOut").textContent = "Saved plan: " + v;
+      refreshSavedPreview();
+      countTaskDone();
+    }
+
+    function refreshSavedPreview(){
+      const j = (localStorage.getItem("calmKit_journal") || "").trim();
+      const p = (localStorage.getItem("calmKit_plan") || "").trim();
+      let out = "";
+      if (p) out += "Plan: " + p + "\n";
+      if (j) out += "Journal: " + (j.length>120 ? j.slice(0,120)+"…" : j);
+      $("savedPreview").textContent = out || "—";
+    }
+
+    // --------- Tidy ----------
+    function pickTidy(){
+      const idx = Math.floor(Math.random()*tidyAreas.length);
+      $("tidyArea").textContent = tidyAreas[idx];
+      // user does it IRL; we count completion when they click again:
+      // but to avoid a “reward loop”, we do NOT auto-count.
+    }
+
+    // --------- Calm / Ultra ---------- 
+    function setUltra(on){
+      document.querySelectorAll(".kpi, .row, .pill, .hint, #savedPreview")
+        .forEach(el => { /* leave base layout; we'll selectively hide */ });
+
+      if (on){
+        // hide everything except one activity area and timer
+        setModePill("ultra-minimal");
+        document.querySelectorAll(".grid .card:nth-child(2), .kpi .box:nth-child(2), .kpi .box:nth-child(3)")
+          .forEach(el => el.classList.add("hidden"));
+        document.querySelectorAll(".row").forEach((el,i)=>{
+          // keep the first control row only
+          if (i > 0) el.classList.add("hidden");
+        });
+$("toggleCalm").classList.remove("hidden");
+      } else {
+        setModePill("calm");
+        document.querySelectorAll(".hidden").forEach(el=>{
+          // careful: don't unhide panels; we'll rely on showPanel for those
+        });
+        // unhide things we hid for ultra
+        document.querySelectorAll(".grid .card:nth-child(2), .kpi .box:nth-child(2), .kpi .box:nth-child(3)")
+          .forEach(el => el.classList.remove("hidden"));
+        document.querySelectorAll(".row").forEach(el=> el.classList.remove("hidden"));
+        // re-hide panels except current
+        for (const el of document.querySelectorAll(".panel")) el.classList.add("hidden");
+        if (currentAct) $("panel_"+currentAct).classList.remove("hidden");
+      }
+    }
+
+    
+
+    // --------- Wiring ----------
+    $("startBtn").addEventListener("click", ()=>{
+      startSession();
+    });
+    $("pauseBtn").addEventListener("click", togglePause);
+    $("stopBtn").addEventListener("click", endSession);
+
+    $("stopRuleSel").addEventListener("change", applyStopMode);
+
+    document.querySelectorAll("button[data-act]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const act = btn.dataset.act;
+        showPanel(act);
+      });
+    });
+
+    $("breathStart").addEventListener("click", startBreathGuide);
+
+    $("logicReveal").addEventListener("click", revealLogic);
+    $("logicNext").addEventListener("click", ()=>{ logicIdx++; loadLogic(); });
+    $("saveJournal").addEventListener("click", saveJournal);
+    $("loadJournal").addEventListener("click", loadJournal);
+    $("planSave").addEventListener("click", savePlan);
+    $("tidyPick").addEventListener("click", pickTidy);
+
+    $("toggleCalm").addEventListener("click", ()=> setUltra(false));
+    $("safety").addEventListener("click", ()=> setUltra(false));
+    $("toggleUltra").addEventListener("click", ()=> setUltra(true));
+
+    $("nextJamalese").addEventListener("click", loadJamaleseGuess);
+
+    $("closeOverlay").addEventListener("click", ()=>{
+      $("overlay").classList.add("hidden");
+    });
+
+    // init
+    applyStopMode();
+    updateStopRuleLabel();
+    updateCounters();
+    refreshSavedPreview();
+    loadLogic();
+    loadWordOfTheDay();
   </script>
 </body>
 </html>
