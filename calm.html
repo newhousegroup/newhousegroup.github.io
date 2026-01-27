@@ -107,6 +107,7 @@
           <option value="timer" selected>Stop when timer ends</option>
           <option value="oneTask">Stop after 1 activity</option>
           <option value="twoTasks">Stop after 2 activities</option>
+          <option value="threeTasks">Stop after 3 activities</option>
         </select>
 
         <button class="primary" id="startBtn">Start</button>
@@ -120,10 +121,10 @@
     <div class="grid" style="margin-top:14px;">
       <div class="card">
         <div class="activity-title">
-          <h2 style="margin:0;font-size:16px;">Activities (non-rewarding on purpose)</h2>
+          <h2 style="margin:0;font-size:16px;">Activities</h2>
           <span class="pill"><span id="doneCount">0</span>/<span id="limitCount">∞</span> done</span>
         </div>
-        <p class="hint">Pick one. It will not “celebrate” you. The goal is to pass time gently.</p>
+        <p class="hint">Pick one. The goal is to pass time gently.</p>
 
         <div class="row" style="margin-top:8px;">
           <button data-act="breath">Box breathing (2 min)</button>
@@ -146,8 +147,8 @@
         </div>
 
         <div id="panel_write" class="panel hidden">
-          <p><b>Boredom journal:</b> write without trying to be interesting.</p>
-          <textarea id="journal" placeholder="1) What am I avoiding?\n2) What would make the next 10 minutes slightly better?\n3) One kind thing I can do for future-me:"></textarea>
+          <p><b>Boredom journal:</b> write on and on.</p>
+          <textarea id="journal" placeholder="What am I avoiding? What would make the next few minutes slightly better? One kind thing I can do for future-me? Write down anything..."></textarea>
           <div class="row">
             <button id="saveJournal">Save locally</button>
             <button id="loadJournal">Load</button>
@@ -171,16 +172,17 @@
         <div id="panel_tidy" class="panel hidden">
           <p><b>Micro tidy:</b> choose one tiny area and reset it.</p>
           <div class="row">
-            <button class="primary" id="tidyPick">Give me a tiny area</button>
+            <button class="primary" id="tidyPick">Give me an area</button>
             <span class="pill" id="tidyArea">—</span>
           </div>
-          <p class="hint">Do it IRL. Come back when done. No bonus tasks.</p>
+          <div class="divider"></div>
+          <p class="hint">Come back when done.</p>
         </div>
 
         <div id="panel_plan" class="panel hidden">
           <p><b>One-step plan:</b> pick one thing you’ll do after this session ends.</p>
           <div class="row"> 
-            <input id="planInput" placeholder="Example: open math notes and do 1 problem" style="flex:1; min-width:220px;" />
+            <input id="planInput" placeholder="Example: do homework or something" style="flex:1; min-width:220px;" />
             <button id="planSave">Save</button>
           </div>
           <p class="hint">Keep it small. The point is to transition out of boredom.</p>
@@ -221,8 +223,8 @@ Have you eaten your musket?
         Don’t start another one immediately. Stand up, drink water, or do your saved plan.
       </p>
       <ul>
-        <li>If you still feel bored, switch environments (different room / different task).</li>
-        <li>If you’re tired, sleep is allowed. Boredom + fatigue looks like “scrolling”.</li>
+        <li>AI Tips: If you still feel bored, switch environments, rooms, tasks.</li>
+        <li>If you’re tired, sleep is recommended.</li>
       </ul>
       <div class="row" style="margin-top:14px;">
         <button id="closeOverlay" class="stop">Close</button>
@@ -265,9 +267,9 @@ Have you eaten your musket?
         e: "Classic reasoning puzzle: light + warmth give two bits of info."
       },
       {
-        q: "What’s the next number: 2, 3, 5, 8, 13, ?",
+        q: "What’s the next number: 1, 2, 3, 5, 8, 13, ?",
         a: "21",
-        e: "Each term is the sum of the previous two (Fibonacci-like starting from 2,3)."
+        e: "Each term is the sum of the previous two."
       },
       {
         q: "If A implies B, and B is false, what can you say about A?",
@@ -277,7 +279,12 @@ Have you eaten your musket?
       {
         q: "Rearrange: 'LISTEN' to make a word meaning 'quiet'.",
         a: "SILENT",
-        e: "Anagram. No score. Just notice it."
+        e: "Anagram. Just notice it."
+      }
+      {
+        q: "Jamal",
+        a: "Jamal",
+        e: "Jamal"
       }
     ];
     let logicIdx = 0;
@@ -287,7 +294,8 @@ Have you eaten your musket?
       "throw away 3 pieces of trash",
       "refill your water bottle",
       "put 5 things back where they belong",
-      "wipe your screen / keyboard quickly"
+      "wipe your screen / keyboard quickly",
+      "make a reminder / todo list"
     ];
 
     // --------- UI helpers ----------
@@ -350,6 +358,7 @@ $("timeLeft").textContent="00:00";
       taskLimit = Infinity;
       if (stopMode === "oneTask") taskLimit = 1;
       if (stopMode === "twoTasks") taskLimit = 2;
+      if (stopMode === "threeTasks") taskLimit = 3;
       updateStopRuleLabel();
       updateCounters();
     }
