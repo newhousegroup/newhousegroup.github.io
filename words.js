@@ -52,6 +52,7 @@ const dictionary = [
   ["dira","ten"],
   ["diksonri","dictionary"],
   ["dis","this"],
+  ["disinai", "discipline"],
   ["dizital","digital"],
   ["do","do"],
   ["dodd","jump"],
