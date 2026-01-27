@@ -708,6 +708,16 @@ Have you eaten your musket?
     </div>
   </div>
 
+  <div id="startPopup" class="overlay hidden">
+  <div class="modal">
+    <h2>🌿 Start a session first</h2>
+    <p class="hint">Choose a time length above to start.</p>
+    <div class="row" style="margin-top:14px;">
+      <button id="closeStartPopup" class="stop">Close</button>
+    </div>
+  </div>
+</div>
+
     <p id="safety" style="margin-left: 60px; margin-top:0; margin-bottom:5px;">Click for Minimal → Calm</p>
 <p style="margin-left: 60px; margin-top:0; margin-bottom:30px" class="hint">© 2026 Made by Newhouse Labs</p>
 
@@ -1083,6 +1093,14 @@ $("toggleCalm").classList.remove("hidden");
       }
     }
 
+    function showStartSessionPopup(){
+  $("startPopup").classList.remove("hidden");
+}
+
+$("closeStartPopup").addEventListener("click", ()=>{
+  $("startPopup").classList.add("hidden");
+});
+
     
 
     // --------- Wiring ----------
@@ -1094,12 +1112,17 @@ $("toggleCalm").classList.remove("hidden");
 
     $("stopRuleSel").addEventListener("change", applyStopMode);
 
-    document.querySelectorAll("button[data-act]").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        const act = btn.dataset.act;
-        showPanel(act);
-      });
-    });
+document.querySelectorAll("button[data-act]").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    if (!running){
+      showStartSessionPopup();
+      return;
+    }
+
+    const act = btn.dataset.act;
+    showPanel(act);
+  });
+});
 
     $("breathStart").addEventListener("click", startBreathGuide);
 
