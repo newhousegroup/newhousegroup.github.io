@@ -386,6 +386,8 @@ let currentGuessWord = null;
       stopEverything();
       $("overlay").classList.remove("hidden");
 $("timeLeft").textContent="00:00";
+
+      
     }
     function stopEverything(){
       running = false;
@@ -396,7 +398,8 @@ $("timeLeft").textContent="00:00";
       clearInterval(breathTick); breathTick=null;
       breathPhase="idle"; $("breathPhase").textContent = "idle";
       breathRemaining = 2*60; $("breathTimer").textContent = "02:00";
-      tasksDone = 0;
+                  tasksDone = 0;
+      updateCounters();
     }
 
     // --------- Session logic ----------
