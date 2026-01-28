@@ -230,6 +230,7 @@
 
         <h3 style="margin:0 0 8px;font-size:14px;">Saved notes</h3>
         <p class="hint mono" id="savedPreview">—</p>
+        <p class="hint mono" id="savedJour">—</p>
 
         <div class="divider"></div>
         <p class="hint">
@@ -602,9 +603,11 @@ loadJamaleseGuess();
       const j = (localStorage.getItem("calmKit_journal") || "").trim();
       const p = (localStorage.getItem("calmKit_plan") || "").trim();
       let out = "";
-      if (p) out += "Plan: " + p + "<br>";
-      if (j) out += "Journal: " + (j.length>120 ? j.slice(0,120)+"…" : j);
+      let jot = "";
+      if (p) out = "Plan: " + p;
+      if (j) jot = "Journal: " + (j.length>120 ? j.slice(0,120)+"…" : j);
       $("savedPreview").textContent = out || "—";
+            $("savedJour").textContent = jot || "—";
     }
 
     // --------- Tidy ----------
