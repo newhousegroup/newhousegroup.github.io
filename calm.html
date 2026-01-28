@@ -98,9 +98,12 @@
       <div class="row">
         <label class="hint">Session length</label>
         <select id="sessionMins">
-<option value="3">3 min</option>
+          <option value="1">1 min</option>
+          <option value="2">2 min</option>
+          <option value="3">3 min</option>
           <option value="5" selected>5 min</option>
           <option value="10">10 min</option>
+          <option value="15">15 min</option>
         </select>
 
         <label class="hint">Stop rule</label>
@@ -374,7 +377,8 @@ let currentGuessWord = null;
         write:"Boredom journal",
         logic:"Tiny logic",
         tidy:"Micro tidy",
-        plan:"One-step plan"
+        plan:"One-step plan",
+        jamalese:"Jamalese exercise"
       })[name] || "Pick one";
     }
     function endSession(){
@@ -456,7 +460,7 @@ function loadJamaleseGuess(){
 
   // ONLY count as activity when finished all 10
   if (jamCount >= JAM_MAX){
-    $("guessResult").textContent += " — Jamalese session complete 🌿";
+
     countTaskDone();
   }
 };
