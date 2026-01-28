@@ -396,6 +396,7 @@ $("timeLeft").textContent="00:00";
       clearInterval(breathTick); breathTick=null;
       breathPhase="idle"; $("breathPhase").textContent = "idle";
       breathRemaining = 2*60; $("breathTimer").textContent = "02:00";
+      tasksDone = 0;
     }
 
     // --------- Session logic ----------
@@ -578,10 +579,13 @@ loadJamaleseGuess();
 
     // --------- Journal ----------
     function saveJournal(){
+if (localStorage.getItem("calmKit_journal") != $("journal").value.trim()) {
+
       localStorage.setItem("calmKit_journal", $("journal").value);
       $("journalStatus").textContent = "Saved";
       refreshSavedPreview();
-      countTaskDone();
+        countTaskDone();
+}
     }
     function loadJournal(){
       $("journal").value = localStorage.getItem("calmKit_journal") || "";
@@ -591,15 +595,18 @@ loadJamaleseGuess();
 
     // --------- Plan ----------
     function savePlan(){
+      if (localStorage.getItem("calmKit_plan") != $("planInput").value.trim()) {
       const v = $("planInput").value.trim();
       if (!v) return;
       localStorage.setItem("calmKit_plan", v);
       $("planOut").textContent = "Saved plan: " + v;
       refreshSavedPreview();
       countTaskDone();
+      }
     }
 
     function refreshSavedPreview(){
+
       const j = (localStorage.getItem("calmKit_journal") || "").trim();
       const p = (localStorage.getItem("calmKit_plan") || "").trim();
       let out = "";
