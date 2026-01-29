@@ -38,6 +38,7 @@
     button{ cursor:pointer; }
     button:hover{ filter:brightness(1.08); }
     button:active{ transform:translateY(1px); }
+    button:disabled{ opacity:.55; cursor:not-allowed; }
     .primary{ background:linear-gradient(180deg,#1a2d46,#16253a); }
     .stop{ background:linear-gradient(180deg,#3a1a22,#2a1218); border-color:#5a1f2a; }
     .pill{ font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); color:var(--muted); }
@@ -130,7 +131,7 @@
         </div>
         <p class="hint">Pick one. The goal is to pass time gently.</p>
 
-        <div class="row" style="margin-top:8px;">
+        <div id="activityButtons" class="row" style="margin-top:8px;">
           <button data-act="breath">Box breathing (2 min)</button>
           <button data-act="write">Boredom journal (3 min)</button>
           <button data-act="logic">Tiny logic (3 min)</button>
@@ -186,7 +187,7 @@
 
         <div id="panel_plan" class="panel hidden">
           <p><b>One-step plan:</b> pick one thing you’ll do after this session ends.</p>
-          <div class="row"> 
+          <div class="row">
             <input id="planInput" placeholder="Example: do homework or something" style="flex:1; min-width:220px;" />
             <button id="planSave">Save</button>
           </div>
@@ -195,37 +196,67 @@
         </div>
 
         <div id="panel_jamalese" class="panel hidden">
-  <p><b>🌍 Jamalese Corner</b></p>
+          <p><b>🌍 Jamalese Corner</b></p>
 
-  <p>
-    <b>Word of the Day:</b>
-    <span id="wotdWord">—</span> —
-    <span id="wotdMeaning">—</span>
-  </p>
+          <p>
+            <b>Word of the Day:</b>
+            <span id="wotdWord">—</span> —
+            <span id="wotdMeaning">—</span>
+          </p>
 
-  <div class="divider"></div>
+          <div class="divider"></div>
 
-  <p><b>Guess this Jamalese word:</b></p>
-  <h3 id="guessWord">—</h3>
+          <p><b>Guess this Jamalese word:</b></p>
+          <h3 id="guessWord">—</h3>
 
-  <div id="guessChoices" class="row"></div>
+          <div id="guessChoices" class="row"></div>
 
-  <p class="hint" id="guessResult"></p>
-  <p class="hint">Guesses this session: <span id="jamCount">0</span>/10</p>
+          <p class="hint" id="guessResult"></p>
+          <p class="hint">Guesses this session: <span id="jamCount">0</span>/10</p>
 
-  <button id="nextJamalese">Generate question</button>
-</div>
+          <button id="nextJamalese">Generate question</button>
+        </div>
+
+        <!-- SHIFT PANEL -->
+        <div id="panel_shift" class="panel hidden">
+          <h2>⇧ Shift Mode</h2>
+          <p class="hint">A short guided mode to shift your brain out of cravings and into action.</p>
+
+          <button id="startShiftBtn" class="primary">Start Shift Mode</button>
+
+          <div id="shiftQuestion" class="hidden">
+            <p class="hint">Are you able to move right now?</p>
+            <button id="shiftMoveYes">I can move</button>
+            <button id="shiftMoveNo">I must stay still</button>
+          </div>
+
+          <div id="shiftTaskBox" class="hidden">
+            <p class="big" id="shiftTaskText">—</p>
+
+            <textarea id="shiftInput" class="hidden" placeholder="Type here..."></textarea>
+
+            <div class="row">
+              <button id="shiftDoneBtn">Done</button>
+              <button id="shiftNextPhysicalBtn" class="hidden">Another physical</button>
+              <button id="shiftGoNextBtn" class="hidden">Go next</button>
+            </div>
+
+            <p class="hint mono" id="shiftTimerText">00:00</p>
+          </div>
+        </div>
+
       </div>
 
       <div class="card">
         <h2 style="margin:0;font-size:16px;">Infobar</h2>
         <p class="hint">
           This page intentionally avoids: random rewards, infinite feeds, streaks, flashy animations, points. Pass the time without dopamine.
-</p>
+        </p>
 
         <div class="divider"></div>
-<button id="toggleCalm">Calm</button>
-<button id="toggleUltra">Minimal</button>
+        <button id="toggleShift">Shift</button>
+        <button id="toggleCalm">Calm</button>
+        <button id="toggleUltra">Minimal</button>
         <div class="divider"></div>
 
         <h3 style="margin:0 0 8px;font-size:14px;">Saved notes</h3>
@@ -236,10 +267,8 @@
         <p class="hint">
           What does “bored” usually means for you? (tired? anxious? procrastinating?)
         </p>
-<div class="divider"></div>
-<p class="hint">
-Have you eaten your musket?
-</p>
+        <div class="divider"></div>
+        <p class="hint">Have you eaten your musket?</p>
       </div>
     </div>
   </div>
@@ -261,34 +290,41 @@ Have you eaten your musket?
   </div>
 
   <div id="startPopup" class="overlay hidden">
-  <div class="modal">
-    <h2>🌿 Start a session first</h2>
-    <p class="hint">Choose a time length and press start first to do a task.</p>
-    <div class="row" style="margin-top:14px;">
-      <button id="closeStartPopup" class="stop">Close</button>
+    <div class="modal">
+      <h2>🌿 Start a session first</h2>
+      <p class="hint">Choose a time length and press start first to do a task.</p>
+      <div class="row" style="margin-top:14px;">
+        <button id="closeStartPopup" class="stop">Close</button>
+      </div>
     </div>
   </div>
-</div>
 
-    <p id="safety" style="margin-left: 60px; margin-top:0; margin-bottom:5px;">Click for Minimal → Calm</p>
-<p style="margin-left: 60px; margin-top:0; margin-bottom:30px" class="hint">© 2026 Made by Newhouse Labs</p>
+  <p id="safety" style="margin-left: 60px; margin-top:0; margin-bottom:5px;">Click for Minimal → Calm</p>
+  <p style="margin-left: 60px; margin-top:0; margin-bottom:30px" class="hint">© 2026 Made by Newhouse Labs</p>
 
-        
   <script>
-    let jamCount = 0;
-const JAM_MAX = 10;
-let wotdIndex = null;
-let currentGuessWord = null;
-
-    
-    // --------- State ----------
+    // --------- Small helpers ----------
     const $ = (id) => document.getElementById(id);
 
+    function fmt(ms){
+      ms = Math.max(0, ms);
+      const total = Math.floor(ms/1000);
+      const m = String(Math.floor(total/60)).padStart(2,"0");
+      const s = String(total%60).padStart(2,"0");
+      return `${m}:${s}`;
+    }
+    function setStatus(text){ $("statusPill").textContent = text; }
+    function setModePill(text){ $("modePill").textContent = `Mode: ${text}`; }
+
+    // Preserve Calm session options so Shift can temporarily replace them
+    const calmSessionOptionsHTML = $("sessionMins").innerHTML;
+
+    // --------- Calm state ----------
     let running = false;
     let remainingMs = 10 * 60 * 1000;
     let tick = null;
 
-    let stopMode = "timer"; // timer | oneTask | twoTasks
+    let stopMode = "timer";
     let taskLimit = Infinity;
     let tasksDone = 0;
 
@@ -297,39 +333,55 @@ let currentGuessWord = null;
     // Breath guide
     let breathTick = null;
     let breathRemaining = 2 * 60;
-    let breathPhase = "idle"; // inhale hold exhale hold2
+    let breathPhase = "idle";
 
+    // --------- Jamalese ----------
+    let jamCount = 0;
+    const JAM_MAX = 10;
+    let wotdIndex = null;
+    let currentGuessWord = null;
+
+    // --------- Shift Mode state ----------
+    let mode = "calm"; // calm | shift
+
+    let shiftRunning = false;
+    let shiftPhase = 0; // 1 physical, 2 creative, 3 trivia
+    let shiftStartTime = 0;
+    let shiftCanMove = false;
+    let shiftDurationSec = 4 * 60; // 4/8/10 min based on session select in shift
+    let shiftTimerTick = null; // timeout loop
+
+    // Typed tasks (so we can show textbox when needed)
+    const shiftPhysicalPool = [
+      { type:"physical", text:"Do 10 squats" },
+      { type:"physical", text:"Stretch your arms for 30 seconds" },
+      { type:"physical", text:"Drink a glass of water" },
+      { type:"physical", text:"Walk to another room" },
+      { type:"physical", text:"Roll your shoulders slowly (10 rolls)" }
+    ];
+    const shiftCreativePool = [
+      { type:"write",  text:"Write one Jamalese sentence" },
+      { type:"write",  text:"Write 3 ideas (any topic)" },
+      { type:"write",  text:"Describe something you see (2 sentences)" },
+      { type:"write",  text:"Invent a new word and its meaning" },
+      { type:"draw",   text:"Draw something simple (on paper)" }
+    ];
+    const shiftTriviaPool = [
+      { type:"answer", text:"Solve: 7 × 8" },
+      { type:"answer", text:"What day is 3 days after Friday?" },
+      { type:"answer", text:"What is 9 + 6 × 2?" },
+      { type:"answer", text:"Name 3 countries in Asia" }
+    ];
+
+    // --------- Logic bank ----------
     const logicBank = [
-      {
-        q: "If today is Wednesday, what day is 10 days from today?",
-        a: "Saturday",
-        e: "10 ≡ 3 (mod 7). Wednesday + 3 days = Saturday."
-      },
-      {
-        q: "You have 3 switches outside a room; one controls a lamp inside. You may enter the room once. How do you know which switch?",
-        a: "Use heat: turn one on for a while, off; turn another on; enter. On=second, warm=first, cold=third.",
-        e: "Classic reasoning puzzle: light + warmth give two bits of info."
-      },
-      {
-        q: "What’s the next number: 1, 2, 3, 5, 8, 13, ?",
-        a: "21",
-        e: "Each term is the sum of the previous two."
-      },
-      {
-        q: "If A implies B, and B is false, what can you say about A?",
-        a: "A must be false.",
-        e: "Contrapositive: A→B means ¬B→¬A."
-      },
-      {
-        q: "Rearrange: 'LISTEN' to make a word meaning 'quiet'.",
-        a: "SILENT",
-        e: "Anagram. Just notice it."
-      },
-      {
-        q: "Jamal",
-        a: "Jamal",
-        e: "Jamal"
-      }
+      { q:"If today is Wednesday, what day is 10 days from today?", a:"Saturday", e:"10 ≡ 3 (mod 7). Wednesday + 3 days = Saturday." },
+      { q:"You have 3 switches outside a room; one controls a lamp inside. You may enter the room once. How do you know which switch?",
+        a:"Use heat: turn one on for a while, off; turn another on; enter. On=second, warm=first, cold=third.",
+        e:"Classic reasoning puzzle: light + warmth give two bits of info." },
+      { q:"What’s the next number: 1, 2, 3, 5, 8, 13, ?", a:"21", e:"Each term is the sum of the previous two." },
+      { q:"If A implies B, and B is false, what can you say about A?", a:"A must be false.", e:"Contrapositive: A→B means ¬B→¬A." },
+      { q:"Rearrange: 'LISTEN' to make a word meaning 'quiet'.", a:"SILENT", e:"Anagram. Just notice it." }
     ];
     let logicIdx = 0;
 
@@ -343,19 +395,6 @@ let currentGuessWord = null;
     ];
 
     // --------- UI helpers ----------
-    function fmt(ms){
-      ms = Math.max(0, ms);
-      const total = Math.floor(ms/1000);
-      const m = String(Math.floor(total/60)).padStart(2,"0");
-      const s = String(total%60).padStart(2,"0");
-      return `${m}:${s}`;
-    }
-    function setStatus(text){
-      $("statusPill").textContent = text;
-    }
-    function setModePill(text){
-      $("modePill").textContent = `Mode: ${text}`;
-    }
     function updateCounters(){
       $("doneCount").textContent = tasksDone;
       $("limitCount").textContent = (taskLimit === Infinity) ? "∞" : taskLimit;
@@ -379,105 +418,62 @@ let currentGuessWord = null;
         logic:"Tiny logic",
         tidy:"Micro tidy",
         plan:"One-step plan",
-        jamalese:"Jamalese exercise"
+        jamalese:"Jamalese exercise",
+        shift:"Shift Mode"
       })[name] || "Pick one";
     }
-    function endSession(){
-      stopEverything();
-      $("overlay").classList.remove("hidden");
-$("timeLeft").textContent="00:00";
 
-      
+    // --------- Session end / stop ----------
+    function stopShiftInternal(){
+      shiftRunning = false;
+      if (shiftTimerTick) { clearTimeout(shiftTimerTick); shiftTimerTick = null; }
+      $("shiftQuestion").classList.add("hidden");
+      $("shiftTaskBox").classList.add("hidden");
+      $("shiftInput").classList.add("hidden");
+      $("shiftInput").value = "";
+      $("shiftNextPhysicalBtn").classList.add("hidden");
+      $("shiftGoNextBtn").classList.add("hidden");
+      $("shiftTimerText").textContent = "00:00";
     }
+
     function stopEverything(){
+      // calm timer
       running = false;
       clearInterval(tick); tick = null;
       setStatus("Stopped");
       $("pauseBtn").textContent = "Pause";
+
       // breath
       clearInterval(breathTick); breathTick=null;
       breathPhase="idle"; $("breathPhase").textContent = "idle";
       breathRemaining = 2*60; $("breathTimer").textContent = "02:00";
-                  tasksDone = 0;
+
+      // shift
+      stopShiftInternal();
+
+      // reset counters (your original behavior)
+      tasksDone = 0;
       updateCounters();
     }
 
-    // --------- Session logic ----------
+    function endSession(){
+      stopEverything();
+      $("overlay").classList.remove("hidden");
+      $("timeLeft").textContent="00:00";
+      $("activityName").textContent = "Session ended";
+    }
+
+    // --------- Calm session logic ----------
     function applyStopMode(){
       stopMode = $("stopRuleSel").value;
       taskLimit = Infinity;
       if (stopMode === "oneTask") taskLimit = 1;
+      if (stopMode === "twoTask") taskLimit = 2;
       if (stopMode === "twoTasks") taskLimit = 2;
       if (stopMode === "threeTasks") taskLimit = 3;
       updateStopRuleLabel();
       updateCounters();
     }
-
-    function loadWordOfTheDay(){
-  wotdIndex = Math.floor(Math.random() * dictionary.length);
-  const w = dictionary[wotdIndex];
-  $("wotdWord").textContent = w[0];
-  $("wotdMeaning").textContent = w[1];
-}
-
-function loadJamaleseGuess(){
-  if (jamCount >= JAM_MAX){
-    $("guessWord").textContent = "Enough Jamalese for now 🌿";
-    $("guessChoices").innerHTML = "";
-    $("guessResult").textContent = "Try another calm activity.";
-    return;
-  }
-
-  let idx;
-  do {
-    idx = Math.floor(Math.random() * dictionary.length);
-  } while (idx === wotdIndex);
-
-  currentGuessWord = dictionary[idx];
-
-  $("guessWord").textContent = currentGuessWord[0];
-  $("guessResult").textContent = "";
-
-  let choices = [currentGuessWord[1]];
-
-  while (choices.length < 4){
-    const m = dictionary[Math.floor(Math.random()*dictionary.length)][1];
-    if (!choices.includes(m)) choices.push(m);
-  }
-
-  choices.sort(() => Math.random() - 0.5);
-
-  const box = $("guessChoices");
-  box.innerHTML = "";
-
-  choices.forEach(choice=>{
-    const btn = document.createElement("button");
-    btn.textContent = choice;
-
-    btn.onclick = ()=>{
-  $("guessResult").textContent =
-    "It means: " + currentGuessWord[1];
-
-  jamCount++;
-  $("jamCount").textContent = jamCount;
-
-  disableGuessButtons();
-
-  // ONLY count as activity when finished all 10
-  if (jamCount >= JAM_MAX){
-
-    countTaskDone();
-  }
-};
-
-    box.appendChild(btn);
-  });
-}
-
-function disableGuessButtons(){
-  document.querySelectorAll("#guessChoices button")
-    .forEach(b => b.disabled = true);
-}
 
     function startSession(){
       const mins = Number($("sessionMins").value);
@@ -488,9 +484,10 @@ function disableGuessButtons(){
       applyStopMode();
       updateCounters();
 
+      // reset Jamalese session counter
       jamCount = 0;
-$("jamCount").textContent = "0";
-loadJamaleseGuess();
+      $("jamCount").textContent = "0";
+      loadJamaleseGuess();
 
       running = true;
       setStatus("Running");
@@ -505,9 +502,6 @@ loadJamaleseGuess();
     }
 
     function togglePause(){
-      if (!tick && running){
-        // should not happen
-      }
       if (!running) return;
       if (tick){
         clearInterval(tick); tick = null;
@@ -538,12 +532,7 @@ loadJamaleseGuess();
     function startBreathGuide(){
       clearInterval(breathTick);
       breathRemaining = 2*60;
-      const phases = [
-        ["inhale",4],
-        ["hold",4],
-        ["exhale",4],
-        ["hold",4]
-      ];
+      const phases = [["inhale",4],["hold",4],["exhale",4],["hold",4]];
       let p = 0, t = phases[0][1];
       breathPhase = phases[0][0];
       $("breathPhase").textContent = breathPhase;
@@ -582,13 +571,12 @@ loadJamaleseGuess();
 
     // --------- Journal ----------
     function saveJournal(){
-if (localStorage.getItem("calmKit_journal") != $("journal").value.trim()) {
-
-      localStorage.setItem("calmKit_journal", $("journal").value);
-      $("journalStatus").textContent = "Saved";
-      refreshSavedPreview();
+      if (localStorage.getItem("calmKit_journal") != $("journal").value.trim()) {
+        localStorage.setItem("calmKit_journal", $("journal").value);
+        $("journalStatus").textContent = "Saved";
+        refreshSavedPreview();
         countTaskDone();
-}
+      }
     }
     function loadJournal(){
       $("journal").value = localStorage.getItem("calmKit_journal") || "";
@@ -599,17 +587,16 @@ if (localStorage.getItem("calmKit_journal") != $("journal").value.trim()) {
     // --------- Plan ----------
     function savePlan(){
       if (localStorage.getItem("calmKit_plan") != $("planInput").value.trim()) {
-      const v = $("planInput").value.trim();
-      if (!v) return;
-      localStorage.setItem("calmKit_plan", v);
-      $("planOut").textContent = "Saved plan: " + v;
-      refreshSavedPreview();
-      countTaskDone();
+        const v = $("planInput").value.trim();
+        if (!v) return;
+        localStorage.setItem("calmKit_plan", v);
+        $("planOut").textContent = "Saved plan: " + v;
+        refreshSavedPreview();
+        countTaskDone();
       }
     }
 
     function refreshSavedPreview(){
-
       const j = (localStorage.getItem("calmKit_journal") || "").trim();
       const p = (localStorage.getItem("calmKit_plan") || "").trim();
       let out = "";
@@ -617,88 +604,318 @@ if (localStorage.getItem("calmKit_journal") != $("journal").value.trim()) {
       if (p) out = "Plan: " + p;
       if (j) jot = "Journal: " + (j.length>120 ? j.slice(0,120)+"…" : j);
       $("savedPreview").textContent = out || "—";
-            $("savedJour").textContent = jot || "—";
+      $("savedJour").textContent = jot || "—";
     }
 
     // --------- Tidy ----------
     function pickTidy(){
       const idx = Math.floor(Math.random()*tidyAreas.length);
       $("tidyArea").textContent = tidyAreas[idx];
-      // user does it IRL; we count completion when they click again:
-      // but to avoid a “reward loop”, we do NOT auto-count.
     }
 
-    // --------- Calm / Ultra ---------- 
+    // --------- Minimal (Ultra) ----------
     function setUltra(on){
-      document.querySelectorAll(".kpi, .row, .pill, .hint, #savedPreview")
-        .forEach(el => { /* leave base layout; we'll selectively hide */ });
-
       if (on){
-        // hide everything except one activity area and timer
         setModePill("ultra-minimal");
         document.querySelectorAll(".grid .card:nth-child(2), .kpi .box:nth-child(2), .kpi .box:nth-child(3)")
           .forEach(el => el.classList.add("hidden"));
         document.querySelectorAll(".row").forEach((el,i)=>{
-          // keep the first control row only
           if (i > 0) el.classList.add("hidden");
         });
-$("toggleCalm").classList.remove("hidden");
+        $("toggleCalm").classList.remove("hidden");
       } else {
+        // don't let calm button accidentally exit shift; calm button only resets ultra/minimal in calm mode
+        if (mode === "shift") return;
+
         setModePill("calm");
-        document.querySelectorAll(".hidden").forEach(el=>{
-          // careful: don't unhide panels; we'll rely on showPanel for those
-        });
-        // unhide things we hid for ultra
         document.querySelectorAll(".grid .card:nth-child(2), .kpi .box:nth-child(2), .kpi .box:nth-child(3)")
           .forEach(el => el.classList.remove("hidden"));
         document.querySelectorAll(".row").forEach(el=> el.classList.remove("hidden"));
-        // re-hide panels except current
         for (const el of document.querySelectorAll(".panel")) el.classList.add("hidden");
         if (currentAct) $("panel_"+currentAct).classList.remove("hidden");
       }
     }
 
+    // --------- Start-session popup ----------
     function showStartSessionPopup(){
-  $("startPopup").classList.remove("hidden");
-}
-
-$("closeStartPopup").addEventListener("click", ()=>{
-  $("startPopup").classList.add("hidden");
-});
-
-    
-
-    // --------- Wiring ----------
-    $("startBtn").addEventListener("click", ()=>{
-      startSession();
+      $("startPopup").classList.remove("hidden");
+    }
+    $("closeStartPopup").addEventListener("click", ()=>{
+      $("startPopup").classList.add("hidden");
     });
-    $("pauseBtn").addEventListener("click", togglePause);
-    $("stopBtn").addEventListener("click", endSession);
 
-    $("stopRuleSel").addEventListener("change", applyStopMode);
-
-document.querySelectorAll("button[data-act]").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    if (!running){
-      showStartSessionPopup();
-      return;
+    // --------- Jamalese ----------
+    function loadWordOfTheDay(){
+      wotdIndex = Math.floor(Math.random() * dictionary.length);
+      const w = dictionary[wotdIndex];
+      $("wotdWord").textContent = w[0];
+      $("wotdMeaning").textContent = w[1];
     }
 
-    const act = btn.dataset.act;
-    showPanel(act);
-  });
-});
+    function disableGuessButtons(){
+      document.querySelectorAll("#guessChoices button").forEach(b => b.disabled = true);
+    }
+
+    function loadJamaleseGuess(){
+      if (jamCount >= JAM_MAX){
+        $("guessWord").textContent = "Enough Jamalese for now 🌿";
+        $("guessChoices").innerHTML = "";
+        $("guessResult").textContent = "Try another calm activity.";
+        return;
+      }
+
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * dictionary.length);
+      } while (idx === wotdIndex);
+
+      currentGuessWord = dictionary[idx];
+
+      $("guessWord").textContent = currentGuessWord[0];
+      $("guessResult").textContent = "";
+
+      let choices = [currentGuessWord[1]];
+      while (choices.length < 4){
+        const m = dictionary[Math.floor(Math.random()*dictionary.length)][1];
+        if (!choices.includes(m)) choices.push(m);
+      }
+      choices.sort(() => Math.random() - 0.5);
+
+      const box = $("guessChoices");
+      box.innerHTML = "";
+
+      choices.forEach(choice=>{
+        const btn = document.createElement("button");
+        btn.textContent = choice;
+        btn.onclick = ()=>{
+          $("guessResult").textContent = "It means: " + currentGuessWord[1];
+          jamCount++;
+          $("jamCount").textContent = jamCount;
+          disableGuessButtons();
+          if (jamCount >= JAM_MAX) countTaskDone();
+        };
+        box.appendChild(btn);
+      });
+    }
+
+    // --------- SHIFT MODE (correct logic) ----------
+    function enterShiftMode(){
+      mode = "shift";
+      setModePill("shift");
+
+      // hide calm activity buttons
+      $("activityButtons").classList.add("hidden");
+
+      // show shift panel
+      showPanel("shift");
+
+      // disable stop rules in shift
+      $("stopRuleSel").disabled = true;
+
+      // force session mins to 4/8/10 in shift
+      $("sessionMins").innerHTML = `
+        <option value="4" selected>4 min</option>
+        <option value="8">8 min</option>
+        <option value="10">10 min</option>
+      `;
+
+      // reset shift UI
+      stopShiftInternal();
+      $("startShiftBtn").classList.remove("hidden");
+    }
+
+    function exitShiftMode(){
+      // Return to calm
+      mode = "calm";
+      setModePill("calm");
+
+      $("activityButtons").classList.remove("hidden");
+      $("stopRuleSel").disabled = false;
+
+      // restore calm session options
+      $("sessionMins").innerHTML = calmSessionOptionsHTML;
+
+      stopShiftInternal();
+      showPanel("logic"); // or hide all panels; logic is just a safe default
+      for (const el of document.querySelectorAll(".panel")) el.classList.add("hidden");
+      $("activityName").textContent = "Pick one";
+    }
+
+    function shiftPick(pool){
+      return pool[Math.floor(Math.random()*pool.length)];
+    }
+
+    function shiftShowTask(task, physicalChoiceButtons){
+      $("shiftTaskText").textContent = task.text;
+
+      // textbox rules
+      if (task.type === "write" || task.type === "answer"){
+        $("shiftInput").classList.remove("hidden");
+        $("shiftInput").value = "";
+        $("shiftInput").focus();
+      } else {
+        $("shiftInput").classList.add("hidden");
+        $("shiftInput").value = "";
+      }
+
+      // physical choice buttons
+      if (physicalChoiceButtons){
+        $("shiftNextPhysicalBtn").classList.remove("hidden");
+        $("shiftGoNextBtn").classList.remove("hidden");
+      } else {
+        $("shiftNextPhysicalBtn").classList.add("hidden");
+        $("shiftGoNextBtn").classList.add("hidden");
+      }
+    }
+
+    function shiftUpdateTimer(){
+      const elapsed = Math.floor((Date.now() - shiftStartTime)/1000);
+      const left = shiftDurationSec - elapsed;
+      $("shiftTimerText").textContent = fmt(left*1000);
+
+      if (left <= 0){
+        // end shift -> end session overlay
+        shiftRunning = false;
+        endSession();
+        return;
+      }
+      if (shiftRunning){
+        shiftTimerTick = setTimeout(shiftUpdateTimer, 1000);
+      }
+    }
+
+    function shiftNextTask(){
+      const elapsed = Math.floor((Date.now() - shiftStartTime)/1000);
+
+      // Phase rules:
+      // If phase 1 (physical), tasks are controlled by buttons (another/go next).
+      // Phase 2 until 2:00 elapsed, then phase 3 for rest of time.
+      if (shiftPhase === 1){
+        shiftShowTask(shiftPick(shiftPhysicalPool), true);
+        return;
+      }
+
+      if (elapsed < 120){
+        shiftPhase = 2;
+        shiftShowTask(shiftPick(shiftCreativePool), false);
+      } else {
+        shiftPhase = 3;
+        shiftShowTask(shiftPick(shiftTriviaPool), false);
+      }
+    }
+
+    function startShiftRun(){
+      // shift duration based on sessionMins (4/8/10)
+      const mins = Number($("sessionMins").value);
+      shiftDurationSec = mins * 60;
+
+      shiftRunning = true;
+      shiftStartTime = Date.now();
+
+      // decide starting phase
+      shiftPhase = shiftCanMove ? 1 : 2;
+
+      $("startShiftBtn").classList.add("hidden");
+      $("shiftQuestion").classList.add("hidden");
+      $("shiftTaskBox").classList.remove("hidden");
+
+      shiftNextTask();
+      // timer loop
+      if (shiftTimerTick) clearTimeout(shiftTimerTick);
+      shiftUpdateTimer();
+    }
+
+    // Shift UI wiring
+    $("startShiftBtn").addEventListener("click", ()=>{
+      $("shiftQuestion").classList.remove("hidden");
+    });
+    $("shiftMoveYes").addEventListener("click", ()=>{
+      shiftCanMove = true;
+      startShiftRun();
+    });
+    $("shiftMoveNo").addEventListener("click", ()=>{
+      shiftCanMove = false;
+      startShiftRun();
+    });
+
+    // Done button:
+    // - In phase 1, Done just finishes that physical and asks choice (buttons already visible).
+    // - In phases 2/3, Done gets next task.
+    $("shiftDoneBtn").addEventListener("click", ()=>{
+      if (!shiftRunning) return;
+
+      if (shiftPhase === 1){
+        // after ONE physical, user chooses: another physical or go next
+        // we keep the same choice buttons visible; just update instruction slightly
+        $("shiftTaskText").textContent = "Physical done. Choose:";
+        $("shiftInput").classList.add("hidden");
+        $("shiftInput").value = "";
+        $("shiftNextPhysicalBtn").classList.remove("hidden");
+        $("shiftGoNextBtn").classList.remove("hidden");
+        return;
+      }
+
+      // phase 2 or 3:
+      shiftNextTask();
+    });
+
+    $("shiftNextPhysicalBtn").addEventListener("click", ()=>{
+      if (!shiftRunning) return;
+      // stay in phase 1, show another physical task
+      shiftPhase = 1;
+      shiftNextTask();
+    });
+
+    $("shiftGoNextBtn").addEventListener("click", ()=>{
+      if (!shiftRunning) return;
+      // move to creative pool
+      shiftPhase = 2;
+      $("shiftNextPhysicalBtn").classList.add("hidden");
+      $("shiftGoNextBtn").classList.add("hidden");
+      shiftNextTask();
+    });
+
+    // --------- Wiring (buttons) ----------
+    $("startBtn").addEventListener("click", startSession);
+    $("pauseBtn").addEventListener("click", togglePause);
+    $("stopBtn").addEventListener("click", endSession);
+    $("stopRuleSel").addEventListener("change", applyStopMode);
+
+    // Only allow calm activities if a calm session is running AND not shift mode
+    document.querySelectorAll("button[data-act]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        if (mode === "shift"){
+          // in shift mode, calm buttons are hidden anyway; but just in case
+          return;
+        }
+        if (!running){
+          showStartSessionPopup();
+          return;
+        }
+        const act = btn.dataset.act;
+        showPanel(act);
+      });
+    });
 
     $("breathStart").addEventListener("click", startBreathGuide);
-
     $("logicReveal").addEventListener("click", revealLogic);
     $("logicNext").addEventListener("click", ()=>{ logicIdx++; loadLogic(); });
+
     $("saveJournal").addEventListener("click", saveJournal);
     $("loadJournal").addEventListener("click", loadJournal);
     $("planSave").addEventListener("click", savePlan);
     $("tidyPick").addEventListener("click", pickTidy);
 
-    $("toggleCalm").addEventListener("click", ()=> setUltra(false));
+    $("toggleShift").addEventListener("click", enterShiftMode);
+
+    // Calm button here is meant for minimal->calm, but also can exit shift
+    $("toggleCalm").addEventListener("click", ()=>{
+      if (mode === "shift"){
+        exitShiftMode();
+      } else {
+        setUltra(false);
+      }
+    });
     $("safety").addEventListener("click", ()=> setUltra(false));
     $("toggleUltra").addEventListener("click", ()=> setUltra(true));
 
@@ -718,5 +935,3 @@ document.querySelectorAll("button[data-act]").forEach(btn=>{
   </script>
 </body>
 </html>
-
-
