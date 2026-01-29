@@ -65,6 +65,10 @@
     .modal h2{ margin:0 0 8px; font-size:18px; }
     ul{ margin:10px 0 0 18px; color:var(--muted); }
     a{ color:#a8c8ff; }
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
   </style>
   <script src="https://newhs.cc/words.js"></script>
 </head>
@@ -722,6 +726,7 @@
       // reset shift UI
       stopShiftInternal();
       $("startShiftBtn").classList.remove("hidden");
+$("toggleUltra").disabled = true;
     }
 
     function exitShiftMode(){
@@ -739,6 +744,7 @@
       showPanel("logic"); // or hide all panels; logic is just a safe default
       for (const el of document.querySelectorAll(".panel")) el.classList.add("hidden");
       $("activityName").textContent = "Pick one";
+$("toggleUltra").disabled = false;
     }
 
     function shiftPick(pool){
