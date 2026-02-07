@@ -21,6 +21,11 @@ In our new house, we're constantly building, growing and developing. But in that
 
 <b>Welcome.</b>
 
+# Newhouse Wall : social media
+### [🌟 Newhouse Wall](https://newhs.cc/wall/)
+
+<hr>
+
 ### [↗️ Monte Central](https://newhs.cc/montecentral)
 ### [🏪 Sigma Market](https://newhs.cc/sigmamarket)
 ### [🏟️ Newhouse Arena](https://newhs.cc/arena)
