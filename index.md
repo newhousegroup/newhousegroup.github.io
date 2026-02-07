@@ -21,7 +21,7 @@ In our new house, we're constantly building, growing and developing. But in that
 
 <b>Welcome.</b>
 
-# Newhouse Wall : social media
+### Newhouse Wall : social media
 ### [🌟 Newhouse Wall](https://newhs.cc/wall/)
 
 <hr>
