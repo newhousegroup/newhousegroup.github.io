@@ -23,6 +23,7 @@ In our new house, we're constantly building, growing and developing. But in that
 
 ### Newhouse Wall : social media
 ### [🌟 Newhouse Wall](https://newhs.cc/wall/)
+or visit the website at wall.wiki
 
 <hr>
 
