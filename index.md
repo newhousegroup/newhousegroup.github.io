@@ -6,6 +6,7 @@
     font-family: 'Raleway', system-ui, sans-serif;
   }
 </style>
+<title>Newhouse</title>
 
 <h1>Hello, we're Newhouse.</h1>
 
