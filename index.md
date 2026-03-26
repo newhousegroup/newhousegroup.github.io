@@ -31,6 +31,7 @@ or visit the website at wall.wiki
 <!--### [🧘 Newhouse Calm](https://newhs.cc/calm)-->
 ### [📕 Zamœlis Diksonri](https://newhs.cc/dict)
 ### [📗 Zamœlis Translata](https://newhs.cc/translate)
+### [🌫️ a blank space](https://thisisablank.space)
 
 <hr>
 
