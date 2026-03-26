@@ -21,16 +21,19 @@ In our new house, we're constantly building, growing and developing. But in that
 
 <b>Welcome.</b>
 
-### Newhouse Wall : social media
 ### [🌟 Newhouse Wall](https://newhs.cc/wall/)
 or visit the website at wall.wiki
 
 <hr>
 
 ### [↗️ Monte Central](https://newhs.cc/montecentral)
-### [🏪 Sigma Market](https://newhs.cc/sigmamarket)
 ### [🏟️ Newhouse Arena](https://newhs.cc/arena)
-### [🧘 Newhouse Calm](https://newhs.cc/calm)
+<!--### [🧘 Newhouse Calm](https://newhs.cc/calm)-->
 ### [📕 Zamœlis Diksonri](https://newhs.cc/dict)
 ### [📗 Zamœlis Translata](https://newhs.cc/translate)
+
+<hr>
+
+## Past Projects
+[🏪 Sigma Market](https://newhs.cc/sigmamarket)
 
