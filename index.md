@@ -22,11 +22,9 @@ In our new house, we're constantly building, growing and developing. But in that
 
 <b>Welcome.</b>
 
-### [🌟 Newhouse Wall](https://newhs.cc/wall/)
-or visit the website at wall.wiki
-
 <hr>
 
+### [🌟 Newhouse Wall](https://newhs.cc/wall/)
 ### [↗️ Monte Central](https://newhs.cc/montecentral)
 ### [🏟️ Newhouse Arena](https://newhs.cc/arena)
 <!--### [🧘 Newhouse Calm](https://newhs.cc/calm)-->
