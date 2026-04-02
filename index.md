@@ -41,3 +41,6 @@ In our new house, we're constantly building, growing and developing. But in that
 [🕯️ pneumonoultramicroscopicsilicovolcanoconiosis](https://pneumonoultramicroscopicsilicovolcanoconiosis.cloud)
 
 
+
+> [!TIP]
+> Helpful advice for doing things better or more easily.
