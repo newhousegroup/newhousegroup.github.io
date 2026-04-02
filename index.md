@@ -39,7 +39,7 @@ formerly Newhouse Calm
 [🏪 Sigma Market](https://newhs.cc/sigmamarket)
 
 ## Future Projects
-[🕯️ pneumonoultramicroscopicsilicovolcanoconiosis](https://pneumonoultramicroscopicsilicovolcanoconiosis.cloud)
+[🕯️ pneumono...coniosis](https://pneumonoultramicroscopicsilicovolcanoconiosis.cloud)
 
 
 [📟 QRin.space](https://qrin.space)
