@@ -27,7 +27,8 @@ In our new house, we're constantly building, growing and developing. But in that
 ### [🌟 Newhouse Wall](https://newhs.cc/wall/)
 ### [↗️ Monte Central](https://newhs.cc/montecentral)
 ### [🏟️ Newhouse Arena](https://newhs.cc/arena)
-<!--### [🧘 Newhouse Calm](https://newhs.cc/calm)-->
+### [🧘 Newhouse Point](https://newhs.cc/point)
+formerly Newhouse Calm
 ### [📕 Zamœlis Diksonri](https://newhs.cc/dict)
 ### [📗 Zamœlis Translata](https://newhs.cc/translate)
 ### [🌫️ a blank space](https://thisisablank.space)
@@ -41,6 +42,4 @@ In our new house, we're constantly building, growing and developing. But in that
 [🕯️ pneumonoultramicroscopicsilicovolcanoconiosis](https://pneumonoultramicroscopicsilicovolcanoconiosis.cloud)
 
 
-
-> [!TIP]
-> Helpful advice for doing things better or more easily.
+[📟 QRin.space](https://qrin.space)
