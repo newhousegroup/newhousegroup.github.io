@@ -32,6 +32,7 @@ formerly Newhouse Calm
 ### [📕 Zamœlis Diksonri](https://newhs.cc/dict)
 ### [📗 Zamœlis Translata](https://newhs.cc/translate)
 ### [🌫️ a blank space](https://thisisablank.space)
+### [🕯️ pneumonoul...coniosis](https://pneumonoultramicroscopicsilicovolcanoconiosis.click)
 
 <hr>
 
@@ -39,7 +40,6 @@ formerly Newhouse Calm
 [🏪 Sigma Market](https://newhs.cc/sigmamarket)
 
 ## Future Projects
-[🕯️ pneumono...coniosis](https://pneumonoultramicroscopicsilicovolcanoconiosis.cloud)
 
 
 [📟 QRin.space](https://qrin.space)
