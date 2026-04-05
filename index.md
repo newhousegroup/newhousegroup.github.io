@@ -24,6 +24,7 @@ In our new house, we're constantly building, growing and developing. But in that
 
 <hr>
 
+### [⚔️ Kill das James](https://newhs.cc/kdj)
 ### [🌟 Newhouse Wall](https://newhs.cc/wall/)
 ### [↗️ Monte Central](https://newhs.cc/montecentral)
 ### [🏟️ Newhouse Arena](https://newhs.cc/arena)
