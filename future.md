@@ -14,6 +14,9 @@
 - 📟 QRin.space
 - 🗺️ Newhouse Cartograph
 
+## Coming 2027
+- 📖 Our book, *Boiling Trees*
+
 ## In development
 - 🚩 Dominion
 - 🦜 Newhouse Parrot
