@@ -27,7 +27,7 @@
 
 ## Future Projects
 
-[📟 QRin.space](https://qrin.space)
+[View our future projects here](/future)
 
 ---
 
