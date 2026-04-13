@@ -11,7 +11,6 @@
 # Newhouse's Future Projects
 
 ## Coming 2026
-- 📟 QRin.space
 - 🗺️ Newhouse Cartograph
 
 ## Coming 2027
