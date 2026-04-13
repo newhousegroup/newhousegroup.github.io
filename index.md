@@ -8,10 +8,9 @@
 </style>
 <title>Newhouse</title>
 
-> # New project releasing today
-
 # Newhouse
 
+### [📟 QRin.space](https://www.qrin.space)
 ### [⚔️ Kill das James](https://newhs.cc/kdj)
 ### [🌟 Newhouse Wall](https://newhs.cc/wall/)
 ### [↗️ Monte Central](https://newhs.cc/montecentral)
