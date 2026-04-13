@@ -8,6 +8,8 @@
 </style>
 <title>Newhouse</title>
 
+> # New project releasing today
+
 # Newhouse
 
 ### [⚔️ Kill das James](https://newhs.cc/kdj)
