@@ -1,9 +1,10 @@
-<!-- Raleway font (Google Fonts) -->
+<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&display=swap" rel="stylesheet">
 
 <style>
   * {
-    font-family: 'Raleway', system-ui, sans-serif;
+    font-family: 'Alan Sans', 'Raleway', system-ui, sans-serif;
   }
 </style>
 <title>Newhouse</title>
