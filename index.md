@@ -13,6 +13,7 @@
 
 ### [📘 Book Renderer](https://newhouselabs.netlify.app/BookRenderer/)
 ### [📟 QRin.space](https://www.qrin.space)
+### [⚔️ Kill das James 2](https://newhs.cc/kdj2)
 ### [⚔️ Kill das James](https://newhs.cc/kdj)
 ### [🌟 Newhouse Wall](https://newhs.cc/wall/)
 ### [↗️ Monte Central](https://newhs.cc/montecentral)
