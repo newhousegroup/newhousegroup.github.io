@@ -11,11 +11,12 @@
 
 # Newhouse
 
-### [📘 Book Renderer](https://newhouselabs.netlify.app/BookRenderer/)
 ### [📟 QRin.space](https://www.qrin.space)
+### [📤 Bamaodrop](https://bamao.qrin.space)
 ### [⚔️ Kill das James 2](https://newhs.cc/kdj2)
 ### [⚔️ Kill das James](https://newhs.cc/kdj)
 ### [🌟 Newhouse Wall](https://newhs.cc/wall/)
+### [📘 Book Renderer](https://newhouselabs.netlify.app/BookRenderer/)
 ### [↗️ Monte Central](https://newhs.cc/montecentral)
 ### [🏟️ Newhouse Arena](https://newhs.cc/arena)
 ### [🌫️ a blank space](https://thisisablank.space)
@@ -36,7 +37,7 @@
 ---
 
 # About us
-Here at Newhouse, we believe every idea deserves a new house. Not a clean, polished house — but a new house that's never complete. A new house that's always under construction. A new house that hums at midnight, its whose doors always open.
+Here at Newhouse, we believe every idea deserves a new house. Not a clean, polished house — but a new house that's never complete. A new house that's always under construction. A new house that hums at midnight, whose doors are always open.
 
 In our new house, nothing stays still. Chairs become ladders, tables become stages, and closets are full of whiteboards. Someone’s always pacing, someone’s always laughing, and someone’s always saying, “This new house needs more fire.” And so we give it more. 
 
