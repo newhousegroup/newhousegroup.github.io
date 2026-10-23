@@ -1,0 +1,6 @@
+.identity{display:flex;align-items:center;gap:14px}
+.identity .version{font-size:11px;letter-spacing:0;padding:4px 8px}
+.waiting-dots{display:inline-block;min-width:1.3em;background:transparent!important;color:#658c54;letter-spacing:2px}
+main{padding-top:12px}
+aside h2{margin-top:0}
+@media(min-width:801px){.editorwrap{height:clamp(390px,65vh,760px)}}

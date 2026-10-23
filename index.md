@@ -13,8 +13,10 @@
 
 ### [📟 QRin.space](https://www.qrin.space)
 ### [📤 Bamaodrop](https://bamao.qrin.space)
+### [🧘 Newhouse Point (Updated!)](https://newhs.cc/point)
 ### [⚔️ Kill das James 2](https://newhs.cc/kdj2)
 ### [⚔️ Kill das James](https://newhs.cc/kdj)
+### [🤖 Glyph Playground](https://newhs.cc/glyph-playground)
 ### [🌟 Newhouse Wall](https://newhs.cc/wall/)
 ### [📘 Book Renderer](https://newhouselabs.netlify.app/BookRenderer/)
 ### [↗️ Monte Central](https://newhs.cc/montecentral)
@@ -23,7 +25,6 @@
 ### [🕯️ pneumonoul...coniosis](https://pneumonoultramicroscopicsilicovolcanoconiosis.click)
 ### [📕 Zamœlis Diksonri](https://newhs.cc/dict)
 ### [📗 Zamœlis Translata](https://newhs.cc/translate)
-### [🧘 Newhouse Point](https://newhs.cc/point)
 
 <hr>
 

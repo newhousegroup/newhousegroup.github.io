@@ -1,0 +1,41 @@
+const $=id=>document.getElementById(id);let worker,ready=false,busy=false,base='',output='',lastBase=null,started=0,timer,download;
+let reveal=new WordReveal(),revealTimer,waitingTimer,dots=1,generating=false,pendingDone=null,stopRequested=false,revealDeadline=0;
+const editor=$('editor');
+const placeholder=editor.placeholder;
+function paint(){const text=editor.value,at=output&&text===base+output?base.length:text.length;$('highlight').replaceChildren(document.createTextNode(text.slice(0,at)));if(at<text.length){const span=document.createElement('span');span.textContent=text.slice(at);$('highlight').append(span)}if(generating&&!stopRequested&&!reveal.target){const span=document.createElement('span');span.className='waiting-dots';span.textContent='.'.repeat(dots);$('highlight').append(span)}$('highlight').append(document.createTextNode('\n'));$('highlight').scrollTop=editor.scrollTop}
+function showVisible(){const nearBottom=editor.scrollHeight-editor.scrollTop-editor.clientHeight<60;output=reveal.visible;editor.value=base+output;paint();if(nearBottom){editor.scrollTop=editor.scrollHeight;$('highlight').scrollTop=editor.scrollTop}}
+function settle(){if(!pendingDone||reveal.pending)return;const d=pendingDone;pendingDone=null;$('state').textContent='Ready';status(d.cancelled?'Stopped. Unselected candidates were discarded.':'Completion finished. Edit or continue whenever you like.');$('stats').textContent=`${d.tokens} tokens · ${d.elapsed.toFixed(1)}s`;finish()}
+function queueReveal(){if(revealTimer||!reveal.pending)return;const delay=generating?Math.max(300,Math.min(900,(revealDeadline-performance.now())/reveal.stepsLeft())):300;revealTimer=setTimeout(()=>{revealTimer=null;reveal.step();showVisible();if(reveal.pending)queueReveal();else settle()},delay)}
+function controls(){const canStart=ready&&(!busy||!!pendingDone);for(const id of ['generate','continue'])$(id).disabled=!canStart;$('regenerate').disabled=!canStart||lastBase===null;$('stop').disabled=!busy||!ready;for(const id of ['retry','file','clear','length','temperature','candidates','repeat','gram','mode'])$(id).disabled=busy;editor.readOnly=busy}
+function status(text){$('status').textContent=text}
+function finish(){busy=false;generating=false;clearInterval(timer);clearInterval(waitingTimer);clearTimeout(revealTimer);revealTimer=null;editor.placeholder=placeholder;paint();controls()}
+function spawn(){worker?.terminate();ready=false;worker=new Worker('worker.js?v=1.0.3');worker.onerror=e=>{status('Inference worker failed to start. Check that the vendor scripts were deployed. '+e.message);$('state').textContent='Unavailable';finish()};worker.onmessage=({data:d})=>{
+ if(d.type==='status')status(d.message);
+ if(d.type==='ready'){ready=true;$('state').textContent='Ready';$('progress').hidden=true;status('Ready to continue your text.');$('modelInfo').textContent=`${d.name} · ${(d.params/1e6).toFixed(2)}M parameters · ${d.context}-token context · ${d.backend}`;finish()}
+ if(d.type==='chunk'){reveal.setTarget(d.text);revealDeadline=performance.now()+(Number(d.nextGroupMs)||0);clearInterval(waitingTimer);if(stopRequested){reveal.flush();showVisible()}else queueReveal();$('stats').textContent=`${d.tokens} tokens · ${d.elapsed.toFixed(1)}s`;$('scores').textContent=JSON.stringify(d.score,null,2)}
+ if(d.type==='done'){generating=false;clearInterval(waitingTimer);clearInterval(timer);pendingDone=d;if(d.cancelled||stopRequested){reveal.flush();showVisible()}if(reveal.pending){clearTimeout(revealTimer);revealTimer=null;$('state').textContent='Ready';status('Completion finished.');queueReveal()}controls();settle()}
+ if(d.type==='error'){ready=d.ready;pendingDone=null;reveal.flush();showVisible();$('state').textContent='Error';$('progress').hidden=true;status(d.message);finish()}
+ };controls()}
+async function published(){if(busy)return;spawn();busy=true;controls();$('state').textContent='Loading';$('progress').hidden=false;$('progress').removeAttribute('value');download=new AbortController();
+ try{
+  const r=await fetch('models/model.json',{cache:'no-cache',signal:download.signal});if(!r.ok)throw Error('No published model manifest. Use the publishing tool or import a local .lrm.');const manifest=await r.json();
+  if(!Array.isArray(manifest.files)||!manifest.files.length)throw Error('Invalid model manifest.');
+  let loaded=0;const parts=[];if(manifest.bytes>0){$('progress').max=manifest.bytes;$('progress').value=0}
+  const reportDownload=()=>{$('progress').value=loaded;status(manifest.bytes>0?`Downloading model · ${Math.min(100,Math.floor(loaded/manifest.bytes*100))}%`:'Downloading model…')};reportDownload();
+  for(const path of manifest.files){const url=new URL(path,new URL('models/model.json',location.href));const response=await fetch(url,{signal:download.signal});if(!response.ok)throw Error(`Model download failed (${response.status}).`);if(!response.body){const blob=await response.blob();parts.push(blob);loaded+=blob.size;reportDownload();continue}const reader=response.body.getReader();for(;;){const {done,value}=await reader.read();if(done)break;parts.push(value);loaded+=value.byteLength;reportDownload()}}
+  if(manifest.bytes&&loaded!==manifest.bytes)throw Error('Downloaded model size mismatch.');worker.postMessage({type:'load',file:new Blob(parts)});
+ }catch(e){$('state').textContent='Model unavailable';$('progress').hidden=true;status(e.message);finish()}
+}
+function generate(regen=false){
+ if(!ready||(busy&&!pendingDone))return;
+ const options={length:+$('length').value,temperature:+$('temperature').value,candidates:+$('candidates').value,repeat:+$('repeat').value,gram:+$('gram').value,mode:$('mode').value};
+ if(!Number.isFinite(options.temperature)||!Number.isFinite(options.repeat)){status('Enter valid numeric settings.');return}
+ // The model is already idle after done. Never make another inference wait
+ // for a presentation-only tail; preserve all selected text before continuing.
+ if(pendingDone){reveal.flush();showVisible();pendingDone=null;finish()}
+ base=regen?lastBase:editor.value;lastBase=base;output='';reveal=new WordReveal();revealDeadline=0;pendingDone=null;stopRequested=false;generating=true;dots=1;editor.placeholder='';editor.value=base;busy=true;paint();waitingTimer=setInterval(()=>{dots=dots%3+1;paint()},400);started=performance.now();$('state').textContent='Generating';$('stats').textContent='0 tokens · 0.0s';controls();timer=setInterval(()=>{const prefix=$('stats').textContent.split(' · ')[0];$('stats').textContent=prefix+' · '+((performance.now()-started)/1000).toFixed(1)+'s'},100);worker.postMessage({type:'generate',prompt:base,options})
+}
+$('generate').onclick=()=>generate();$('continue').onclick=()=>generate();$('regenerate').onclick=()=>generate(true);$('stop').onclick=()=>{stopRequested=true;clearInterval(waitingTimer);clearTimeout(revealTimer);revealTimer=null;reveal.flush();showVisible();if(pendingDone){pendingDone.cancelled=true;settle()}else{worker.postMessage({type:'stop'});$('stop').disabled=true;status('Stopping after the current tensor operation…')}};$('clear').onclick=()=>{editor.value='';base='';output='';lastBase=null;paint();controls()};editor.oninput=()=>{base=editor.value;output='';lastBase=null;paint();controls()};editor.onscroll=()=>{$('highlight').scrollTop=editor.scrollTop;$('highlight').scrollLeft=editor.scrollLeft};$('copy').onclick=async()=>{try{await navigator.clipboard.writeText(editor.value);status('Text copied.')}catch{editor.focus();editor.select();status('Select Copy from your browser menu.')}};$('retry').onclick=published;$('file').onchange=e=>{const file=e.target.files[0];if(!file||busy)return;spawn();busy=true;controls();$('state').textContent='Loading local checkpoint';worker.postMessage({type:'load',file});e.target.value=''};
+window.addEventListener('pagehide',()=>{download?.abort();worker?.terminate();clearInterval(timer);clearInterval(waitingTimer);clearTimeout(revealTimer)});paint();if(!window.Worker||!window.WebAssembly){status('This browser lacks required Worker or WebAssembly support. Try a current Safari, Chrome, Firefox, or Edge.');$('state').textContent='Unsupported'}else published();
+
+window.addEventListener('pageshow',e=>{if(e.persisted){finish();published()}});

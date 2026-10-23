@@ -6,307 +6,75 @@
   <title>Newhouse Point</title>
   <meta name="description" content="Engage your brain without distractions.">
   <style>
-    :root{
-      --bg:#0b0f14; --card:#111826; --text:#e7eefc; --muted:#9fb0cc;
-      --line:#22324a; --btn:#1a2638; --btn2:#182234; --ok:#1f7a4a;
-      --warn:#7a5a1f; --bad:#7a1f2a;
-      --radius:16px;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    }
-    body{ margin:0; background:linear-gradient(180deg,#0b0f14,#0a1220); color:var(--text); }
-    .wrap{ max-width:900px; margin:0 auto; padding:24px; }
-    h1{ font-size:22px; margin:0 0 6px; }
-    p{ margin:0 0 14px; color:var(--muted); line-height:1.4; }
-    .grid{ display:grid; gap:14px; grid-template-columns: 1fr; }
-    @media (min-width: 800px){ .grid{ grid-template-columns: 1.2fr 0.8fr; } }
-    .card{
-      background:rgba(17,24,38,.9);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      padding:16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,.25);
-    }
-    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    button, input, select, textarea{
-      background:var(--btn);
-      border:1px solid var(--line);
-      color:var(--text);
-      border-radius:12px;
-      padding:10px 12px;
-      font-size:14px;
-      outline:none;
-    }
-    button{ cursor:pointer; }
-    button:hover{ filter:brightness(1.08); }
-    button:active{ transform:translateY(1px); }
-    button:disabled{ opacity:.55; cursor:not-allowed; }
-    .primary{ background:linear-gradient(180deg,#1a2d46,#16253a); }
-    .stop{ background:linear-gradient(180deg,#3a1a22,#2a1218); border-color:#5a1f2a; }
-    .pill{ font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); color:var(--muted); }
-    .kpi{ display:flex; gap:10px; flex-wrap:wrap; }
-    .kpi .box{ flex:1; min-width:160px; background:rgba(0,0,0,.12); border:1px solid var(--line); border-radius:14px; padding:12px; }
-    .big{ font-size:20px; font-weight:700; margin-top:4px; }
-    .small{ font-size:12px; color:var(--muted); }
-    textarea{ width:100%; min-height:130px; resize:vertical; background:var(--btn2); }
-    .activity-title{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
-    .hint{ font-size:12px; color:var(--muted); }
-    .divider{ height:1px; background:var(--line); margin:12px 0; }
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-    .hidden{ display:none !important; }
-    .overlay{
-      position:fixed; inset:0; background:rgba(0,0,0,.72);
-      display:flex; align-items:center; justify-content:center;
-      padding:18px;
-    }
-    .modal{
-      max-width:520px; width:100%;
-      background:var(--card); border:1px solid var(--line);
-      border-radius:18px; padding:18px;
-    }
-    .modal h2{ margin:0 0 8px; font-size:18px; }
-    ul{ margin:10px 0 0 18px; color:var(--muted); }
-    a{ color:#a8c8ff; }
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+:root{font-family:Helvetica,Arial,sans-serif;color:#202124;background:#f5f5f7;font-synthesis:none}*{box-sizing:border-box}body{margin:0;background:#f5f5f7;color:#202124;-webkit-font-smoothing:antialiased}.wrap{max-width:540px;margin:0 auto;padding:44px 20px 80px}.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:38px}.brand{font-size:17px;font-weight:700;letter-spacing:-.45px}.subtitle{font-size:13px;color:#8b8b90;margin-top:5px}.mode-switch{display:flex;gap:3px;background:#e9e9ed;border-radius:10px;padding:3px}.mode-switch button{border:0;background:transparent;color:#777;font-weight:600;font-size:12px;padding:8px 13px;border-radius:8px}.mode-switch button.active{background:#fff;color:#222;box-shadow:0 1px 4px #00000012}.hero{text-align:center;padding:26px 0 34px}.eyebrow{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:#8e8e93;font-weight:700}.timer{font-size:76px;font-weight:200;letter-spacing:-4px;font-variant-numeric:tabular-nums;line-height:1.3;margin:10px 0}.status{font-size:13px;color:#888}.status::before{content:'●';font-size:8px;margin-right:7px;color:#b6b6ba}.session-config{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}.field label{display:block;color:#8e8e93;font-size:12px;margin:0 0 8px 2px}.field select{width:100%}.controls{display:flex;gap:9px}.controls button{flex:1}.section-head{font-size:12px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:#8e8e93;margin:35px 2px 13px}.sheet{background:white;border:1px solid #e6e6e9;border-radius:14px;overflow:hidden}.activity-button{display:flex;align-items:center;width:100%;text-align:left;padding:16px 17px;border:0;border-bottom:1px solid #eeeef0;border-radius:0;background:#fff;color:#242424;font-size:15px;font-weight:500}.activity-button:last-child{border-bottom:0}.activity-button .symbol{font-size:18px;width:33px;color:#777}.activity-button .chevron{margin-left:auto;color:#c5c5c8;font-size:20px;font-weight:300}.activity-button:hover{background:#fafafa}.activity-button.selected{background:#f0f5ff;color:#1762c6}.panel{padding:20px;background:#fff;border:1px solid #e6e6e9;border-radius:14px;margin-top:14px}.panel h2{font-size:18px;letter-spacing:-.4px;margin:0 0 12px}.panel p{font-size:14px;color:#6c6c72;line-height:1.55;margin:0 0 15px}.panel .big{font-size:21px;color:#222}.row{display:flex;align-items:center;flex-wrap:wrap;gap:9px}.hidden{display:none!important}button,input,select,textarea{font-family:Helvetica,Arial,sans-serif;font-size:14px;border:1px solid #dedee2;background:#fff;border-radius:9px;padding:12px;color:#222;outline:none;min-width:0}button{cursor:pointer;font-weight:600}button:disabled{opacity:.4;cursor:not-allowed}button:active{opacity:.7}.primary{background:#2675d9;color:#fff;border-color:#2675d9}.stop{color:#bd4545}.secondary{background:#ebebef;border-color:#ebebef}.row input{flex:1;min-width:160px}textarea{width:100%;min-height:140px;resize:vertical;line-height:1.5}.hint,.small{font-size:12px!important;color:#929297!important}.pill{display:inline-block;font-size:12px;color:#777;padding:7px 10px;border-radius:8px;background:#f4f4f6}.divider{height:1px;background:#eee;margin:18px 0}.mono{font-variant-numeric:tabular-nums}.footer{text-align:center;font-size:11px;color:#aaa;margin-top:38px}.overlay{position:fixed;inset:0;background:#15151b80;display:flex;align-items:center;justify-content:center;padding:20px;z-index:10}.modal{max-width:420px;width:100%;padding:25px;background:#fff;border-radius:17px;box-shadow:0 20px 60px #0002}.modal h2{font-size:21px;letter-spacing:-.6px;margin:0 0 10px}.modal p,.modal li{font-size:14px;line-height:1.5;color:#777}.modal ul{padding-left:20px}.modal .row{margin-top:20px}.activity-meta{font-size:12px;color:#999;margin:12px 2px}.saved-section{margin-top:25px}.saved-section details{font-size:13px;color:#888}.saved-section summary{cursor:pointer;padding:10px 0}.saved-section p{font-size:12px;overflow-wrap:anywhere}.shift-panel{margin-top:16px}@media(max-width:420px){.wrap{padding:26px 16px 60px}.timer{font-size:64px}.hero{padding:20px 0 28px}.topline{margin-bottom:22px}.controls button{padding:12px 7px;font-size:13px}}@media(prefers-reduced-motion:no-preference){button{transition:background .15s ease,opacity .15s ease}}
+  
+.hero{padding:16px 0 28px}
+.timer{margin:0;line-height:1.2}
+.activity-button .symbol{width:35px;display:inline-flex;align-items:center;flex-shrink:0}
+.activity-button .symbol svg{width:20px;height:20px}
+.activity-button .chevron{display:inline-flex;align-items:center}
+.activity-button .chevron svg{width:15px;height:15px}
+#startBtn{
+ background:linear-gradient(to bottom,#a6d6ff 0%,#5da9ee 8%,#2479d0 48%,#1260b7 49%,#1c70ca 100%);
+ border:1px solid #165b9e;border-radius:9px;color:#fff;
+ text-shadow:0 -1px 1px rgba(0,36,83,.55);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.72),inset 0 -1px 0 rgba(0,31,83,.14),0 1px 2px rgba(0,0,0,.12);
+ font-weight:700;
 }
-  </style>
+#startBtn:hover:not(:disabled){filter:brightness(1.04)}
+#startBtn:active:not(:disabled){background:linear-gradient(to bottom,#155eae,#267bd1);box-shadow:inset 0 2px 5px rgba(0,0,0,.2)}
+
+button:not(.activity-button):not(.mode-switch button){
+ background:linear-gradient(to bottom,#ffffff 0%,#f8f9fb 42%,#dce1e8 51%,#eef1f5 100%);
+ border:1px solid #aeb7c4;border-radius:9px;color:#354052;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(34,48,70,.13);
+ text-shadow:0 1px 0 rgba(255,255,255,.85);
+ transition:filter .18s,box-shadow .18s,transform .12s;
+}
+button:not(.activity-button):not(.mode-switch button):hover{filter:brightness(1.035)}
+button:not(.activity-button):not(.mode-switch button):active{opacity:1;transform:translateY(1px);box-shadow:inset 0 2px 5px #0002}
+button.primary:not(.activity-button){background:linear-gradient(to bottom,#a7d8ff 0%,#56a8ef 46%,#1678d2 51%,#348ce0 100%);border-color:#2876b6;color:#fff;text-shadow:0 -1px 1px #16548c;box-shadow:inset 0 1px 0 #ffffffa8,0 1px 3px #174e8138}
+button.stop:not(.activity-button){background:linear-gradient(to bottom,#fff 0%,#f5eeee 47%,#e6d9da 51%,#f8eeee 100%);border-color:#d3b9bc;color:#a4474f}
+.mode-switch{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:0;padding:3px;background:linear-gradient(#d7dbe2,#f0f1f4);border:1px solid #c4c9d2;border-radius:10px;isolation:isolate;box-shadow:inset 0 1px 3px #00000017}
+.mode-switch .mode-thumb{position:absolute;z-index:-1;top:3px;bottom:3px;left:3px;width:calc((100% - 6px)/2);border-radius:7px;background:linear-gradient(#fff,#e8edf4 48%,#dce3ed 51%,#f7f9fc);border:1px solid #b5bfcc;box-shadow:0 1px 3px #0002,inset 0 1px 0 #fff;transform:translateX(0);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.mode-switch:has(#toggleShift.active) .mode-thumb{transform:translateX(100%)}
+.mode-switch button,.mode-switch button.active{position:relative;background:transparent!important;box-shadow:none!important;border:0!important;border-radius:7px;color:#6c7580;text-shadow:0 1px #fff;transition:color .25s ease;transform:none!important;opacity:1!important}
+.mode-switch button.active{color:#263e58}
+@media(prefers-reduced-motion:reduce){.mode-switch .mode-thumb{transition:none}}
+
+button:disabled{pointer-events:none!important;cursor:not-allowed!important;opacity:.4!important;filter:none!important;transform:none!important}
+button:disabled:hover,button:disabled:active{filter:none!important;transform:none!important}
+#startShiftBtn{background:linear-gradient(to bottom,#a7d8ff 0%,#56a8ef 46%,#1678d2 51%,#348ce0 100%);border-color:#2876b6;color:#fff;text-shadow:0 -1px 1px #16548c;box-shadow:inset 0 1px 0 #ffffffa8,0 1px 3px #174e8138}
+</style>
   <script src="https://newhs.cc/words.js"></script>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <div class="row" style="justify-content:space-between;">
-        <div>
-          <h1>Newhouse Point</h1>
-          <p>Do small, wonderful things with Newhouse Point.</p>
-        </div>
-        <span class="pill" id="modePill">Mode: calm</span>
-      </div>
-
-      <div class="kpi">
-        <div class="box">
-          <div class="small">Time left in this session</div>
-          <div class="big mono" id="timeLeft">00:00</div>
-        </div>
-        <div class="box">
-          <div class="small">Your stop rule</div>
-          <div class="big" id="stopRule">Stop when timer ends</div>
-        </div>
-        <div class="box">
-          <div class="small">Current activity</div>
-          <div class="big" id="activityName">Pick one</div>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="row">
-        <label class="hint">Session length</label>
-        <select id="sessionMins">
-          <option value="1">1 min</option>
-          <option value="2">2 min</option>
-          <option value="3">3 min</option>
-          <option value="5" selected>5 min</option>
-          <option value="10">10 min</option>
-          <option value="15">15 min</option>
-        </select>
-
-        <label class="hint">Stop rule</label>
-        <select id="stopRuleSel">
-          <option value="timer" selected>Stop when timer ends</option>
-          <option value="oneTask">Stop after 1 activity</option>
-          <option value="twoTasks">Stop after 2 activities</option>
-          <option value="threeTasks">Stop after 3 activities</option>
-        </select>
-
-        <button class="primary" id="startBtn">Start</button>
-        <button id="pauseBtn">Pause</button>
-        <button class="stop" id="stopBtn">Stop now</button>
-
-        <span class="pill" id="statusPill">Ready</span>
-      </div>
-    </div>
-
-    <div class="grid" style="margin-top:14px;">
-      <div class="card">
-        <div class="activity-title">
-          <h2 style="margin:0;font-size:16px;">Activities</h2>
-          <span class="pill"><span id="doneCount">0</span>/<span id="limitCount">∞</span> done</span>
-        </div>
-        <p class="hint">Pick one. The goal is to pass time gently.</p>
-
-        <div id="activityButtons" class="row" style="margin-top:8px;">
-          <button data-act="breath">Box breathing (2 min)</button>
-          <button data-act="write">Boredom journal (3 min)</button>
-          <button data-act="logic">Tiny logic (3 min)</button>
-          <button data-act="tidy">Micro tidy (2 min)</button>
-          <button data-act="plan">One-step plan (1 min)</button>
-          <button data-act="jamalese">Jamalese (3 min)</button>
-        </div>
-
-        <div class="divider"></div>
-
-        <div id="panel_breath" class="panel hidden">
-          <p><b>Box breathing:</b> inhale 4 → hold 4 → exhale 4 → hold 4. Repeat calmly.</p>
-          <div class="row">
-            <button id="breathStart" class="primary">Start 2-minute guide</button>
-            <span class="pill mono" id="breathPhase">idle</span>
-            <span class="pill mono" id="breathTimer">02:00</span>
-          </div>
-          <p class="hint" id="breathHint">Tip: keep shoulders relaxed, breathe quietly.</p>
-        </div>
-
-        <div id="panel_write" class="panel hidden">
-          <p><b>Boredom journal:</b> write on and on.</p>
-          <textarea id="journal" placeholder="What am I avoiding? What would make the next few minutes slightly better? One kind thing I can do for future-me? Write down anything..."></textarea>
-          <div class="row">
-            <button id="saveJournal">Save locally</button>
-            <button id="loadJournal">Load</button>
-            <span class="pill" id="journalStatus">Not saved</span>
-          </div>
-        </div>
-
-        <div id="panel_logic" class="panel hidden">
-          <p><b>Tiny logic:</b> answer slowly. No scoring.</p>
-          <p id="logicQ" class="mono" style="margin-top:10px;"></p>
-          <div class="row">
-            <input id="logicA" placeholder="your answer" style="flex:1; min-width:220px;" />
-            <button id="logicReveal">Reveal explanation</button>
-          </div>
-          <div id="logicExplain" class="hint" style="margin-top:10px;"></div>
-          <div class="row" style="margin-top:10px;">
-            <button id="logicNext">Another one</button>
-          </div>
-        </div>
-
-        <div id="panel_tidy" class="panel hidden">
-          <p><b>Micro tidy:</b> choose one tiny area and reset it.</p>
-          <div class="row">
-            <button class="primary" id="tidyPick">Give me an area</button>
-            <span class="pill" id="tidyArea">—</span>
-          </div>
-          <div class="divider"></div>
-          <p class="hint">Come back when done.</p>
-        </div>
-
-        <div id="panel_plan" class="panel hidden">
-          <p><b>One-step plan:</b> pick one thing you’ll do after this session ends.</p>
-          <div class="row">
-            <input id="planInput" placeholder="Example: do homework or something" style="flex:1; min-width:220px;" />
-            <button id="planSave">Save</button>
-          </div>
-          <p class="hint">Keep it small. The point is to transition out of boredom.</p>
-          <div class="pill" id="planOut" style="margin-top:10px;">Saved plan: —</div>
-        </div>
-
-        <div id="panel_jamalese" class="panel hidden">
-          <p><b>🌍 Jamalese Corner</b></p>
-
-          <p>
-            <b>Word of the Day:</b>
-            <span id="wotdWord">—</span> —
-            <span id="wotdMeaning">—</span>
-          </p>
-
-          <div class="divider"></div>
-
-          <p><b>Guess this Jamalese word:</b></p>
-          <h3 id="guessWord">—</h3>
-
-          <div id="guessChoices" class="row"></div>
-
-          <p class="hint" id="guessResult"></p>
-          <p class="hint">Guesses this session: <span id="jamCount">0</span>/10</p>
-
-          <button id="nextJamalese">Generate question</button>
-        </div>
-
-        <!-- SHIFT PANEL -->
-        <div id="panel_shift" class="panel hidden">
-          <h2>⇧ Shift Mode</h2>
-          <p class="hint">A short guided mode to shift your brain out of cravings and into action.</p>
-
-          <button id="startShiftBtn" class="primary">Start Shift Mode</button>
-
-          <div id="shiftQuestion" class="hidden">
-            <p class="hint">Are you able to move right now?</p>
-            <button id="shiftMoveYes">I can move</button>
-            <button id="shiftMoveNo">I must stay still</button>
-          </div>
-
-          <div id="shiftTaskBox" class="hidden">
-            <p class="big" id="shiftTaskText">—</p>
-
-            <textarea id="shiftInput" class="hidden" placeholder="Type here..."></textarea>
-
-            <div class="row">
-              <button id="shiftDoneBtn">Done</button>
-              <button id="shiftNextPhysicalBtn" class="hidden">Another physical</button>
-              <button id="shiftGoNextBtn" class="hidden">Go next</button>
-            </div>
-
-            <p class="hint mono" id="shiftTimerText">00:00</p>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="card">
-        <h2 style="margin:0;font-size:16px;">Infobar</h2>
-        <p class="hint">
-          This page intentionally avoids: random rewards, infinite feeds, streaks, flashy animations, points. Pass the time without dopamine.
-        </p>
-
-        <div class="divider"></div>
-        <button id="toggleShift">Shift</button>
-        <button id="toggleCalm">Calm</button>
-        <button id="toggleUltra">Minimal</button>
-        <div class="divider"></div>
-
-        <h3 style="margin:0 0 8px;font-size:14px;">Saved notes</h3>
-        <p class="hint mono" id="savedPreview">—</p>
-        <p class="hint mono" id="savedJour">—</p>
-
-        <div class="divider"></div>
-        <p class="hint">
-          What does “bored” usually means for you? (tired? anxious? procrastinating?)
-        </p>
-        <div class="divider"></div>
-        <p class="hint">Have you eaten your musket?</p>
-      </div>
-    </div>
-  </div>
-
-  <div id="overlay" class="overlay hidden" role="dialog" aria-modal="true">
-    <div class="modal">
-      <h2>Session ended. Stop here.</h2>
-      <p class="hint">
-        Don’t start another one immediately. Stand up, drink water, or do your saved plan.
-      </p>
-      <ul>
-        <li>AI Tips: If you still feel bored, switch environments, rooms, tasks.</li>
-        <li>If you’re tired, sleep is recommended.</li>
-      </ul>
-      <div class="row" style="margin-top:14px;">
-        <button id="closeOverlay" class="stop">Close</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="startPopup" class="overlay hidden">
-    <div class="modal">
-      <h2>🌿 Start a session first</h2>
-      <p class="hint">Choose a time length and press start first to do a task.</p>
-      <div class="row" style="margin-top:14px;">
-        <button id="closeStartPopup" class="stop">Close</button>
-      </div>
-    </div>
-  </div>
-
-  <p id="safety" style="margin-left: 60px; margin-top:0; margin-bottom:5px;">Click for Minimal → Calm</p>
-  <p style="margin-left: 60px; margin-top:0; margin-bottom:30px" class="hint">© 2026 Made by Newhouse Labs</p>
-
+<main class="wrap">
+ <header class="topline"><div><div class="brand">Newhouse Point v1.5</div><div class="subtitle">A little space to reset.</div></div><div class="mode-switch"><span class="mode-thumb" aria-hidden="true"></span><button id="toggleCalm" class="active">Calm</button><button id="toggleShift">Shift</button></div></header>
+ <section class="hero"><div class="hidden" id="modePill" aria-hidden="true">Calm session</div><div class="timer mono" id="timeLeft">05:00</div><div class="hidden" id="statusPill" aria-hidden="true">Ready to begin</div></section>
+ <section><div class="session-config"><div class="field"><label for="sessionMins">Duration</label><select id="sessionMins"><option value="1">1 minute</option><option value="2">2 minutes</option><option value="3">3 minutes</option><option value="5" selected>5 minutes</option><option value="10">10 minutes</option><option value="15">15 minutes</option></select></div><div class="field"><label for="stopRuleSel">Finish after</label><select id="stopRuleSel"><option value="timer">Timer ends</option><option value="oneTask">1 activity</option><option value="twoTasks">2 activities</option><option value="threeTasks">3 activities</option></select></div></div><div class="controls"><button class="primary" id="startBtn">Start session</button><button class="secondary" id="pauseBtn" disabled>Pause</button><button class="stop" id="stopBtn">End</button></div></section>
+ <section id="calmArea"><div class="section-head">Choose an activity</div><div id="activityButtons" class="sheet">
+ <button class="activity-button" data-act="breath"><span class="symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/></svg></span>Box breathing<span class="chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></span></button>
+ <button class="activity-button" data-act="write"><span class="symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h10l4 4v12H5z"/><path d="M15 4v4h4M8 12h8M8 16h6"/></svg></span>Boredom journal<span class="chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></span></button>
+ <button class="activity-button" data-act="logic"><span class="symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 21 12 12 21 3 12Z"/><path d="M9 12h6M12 9v6"/></svg></span>Tiny logic<span class="chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></span></button>
+ <button class="activity-button" data-act="tidy"><span class="symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14M8 7V5h8v2M7 7l1 13h8l1-13M10 10v7M14 10v7"/></svg></span>Micro tidy<span class="chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></span></button>
+ <button class="activity-button" data-act="plan"><span class="symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8 12 3 3 5-6"/></svg></span>One-step plan<span class="chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></span></button>
+ <button class="activity-button" data-act="jamalese"><span class="symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18"/></svg></span>Jamalese<span class="chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></span></button>
+ </div><div class="activity-meta"><span id="doneCount">0</span> / <span id="limitCount">∞</span> activities completed <span class="hidden" id="activityName">Pick one</span><span class="hidden" id="stopRule">Stop when timer ends</span></div>
+ <div id="panel_breath" class="panel hidden"><h2>Box breathing</h2><p>Inhale for 4 seconds, hold for 4, exhale for 4, then hold for 4. Repeat gently.</p><div class="row"><button class="primary" id="breathStart">Begin guide</button><span class="pill" id="breathPhase">idle</span><span class="pill mono" id="breathTimer">02:00</span></div><p class="hint" id="breathHint" style="margin-top:15px">Keep your shoulders relaxed.</p></div>
+ <div id="panel_write" class="panel hidden"><h2>Boredom journal</h2><p>Write whatever comes to mind.</p><textarea id="journal" placeholder="What's on your mind?"></textarea><div class="row"><button class="primary" id="saveJournal">Save locally</button><button id="loadJournal">Load</button><span class="pill" id="journalStatus">Not saved</span></div></div>
+ <div id="panel_logic" class="panel hidden"><h2>Tiny logic</h2><p>No scores, no rush.</p><p id="logicQ"></p><div class="row"><input id="logicA" placeholder="Your answer"><button id="logicReveal">Reveal answer</button></div><p id="logicExplain" class="hint" style="margin-top:15px"></p><button id="logicNext">Another question</button></div>
+ <div id="panel_tidy" class="panel hidden"><h2>Micro tidy</h2><p>One small area, one small reset.</p><div class="row"><button class="primary" id="tidyPick">Suggest something</button><span class="pill" id="tidyArea">—</span></div></div>
+ <div id="panel_plan" class="panel hidden"><h2>One-step plan</h2><p>What's one thing you'll do after this session?</p><div class="row"><input id="planInput" placeholder="My next small step"><button class="primary" id="planSave">Save</button></div><p class="hint" id="planOut" style="margin-top:15px">Saved plan: —</p></div>
+ <div id="panel_jamalese" class="panel hidden"><h2>Jamalese</h2><p>Word of the day: <strong id="wotdWord">—</strong> — <span id="wotdMeaning">—</span></p><div class="divider"></div><p>What does this word mean?</p><h2 id="guessWord">—</h2><div id="guessChoices" class="row"></div><p id="guessResult" class="hint" style="margin-top:15px"></p><p class="hint">Guesses: <span id="jamCount">0</span>/10</p><button id="nextJamalese">Next word</button></div>
+ </section>
+ <section id="panel_shift" class="panel shift-panel hidden"><h2>Shift</h2><p>A few simple tasks to help you change gears.</p><button class="primary" id="startShiftBtn">Begin Shift</button><div id="shiftQuestion" class="hidden"><p>Can you move around right now?</p><div class="row"><button id="shiftMoveYes">Yes</button><button id="shiftMoveNo">Not right now</button></div></div><div id="shiftTaskBox" class="hidden"><p class="big" id="shiftTaskText">—</p><textarea id="shiftInput" class="hidden" placeholder="Type here..."></textarea><div class="row"><button class="primary" id="shiftDoneBtn">Done</button><button id="shiftNextPhysicalBtn" class="hidden">Another</button><button id="shiftGoNextBtn" class="hidden">Continue</button></div><p class="hint mono" id="shiftTimerText" style="margin-top:15px">00:00</p></div></section>
+ <section class="saved-section"><details><summary>Saved notes</summary><p id="savedPreview">—</p><p id="savedJour">—</p></details></section>
+ <footer class="footer">© 2026 Newhouse Labs</footer>
+ <button id="toggleUltra" class="hidden">Minimal</button><span id="safety" class="hidden"></span>
+</main>
+<div id="overlay" class="overlay hidden" role="dialog" aria-modal="true"><div class="modal"><h2>Session complete.</h2><p>That's enough for now. Take a moment before moving on.</p><div class="row"><button class="primary" id="closeOverlay">Done</button></div></div></div>
+<div id="startPopup" class="overlay hidden" role="dialog" aria-modal="true"><div class="modal"><h2>Start a session first</h2><p>Choose your duration, then tap Start session.</p><div class="row"><button class="primary" id="closeStartPopup">Got it</button></div></div></div>
   <script>
     // --------- Small helpers ----------
     const $ = (id) => document.getElementById(id);
@@ -319,14 +87,14 @@ button:disabled {
       return `${m}:${s}`;
     }
     function setStatus(text){ $("statusPill").textContent = text; }
-    function setModePill(text){ $("modePill").textContent = `Mode: ${text}`; }
+    function setModePill(text){ $("modePill").textContent = text === "shift" ? "Shift session" : "Calm session"; }
 
     // Preserve Calm session options so Shift can temporarily replace them
     const calmSessionOptionsHTML = $("sessionMins").innerHTML;
 
     // --------- Calm state ----------
     let running = false;
-    let remainingMs = 10 * 60 * 1000;
+    let remainingMs = 5 * 60 * 1000;
     let tick = null;
 
     let stopMode = "timer";
@@ -416,6 +184,7 @@ button:disabled {
     function showPanel(name){
       for (const el of document.querySelectorAll(".panel")) el.classList.add("hidden");
       $("panel_"+name).classList.remove("hidden");
+      document.querySelectorAll("[data-act]").forEach(b=>b.classList.toggle("selected",b.dataset.act===name));
       currentAct = name;
       $("activityName").textContent = ({
         breath:"Box breathing",
@@ -446,6 +215,7 @@ button:disabled {
       running = false;
       clearInterval(tick); tick = null;
       setStatus("Stopped");
+      $("pauseBtn").disabled = true;
       $("pauseBtn").textContent = "Pause";
 
       // breath
@@ -496,6 +266,7 @@ button:disabled {
 
       running = true;
       setStatus("Running");
+      $("pauseBtn").disabled = false;
       clearInterval(tick);
       tick = setInterval(()=>{
         remainingMs -= 1000;
@@ -507,13 +278,14 @@ button:disabled {
     }
 
     function togglePause(){
-      if (!running) return;
+      if (!running || $("pauseBtn").disabled || mode !== "calm") return;
       if (tick){
         clearInterval(tick); tick = null;
         setStatus("Paused");
         $("pauseBtn").textContent = "Resume";
       } else {
         setStatus("Running");
+      $("pauseBtn").disabled = false;
         $("pauseBtn").textContent = "Pause";
         tick = setInterval(()=>{
           remainingMs -= 1000;
@@ -709,17 +481,23 @@ button:disabled {
       setModePill("shift");
 
       // hide calm activity buttons
-      $("activityButtons").classList.add("hidden");
+      $("calmArea").classList.add("hidden");
+      $("toggleShift").classList.add("active");
+      $("toggleCalm").classList.remove("active");
+      $("startBtn").classList.add("hidden");
+      $("pauseBtn").classList.add("hidden");
 
       // show shift panel
       showPanel("shift");
 
       // disable stop rules in shift
       $("stopRuleSel").disabled = true;
+      $("stopRuleSel").parentElement.classList.add("hidden");
 
       // force session mins to 4/8/10 in shift
       $("sessionMins").innerHTML = `
         <option value="4" selected>4 min</option>
+        <option value="6">6 min</option>
         <option value="8">8 min</option>
         <option value="10">10 min</option>
       `;
@@ -727,6 +505,8 @@ button:disabled {
       // reset shift UI
       stopShiftInternal();
       $("startShiftBtn").classList.remove("hidden");
+      $("timeLeft").textContent = "04:00";
+      setStatus("Ready to begin");
 $("toggleUltra").disabled = true;
     }
 
@@ -735,8 +515,14 @@ $("toggleUltra").disabled = true;
       mode = "calm";
       setModePill("calm");
 
-      $("activityButtons").classList.remove("hidden");
+      $("calmArea").classList.remove("hidden");
+      $("panel_shift").classList.add("hidden");
+      $("toggleCalm").classList.add("active");
+      $("toggleShift").classList.remove("active");
+      $("startBtn").classList.remove("hidden");
+      $("pauseBtn").classList.remove("hidden");
       $("stopRuleSel").disabled = false;
+      $("stopRuleSel").parentElement.classList.remove("hidden");
 
       // restore calm session options
       $("sessionMins").innerHTML = calmSessionOptionsHTML;
@@ -745,6 +531,7 @@ $("toggleUltra").disabled = true;
       showPanel("logic"); // or hide all panels; logic is just a safe default
       for (const el of document.querySelectorAll(".panel")) el.classList.add("hidden");
       $("activityName").textContent = "Pick one";
+      $("timeLeft").textContent = fmt(Number($("sessionMins").value)*60000);
 $("toggleUltra").disabled = false;
     }
 
@@ -779,6 +566,7 @@ $("toggleUltra").disabled = false;
       const elapsed = Math.floor((Date.now() - shiftStartTime)/1000);
       const left = shiftDurationSec - elapsed;
       $("shiftTimerText").textContent = fmt(left*1000);
+      $("timeLeft").textContent = fmt(left*1000);
 
       if (left <= 0){
         // end shift -> end session overlay
@@ -817,6 +605,7 @@ $("toggleUltra").disabled = false;
       shiftDurationSec = mins * 60;
 
       shiftRunning = true;
+      setStatus("Running");
       shiftStartTime = Date.now();
 
       // decide starting phase
@@ -925,6 +714,7 @@ $("toggleUltra").disabled = false;
     });
     $("safety").addEventListener("click", ()=> setUltra(false));
     $("toggleUltra").addEventListener("click", ()=> setUltra(true));
+    $("sessionMins").addEventListener("change", ()=>{if(!running && !shiftRunning) $("timeLeft").textContent=fmt(Number($("sessionMins").value)*60000);});
 
     $("nextJamalese").addEventListener("click", loadJamaleseGuess);
 

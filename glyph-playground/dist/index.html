@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Continue your words with Glyph. Private, on-device text completion.">
+    <title>Glyph Playground</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="ui.css?v=1.0.1">
+</head>
+
+<body>
+    <header>
+        <div class="identity"><a class="brand" href="./">Glyph <span>Playground</span></a><!--<span
+                class="version">1.0</span>--></div>
+    </header>
+    <main>
+        <div class="workspace">
+            <section class="paper">
+                <div class="paperbar"><span> </span>
+                    <div><button id="copy" class="quiet">Copy text</button><button id="clear"
+                            class="quiet">Clear</button></div>
+                </div>
+                <label class="sr" for="editor">Your text and generated continuation</label>
+                <div class="editorwrap">
+                    <div id="highlight" aria-hidden="true"></div><textarea id="editor" spellcheck="false"
+                        placeholder="Write the beginning of something…"></textarea>
+                </div>
+                <div class="legend"><span>● Your words</span><span class="generated">● Glyph continuation</span><span
+                        id="editHint">Edit anywhere to start a new continuation.</span></div>
+                <div class="actions"><button id="generate" class="primary" disabled>Generate ↗</button><button id="stop"
+                        disabled>Stop</button><button id="continue" disabled>Continue</button><button id="regenerate"
+                        disabled>Regenerate</button></div>
+            </section>
+            <aside>
+                <h2>glyph-1x-plus</h2>
+                <div class="connection"><span id="state">Loading</span><progress id="progress"></progress>
+                    <p id="status" role="status" aria-live="polite">Starting playground…</p>
+                </div>
+                <p id="modelInfo" class="small"></p><button id="retry">Reload published model</button>
+                <div class="divider"></div>
+                <div class="eyebrow">GENERATION</div><label>Length <select id="length">
+                        <option value="32">32 tokens</option>
+                        <option value="64">64 tokens</option>
+                        <option value="128" selected>128 tokens</option>
+                        <option value="256">256 tokens</option>
+                        <option value="512">512 tokens</option>
+                        <option value="1024">1,024 tokens</option>
+                    </select></label><label>Temperature <input id="temperature" type="number" min="0.1" max="2"
+                        step="0.05" value="0.75"></label><label>Candidates <select id="candidates">
+                        <option>1</option>
+                        <option selected>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select></label>
+                <p class="small">More candidates take more time.</p>
+                <details>
+                    <summary>Advanced settings</summary><label>Repetition penalty <input id="repeat" type="number"
+                            min="1" max="3" step="0.05" value="1.2"></label><label>Repeated n-gram <select id="gram">
+                            <option>2</option>
+                            <option selected>3</option>
+                            <option>4</option>
+                        </select></label><label>Context overflow <select id="mode">
+                            <option value="fast">Half-window (faster)</option>
+                            <option value="exact">Full-window (accurate)</option>
+                        </select></label>
+                    <p class="small"></p><label><input id="file" type="file"
+                            accept=".lrm"></label>
+                    <p class="small"></p>
+                    <pre id="scores"></pre>
+                </details>
+            </aside>
+        </div>
+        <footer><span id="stats">0 tokens · 0.0s</span><span></span>
+        </footer>
+        <p class="footnote">Glyph is a text model developed by Newhouse. It is weaker than most popular AI models today, and made as an experiment.</p>
+    </main>
+    <script src="reveal.js?v=1.0.3" defer></script>
+    <script src="app.js?v=1.0.5" defer></script>
+</body>
+
+</html>
