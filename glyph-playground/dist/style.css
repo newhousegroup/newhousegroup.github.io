@@ -174,7 +174,7 @@ button:disabled {
 
 textarea,
 #highlight {
-    font: 18px/1.85 Georgia, "Times New Roman", serif;
+    font: 18px/1.85 Helvetica, sans-serif;
     letter-spacing: 0;
     white-space: pre-wrap;
     overflow-wrap: break-word;
