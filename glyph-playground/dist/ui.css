@@ -1,4 +1,4 @@
-.identity{display:flex;align-items:center;gap:14px}
+.identity{display:flex;align-items:center;gap:0px}
 .identity .version{font-size:11px;letter-spacing:0;padding:4px 8px}
 .waiting-dots{display:inline-block;min-width:1.3em;background:transparent!important;color:#658c54;letter-spacing:2px}
 main{padding-top:12px}
