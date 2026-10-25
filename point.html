@@ -50,6 +50,7 @@ button:disabled:hover,button:disabled:active{filter:none!important;transform:non
 .sudoku-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:min(100%,296px);margin:16px auto;gap:0;border:2px solid #697788;border-radius:6px;overflow:hidden}
 .sudoku-cell{width:100%;height:62px;border:0!important;border-right:1px solid #c5cbd2!important;border-bottom:1px solid #c5cbd2!important;border-radius:0!important;text-align:center;font-size:23px!important;font-weight:600;padding:0!important;background:#fff!important;color:#245b99!important;box-shadow:none!important;appearance:none}
 .sudoku-cell:nth-child(2n){border-right:2px solid #697788!important}.sudoku-cell:nth-child(4n){border-right:0!important}.sudoku-cell:nth-child(n+5):nth-child(-n+8){border-bottom:2px solid #697788!important}.sudoku-cell:nth-child(n+13){border-bottom:0!important}.sudoku-cell.given{background:#eef1f5!important;color:#29313a!important}.sudoku-cell.conflict{background:#fff0f0!important;color:#b23c3c!important}.sudoku-cell:focus{outline:2px solid #2675d9;outline-offset:-2px}.chain-history{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}.chain-history span{background:#f1f4f8;padding:7px 10px;border-radius:8px;font-size:13px}.wonder-question{font-size:20px!important;color:#2a303a!important;line-height:1.45!important}
+
 </style>
   <script src="https://newhs.cc/words.js"></script>
 </head>
@@ -67,9 +68,9 @@ button:disabled:hover,button:disabled:active{filter:none!important;transform:non
  <button class="activity-button" data-act="jamalese"><span class="symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18"/></svg></span>Jamalese<span class="chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></span></button>
  <button class="activity-button" data-act="bible"><span class="symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c-2.5-1.5-5-1.5-8-1v15c3-.5 5.5-.5 8 1 2.5-1.5 5-1.5 8-1V4c-3-.5-5.5-.5-8 1Z"/><path d="M12 5v15"/></svg></span>Repeat and Reflect<span class="chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></span></button>
 
- <button class="activity-button" data-act="sudoku"><span class="symbol" aria-hidden="true">▦</span>Mini Sudoku<span class="chevron" aria-hidden="true">›</span></button>
- <button class="activity-button" data-act="chain"><span class="symbol" aria-hidden="true">↗</span>Word Chain<span class="chevron" aria-hidden="true">›</span></button>
- <button class="activity-button" data-act="wonder"><span class="symbol" aria-hidden="true">✧</span>Wonder<span class="chevron" aria-hidden="true">›</span></button>
+ <button class="activity-button" data-act="sudoku"><span class="symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18M3 12h18M7.5 6.5v2M16.5 15.5v2M15 7.5h3M6 16.5h3"/></svg></span>Mini Sudoku<span class="chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></span></button>
+ <button class="activity-button" data-act="chain"><span class="symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13.5l4-4"/><path d="M8.5 16H7a4 4 0 0 1 0-8h3M15.5 8H17a4 4 0 0 1 0 8h-3"/></svg></span>Word Chain<span class="chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></span></button>
+ <button class="activity-button" data-act="wonder"><span class="symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M8.5 15.5C7 14.4 6 12.7 6 10.5a6 6 0 1 1 12 0c0 2.2-1 3.9-2.5 5L15 17H9z"/><path d="M12 7v3M10.5 11.5h3"/></svg></span>Wonder<span class="chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></span></button>
  </div><div class="activity-meta"><span id="doneCount">0</span> / <span id="limitCount">∞</span> activities completed <span class="hidden" id="activityName">Pick one</span><span class="hidden" id="stopRule">Stop when timer ends</span></div>
  <div id="panel_breath" class="panel hidden"><h2>Box breathing</h2><p>Inhale for 4 seconds, hold for 4, exhale for 4, then hold for 4. Repeat gently.</p><div class="row"><button class="primary" id="breathStart">Begin guide</button><span class="pill" id="breathPhase">idle</span><span class="pill mono" id="breathTimer">02:00</span></div><p class="hint" id="breathHint" style="margin-top:15px">Keep your shoulders relaxed.</p></div>
  <div id="panel_write" class="panel hidden"><h2>Boredom journal</h2><p>Write whatever comes to mind.</p><textarea id="journal" placeholder="What's on your mind?"></textarea><div class="row"><button class="primary" id="saveJournal">Save locally</button><button id="loadJournal">Load</button><span class="pill" id="journalStatus">Not saved</span></div></div>
@@ -106,7 +107,7 @@ button:disabled:hover,button:disabled:active{filter:none!important;transform:non
 </div></div><p class="hint mono" id="shiftTimerText" style="margin-top:15px">00:00</p></div></section>
  <section class="saved-section"><details><summary>Saved notes</summary><p id="savedPreview">—</p><p id="savedJour">—</p><div id="savedWonder"></div></details></section>
  <footer class="footer">© 2026 Newhouse Labs</footer>
- <button id="toggleUltra" class="hidden">Minimal</button><span id="safety" class="hidden"></span>
+ 
 </main>
 <div id="overlay" class="overlay hidden" role="dialog" aria-modal="true"><div class="modal"><h2>Session complete.</h2><p>That's enough for now. Take a moment before moving on.</p><div class="row"><button class="primary" id="closeOverlay">Done</button></div></div></div>
 <div id="startPopup" class="overlay hidden" role="dialog" aria-modal="true"><div class="modal"><h2>Start a session first</h2><p>Choose your duration, then tap Start session.</p><div class="row"><button class="primary" id="closeStartPopup">Got it</button></div></div></div>
@@ -508,29 +509,6 @@ button:disabled:hover,button:disabled:active{filter:none!important;transform:non
       $("tidyArea").textContent = tidyAreas[idx];
     }
 
-    // --------- Minimal (Ultra) ----------
-    function setUltra(on){
-      if (on){
-        setModePill("ultra-minimal");
-        document.querySelectorAll(".grid .card:nth-child(2), .kpi .box:nth-child(2), .kpi .box:nth-child(3)")
-          .forEach(el => el.classList.add("hidden"));
-        document.querySelectorAll(".row").forEach((el,i)=>{
-          if (i > 0) el.classList.add("hidden");
-        });
-        $("toggleCalm").classList.remove("hidden");
-      } else {
-        // don't let calm button accidentally exit shift; calm button only resets ultra/minimal in calm mode
-        if (mode === "shift") return;
-
-        setModePill("calm");
-        document.querySelectorAll(".grid .card:nth-child(2), .kpi .box:nth-child(2), .kpi .box:nth-child(3)")
-          .forEach(el => el.classList.remove("hidden"));
-        document.querySelectorAll(".row").forEach(el=> el.classList.remove("hidden"));
-        for (const el of document.querySelectorAll(".panel")) el.classList.add("hidden");
-        if (currentAct) $("panel_"+currentAct).classList.remove("hidden");
-      }
-    }
-
     // --------- Start-session popup ----------
     function showStartSessionPopup(){
       $("startPopup").classList.remove("hidden");
@@ -595,6 +573,7 @@ button:disabled:hover,button:disabled:active{filter:none!important;transform:non
 
     // --------- SHIFT MODE (correct logic) ----------
     function enterShiftMode(){
+      stopEverything();
       mode = "shift";
       setModePill("shift");
 
@@ -625,7 +604,7 @@ button:disabled:hover,button:disabled:active{filter:none!important;transform:non
       $("startShiftBtn").classList.remove("hidden");
       $("timeLeft").textContent = "04:00";
       setStatus("Ready to begin");
-$("toggleUltra").disabled = true;
+
     }
 
     function exitShiftMode(){
@@ -650,7 +629,7 @@ $("toggleUltra").disabled = true;
       for (const el of document.querySelectorAll(".panel")) el.classList.add("hidden");
       $("activityName").textContent = "Pick one";
       $("timeLeft").textContent = fmt(Number($("sessionMins").value)*60000);
-$("toggleUltra").disabled = false;
+
     }
 
     function shiftPick(pool){
@@ -1122,18 +1101,11 @@ $("toggleUltra").disabled = false;
     $("planSave").addEventListener("click", savePlan);
     $("tidyPick").addEventListener("click", pickTidy);
 
-    $("toggleShift").addEventListener("click", enterShiftMode);
+    $("toggleShift").addEventListener("click", ()=>{if(mode !== "shift") enterShiftMode();});
 
-    // Calm button here is meant for minimal->calm, but also can exit shift
     $("toggleCalm").addEventListener("click", ()=>{
-      if (mode === "shift"){
-        exitShiftMode();
-      } else {
-        setUltra(false);
-      }
+      if(mode === "shift") exitShiftMode();
     });
-    $("safety").addEventListener("click", ()=> setUltra(false));
-    $("toggleUltra").addEventListener("click", ()=> setUltra(true));
     $("sessionMins").addEventListener("change", ()=>{if(!running && !shiftRunning) $("timeLeft").textContent=fmt(Number($("sessionMins").value)*60000);});
 
     $("nextJamalese").addEventListener("click", loadJamaleseGuess);
