@@ -45,12 +45,17 @@ button.stop:not(.activity-button){background:linear-gradient(to bottom,#fff 0%,#
 button:disabled{pointer-events:none!important;cursor:not-allowed!important;opacity:.4!important;filter:none!important;transform:none!important}
 button:disabled:hover,button:disabled:active{filter:none!important;transform:none!important}
 #startShiftBtn{background:linear-gradient(to bottom,#a7d8ff 0%,#56a8ef 46%,#1678d2 51%,#348ce0 100%);border-color:#2876b6;color:#fff;text-shadow:0 -1px 1px #16548c;box-shadow:inset 0 1px 0 #ffffffa8,0 1px 3px #174e8138}
+
+/* Point 2.0 activities */
+.sudoku-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:min(100%,296px);margin:16px auto;gap:0;border:2px solid #697788;border-radius:6px;overflow:hidden}
+.sudoku-cell{width:100%;height:62px;border:0!important;border-right:1px solid #c5cbd2!important;border-bottom:1px solid #c5cbd2!important;border-radius:0!important;text-align:center;font-size:23px!important;font-weight:600;padding:0!important;background:#fff!important;color:#245b99!important;box-shadow:none!important;appearance:none}
+.sudoku-cell:nth-child(2n){border-right:2px solid #697788!important}.sudoku-cell:nth-child(4n){border-right:0!important}.sudoku-cell:nth-child(n+5):nth-child(-n+8){border-bottom:2px solid #697788!important}.sudoku-cell:nth-child(n+13){border-bottom:0!important}.sudoku-cell.given{background:#eef1f5!important;color:#29313a!important}.sudoku-cell.conflict{background:#fff0f0!important;color:#b23c3c!important}.sudoku-cell:focus{outline:2px solid #2675d9;outline-offset:-2px}.chain-history{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}.chain-history span{background:#f1f4f8;padding:7px 10px;border-radius:8px;font-size:13px}.wonder-question{font-size:20px!important;color:#2a303a!important;line-height:1.45!important}
 </style>
   <script src="https://newhs.cc/words.js"></script>
 </head>
 <body>
 <main class="wrap">
- <header class="topline"><div><div class="brand">Newhouse Point v1.5</div><div class="subtitle">A little space to reset.</div></div><div class="mode-switch"><span class="mode-thumb" aria-hidden="true"></span><button id="toggleCalm" class="active">Calm</button><button id="toggleShift">Shift</button></div></header>
+ <header class="topline"><div><div class="brand">Newhouse Point v2.0</div><div class="subtitle">A little space to reset.</div></div><div class="mode-switch"><span class="mode-thumb" aria-hidden="true"></span><button id="toggleCalm" class="active">Calm</button><button id="toggleShift">Shift</button></div></header>
  <section class="hero"><div class="hidden" id="modePill" aria-hidden="true">Calm session</div><div class="timer mono" id="timeLeft">05:00</div><div class="hidden" id="statusPill" aria-hidden="true">Ready to begin</div></section>
  <section><div class="session-config"><div class="field"><label for="sessionMins">Duration</label><select id="sessionMins"><option value="1">1 minute</option><option value="2">2 minutes</option><option value="3">3 minutes</option><option value="5" selected>5 minutes</option><option value="10">10 minutes</option><option value="15">15 minutes</option></select></div><div class="field"><label for="stopRuleSel">Finish after</label><select id="stopRuleSel"><option value="timer">Timer ends</option><option value="oneTask">1 activity</option><option value="twoTasks">2 activities</option><option value="threeTasks">3 activities</option></select></div></div><div class="controls"><button class="primary" id="startBtn">Start session</button><button class="secondary" id="pauseBtn" disabled>Pause</button><button class="stop" id="stopBtn">End</button></div></section>
  <section id="calmArea"><div class="section-head">Choose an activity</div><div id="activityButtons" class="sheet">
@@ -60,16 +65,46 @@ button:disabled:hover,button:disabled:active{filter:none!important;transform:non
  <button class="activity-button" data-act="tidy"><span class="symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14M8 7V5h8v2M7 7l1 13h8l1-13M10 10v7M14 10v7"/></svg></span>Micro tidy<span class="chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></span></button>
  <button class="activity-button" data-act="plan"><span class="symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8 12 3 3 5-6"/></svg></span>One-step plan<span class="chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></span></button>
  <button class="activity-button" data-act="jamalese"><span class="symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18"/></svg></span>Jamalese<span class="chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></span></button>
+ <button class="activity-button" data-act="bible"><span class="symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c-2.5-1.5-5-1.5-8-1v15c3-.5 5.5-.5 8 1 2.5-1.5 5-1.5 8-1V4c-3-.5-5.5-.5-8 1Z"/><path d="M12 5v15"/></svg></span>Repeat and Reflect<span class="chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></span></button>
+
+ <button class="activity-button" data-act="sudoku"><span class="symbol" aria-hidden="true">▦</span>Mini Sudoku<span class="chevron" aria-hidden="true">›</span></button>
+ <button class="activity-button" data-act="chain"><span class="symbol" aria-hidden="true">↗</span>Word Chain<span class="chevron" aria-hidden="true">›</span></button>
+ <button class="activity-button" data-act="wonder"><span class="symbol" aria-hidden="true">✧</span>Wonder<span class="chevron" aria-hidden="true">›</span></button>
  </div><div class="activity-meta"><span id="doneCount">0</span> / <span id="limitCount">∞</span> activities completed <span class="hidden" id="activityName">Pick one</span><span class="hidden" id="stopRule">Stop when timer ends</span></div>
  <div id="panel_breath" class="panel hidden"><h2>Box breathing</h2><p>Inhale for 4 seconds, hold for 4, exhale for 4, then hold for 4. Repeat gently.</p><div class="row"><button class="primary" id="breathStart">Begin guide</button><span class="pill" id="breathPhase">idle</span><span class="pill mono" id="breathTimer">02:00</span></div><p class="hint" id="breathHint" style="margin-top:15px">Keep your shoulders relaxed.</p></div>
  <div id="panel_write" class="panel hidden"><h2>Boredom journal</h2><p>Write whatever comes to mind.</p><textarea id="journal" placeholder="What's on your mind?"></textarea><div class="row"><button class="primary" id="saveJournal">Save locally</button><button id="loadJournal">Load</button><span class="pill" id="journalStatus">Not saved</span></div></div>
  <div id="panel_logic" class="panel hidden"><h2>Tiny logic</h2><p>No scores, no rush.</p><p id="logicQ"></p><div class="row"><input id="logicA" placeholder="Your answer"><button id="logicReveal">Reveal answer</button></div><p id="logicExplain" class="hint" style="margin-top:15px"></p><button id="logicNext">Another question</button></div>
+ <div id="panel_bible" class="panel hidden"><h2>Repeat and Reflect</h2><div class="bible-block" data-bible="calm">
+  <div class="verse-reference" data-part="reference">Matthew, Mark, Luke &amp; John</div>
+  <p class="verse-text" data-part="verse">Loading a verse…</p>
+  <div data-part="repeatStage"><p class="hint">Read carefully, then type the full verse. Punctuation, capitalization and small typos are okay.</p><textarea data-part="repeatInput" placeholder="Repeat the verse here…" spellcheck="false"></textarea><div class="row"><button class="primary" data-part="repeatSubmit">Submit repetition</button><button data-part="newVerse">Another verse</button></div></div>
+  <div data-part="reflectStage" class="hidden"><p class="hint">What stands out to you? Write anything that comes to mind.</p><textarea data-part="reflectInput" placeholder="Your reflection…"></textarea><button class="primary" data-part="reflectSubmit">Finish reflection</button></div>
+  <p class="bible-message" data-part="message" aria-live="polite"></p>
+ </div></div>
  <div id="panel_tidy" class="panel hidden"><h2>Micro tidy</h2><p>One small area, one small reset.</p><div class="row"><button class="primary" id="tidyPick">Suggest something</button><span class="pill" id="tidyArea">—</span></div></div>
  <div id="panel_plan" class="panel hidden"><h2>One-step plan</h2><p>What's one thing you'll do after this session?</p><div class="row"><input id="planInput" placeholder="My next small step"><button class="primary" id="planSave">Save</button></div><p class="hint" id="planOut" style="margin-top:15px">Saved plan: —</p></div>
  <div id="panel_jamalese" class="panel hidden"><h2>Jamalese</h2><p>Word of the day: <strong id="wotdWord">—</strong> — <span id="wotdMeaning">—</span></p><div class="divider"></div><p>What does this word mean?</p><h2 id="guessWord">—</h2><div id="guessChoices" class="row"></div><p id="guessResult" class="hint" style="margin-top:15px"></p><p class="hint">Guesses: <span id="jamCount">0</span>/10</p><button id="nextJamalese">Next word</button></div>
+
+ <div id="panel_sudoku" class="panel hidden"><h2>Mini Sudoku</h2><p>Fill each row, column, and 2×2 box with 1–4, without repeats. Just one puzzle; take your time.</p><div id="sudokuGrid" class="sudoku-grid" role="group" aria-label="Four by four Sudoku grid"></div><div class="row"><button class="primary" id="sudokuCheck">Check puzzle</button><button id="sudokuNew">New puzzle</button></div><p class="hint" id="sudokuStatus" aria-live="polite">No rush.</p></div>
+ <div id="panel_chain" class="panel hidden"><h2>Word Chain</h2><p>Each new word starts with the last letter of the previous word. Use a different word each time. Built-in offline words only.</p><div id="chainHistory" class="chain-history"></div><div class="row"><input id="chainWord" placeholder="Next word…" autocapitalize="off" autocomplete="off" spellcheck="false"><button class="primary" id="chainAdd">Add word</button></div><p class="hint" id="chainStatus" aria-live="polite">Make a chain of at least 5 new words to complete the activity.</p><div class="row"><button id="chainRestart">Start again</button><button id="chainComplete" disabled>Finish chain</button></div></div>
+ <div id="panel_wonder" class="panel hidden"><h2>Wonder</h2><p>A small question to remember, imagine, or simply think about.</p><p id="wonderQuestion" class="wonder-question"></p><textarea id="wonderAnswer" placeholder="Write a thought here, if you'd like…"></textarea><div class="row"><button class="primary" id="wonderSave">Save response</button><button id="wonderNext">Another question</button><button id="wonderThought">Thought about it</button></div><p id="wonderStatus" class="hint" aria-live="polite">You can think quietly instead of writing.</p></div>
  </section>
- <section id="panel_shift" class="panel shift-panel hidden"><h2>Shift</h2><p>A few simple tasks to help you change gears.</p><button class="primary" id="startShiftBtn">Begin Shift</button><div id="shiftQuestion" class="hidden"><p>Can you move around right now?</p><div class="row"><button id="shiftMoveYes">Yes</button><button id="shiftMoveNo">Not right now</button></div></div><div id="shiftTaskBox" class="hidden"><p class="big" id="shiftTaskText">—</p><textarea id="shiftInput" class="hidden" placeholder="Type here..."></textarea><div class="row"><button class="primary" id="shiftDoneBtn">Done</button><button id="shiftNextPhysicalBtn" class="hidden">Another</button><button id="shiftGoNextBtn" class="hidden">Continue</button></div><p class="hint mono" id="shiftTimerText" style="margin-top:15px">00:00</p></div></section>
- <section class="saved-section"><details><summary>Saved notes</summary><p id="savedPreview">—</p><p id="savedJour">—</p></details></section>
+ <section id="panel_shift" class="panel shift-panel hidden"><h2>Shift</h2><p>A few simple tasks to help you change gears.</p><button class="primary" id="startShiftBtn">Begin Shift</button><div id="shiftQuestion" class="hidden"><p>Can you move around right now?</p><div class="row"><button id="shiftMoveYes">Yes</button><button id="shiftMoveNo">Not right now</button></div></div><div id="shiftTaskBox" class="hidden"><p class="big" id="shiftTaskText">—</p><textarea id="shiftInput" class="hidden" placeholder="Type here..."></textarea><div class="row"><button class="primary" id="shiftDoneBtn">Done</button><button id="shiftNextPhysicalBtn" class="hidden">Another</button><button id="shiftGoNextBtn" class="hidden">Continue</button></div><div id="shiftBible" class="hidden"><div class="bible-block" data-bible="shift">
+  <div class="verse-reference" data-part="reference">Matthew, Mark, Luke &amp; John</div>
+  <p class="verse-text" data-part="verse">Loading a verse…</p>
+  <div class="repeat-stage" data-part="repeatStage">
+    <p class="hint">Read it carefully, then repeat the entire verse in your own typing. Punctuation, capitalization and small typos are fine.</p>
+    <textarea data-part="repeatInput" placeholder="Repeat the verse here…" spellcheck="false"></textarea>
+    <div class="row"><button data-part="repeatSubmit" class="primary">Submit repetition</button><button data-part="newVerse" type="button">Another verse</button></div>
+  </div>
+  <div class="reflection-stage hidden" data-part="reflectStage">
+    <p class="hint">What stands out to you? Write anything that comes to mind.</p>
+    <textarea data-part="reflectInput" placeholder="Your reflection…"></textarea>
+    <button data-part="reflectSubmit" class="primary">Finish reflection</button>
+  </div>
+  <p class="bible-message" data-part="message" aria-live="polite"></p>
+</div></div><p class="hint mono" id="shiftTimerText" style="margin-top:15px">00:00</p></div></section>
+ <section class="saved-section"><details><summary>Saved notes</summary><p id="savedPreview">—</p><p id="savedJour">—</p><div id="savedWonder"></div></details></section>
  <footer class="footer">© 2026 Newhouse Labs</footer>
  <button id="toggleUltra" class="hidden">Minimal</button><span id="safety" class="hidden"></span>
 </main>
@@ -118,11 +153,12 @@ button:disabled:hover,button:disabled:active{filter:none!important;transform:non
     let mode = "calm"; // calm | shift
 
     let shiftRunning = false;
-    let shiftPhase = 0; // 1 physical, 2 creative, 3 trivia
+    let shiftPhase = 0; // 1 physical, 2 creative, 3 trivia, 4 Repeat and Reflect
     let shiftStartTime = 0;
     let shiftCanMove = false;
     let shiftDurationSec = 4 * 60; // 4/8/10 min based on session select in shift
     let shiftTimerTick = null; // timeout loop
+    let shiftLastTask = null;
 
     // Typed tasks (so we can show textbox when needed)
     const shiftPhysicalPool = [
@@ -132,19 +168,62 @@ button:disabled:hover,button:disabled:active{filter:none!important;transform:non
       { type:"physical", text:"Walk to another room" },
       { type:"physical", text:"Roll your shoulders slowly (10 rolls)" }
     ];
+    const wonderPrompts = [
+      "What's a place you haven't visited in years?", "What's something ordinary you enjoyed last week?",
+      "What if every building had to be circular?", "Which small moment would you like to revisit?",
+      "What if trees could move around at night?", "What's a smell that reminds you of a particular place?",
+      "What was a surprising kindness someone showed you?", "What if all streets were rivers?",
+      "Which old hobby would you enjoy trying again?", "What if every school had a rooftop garden?",
+      "What's a conversation that taught you something?", "What if elevators could move sideways?",
+      "What ordinary object holds a memory for you?", "What if tomorrow had 25 hours?",
+      "What's a sound you associate with childhood?", "What if public libraries were open all night?",
+      "Which little tradition would you like to bring back?", "What if every room had a different season?",
+      "What's one familiar view you've never really examined?", "What if people could lend one another skills for a day?",
+      "What's a meal that reminds you of someone?", "What if windows could show any place on Earth?",
+      "When did you last change your mind about something?", "What if everyone had to invent one new word each year?",
+      "What's a day that turned out differently than expected?", "What if cities were designed around walking only?",
+      "What's something from five years ago you still use?", "What if every bridge doubled as a park?",
+      "What made a recent afternoon memorable?", "What if museums displayed tomorrow's inventions?"
+    ];
     const shiftCreativePool = [
-      { type:"write",  text:"Write one Jamalese sentence" },
-      { type:"write",  text:"Write 3 ideas (any topic)" },
-      { type:"write",  text:"Describe something you see (2 sentences)" },
-      { type:"write",  text:"Invent a new word and its meaning" },
-      { type:"draw",   text:"Draw something simple (on paper)" }
-    ];
+      "Write a sentence in Jamalese and translate it", "Invent a word and explain how it is used",
+      "Describe a familiar object as though you have never seen one", "Invent three uses for a paper clip",
+      "Write the opening line of a mystery", "Describe a place using only sounds",
+      "Imagine a city where everyone travels by elevator", "Invent a holiday and its traditions",
+      "Write a tiny story in exactly three sentences", "Explain your day from the viewpoint of your shoes",
+      "Describe a fictional new planet", "Write a conversation between a clock and a calendar",
+      "Pitch a product that solves a silly problem", "Invent a board game in two sentences",
+      "Write a letter to yourself one year from now", "Describe an ordinary moment as a movie scene",
+      "Come up with three names for a new café", "Imagine a museum of things that haven't been invented",
+      "Write a six-word story", "Describe a new room for your dream building",
+      "Imagine that gravity disappears for five seconds", "Write three questions you wish you knew the answers to",
+      "Invent a new school subject and its first lesson", "Write a micro-poem about rain",
+      "Describe your favorite meal without naming it", "Write a story that begins with a wrong-number text",
+      "Design a flag for an imaginary country", "Imagine what a library in 2200 would be like",
+      "Invent a harmless superpower with an odd limitation", "List five unusual things you could photograph today",
+      "Write two opposing viewpoints on a very small decision", "Describe an invention using only ten words",
+      "What if the sky changed color every hour?", "Give a new ending to a familiar fairy tale",
+      "Create a slogan for a totally imaginary company", "Describe a tiny change that would make your day easier"
+    ].map(text=>({type:"write",text}));
+    shiftCreativePool.push(...wonderPrompts.map(text=>({type:"write",text})));
     const shiftTriviaPool = [
-      { type:"answer", text:"Solve: 7 × 8" },
-      { type:"answer", text:"What day is 3 days after Friday?" },
-      { type:"answer", text:"What is 9 + 6 × 2?" },
-      { type:"answer", text:"Name 3 countries in Asia" }
-    ];
+      "Solve: 7 × 8", "What day is 3 days after Friday?", "What is 9 + 6 × 2?",
+      "Name 3 countries in Asia", "What is the capital of Japan?", "How many sides does a dodecagon have?",
+      "Which planet is called the Red Planet?", "What is 15% of 200?", "What is the chemical symbol for gold?",
+      "How many minutes are in 2.5 hours?", "What is the largest ocean?", "What is the square root of 144?",
+      "What is the next prime after 19?", "Which continent is the Sahara Desert in?",
+      "How many degrees are in the angles of a triangle?", "What does HTML stand for?",
+      "What is 2 to the power of 8?", "Which instrument measures temperature?",
+      "Which gas do plants absorb during photosynthesis?", "What is 1000 divided by 25?",
+      "Name two of the four Gospels", "What is the opposite of a synonym?",
+      "In binary, what is 1010 in decimal?", "What is the freezing point of pure water in °C at standard pressure?",
+      "How many edges does a cube have?", "What is the sum of the first five positive integers?",
+      "Which planet has the most prominent ring system?", "What is the capital of Thailand?",
+      "How many hours are in three days?", "Who wrote Romeo and Juliet?",
+      "Which number comes next: 2, 4, 8, 16, …?", "How many letters are in the English alphabet?",
+      "What is the atomic number of hydrogen?", "What is 17 squared?",
+      "How many seconds are there in a quarter of an hour?", "Name a language used to style web pages"
+    ].map(text=>({type:"answer",text}));
 
     // --------- Logic bank ----------
     const logicBank = [
@@ -156,6 +235,38 @@ button:disabled:hover,button:disabled:active{filter:none!important;transform:non
       { q:"If A implies B, and B is false, what can you say about A?", a:"A must be false.", e:"Contrapositive: A→B means ¬B→¬A." },
       { q:"Rearrange: 'LISTEN' to make a word meaning 'quiet'.", a:"SILENT", e:"Anagram. Just notice it." }
     ];
+    logicBank.push(
+      {q:"What comes next: 2, 6, 12, 20, 30, ?",a:"42",e:"The differences are 4, 6, 8, 10, then 12."},
+      {q:"A farmer has 17 sheep; all but 9 run away. How many remain?",a:"9",e:"All but 9 means 9 stay."},
+      {q:"If 5 machines make 5 parts in 5 minutes, how long for 100 machines to make 100 parts?",a:"5 minutes",e:"Each machine produces one part in five minutes."},
+      {q:"You overtake the runner in second place. What place are you now?",a:"Second",e:"You take the position of the person you passed."},
+      {q:"Which weighs more: 1 kg of feathers or 1 kg of stones?",a:"Neither",e:"They both have the same mass."},
+      {q:"What comes next: 1, 4, 9, 16, 25, ?",a:"36",e:"These are perfect squares."},
+      {q:"If every Z is Y and every Y is X, is every Z an X?",a:"Yes",e:"Implication is transitive."},
+      {q:"There are 12 months. How many have at least 28 days?",a:"12",e:"Every month has at least 28 days."},
+      {q:"At 3:00, what is the smaller angle between the clock hands?",a:"90 degrees",e:"The minute hand is at 12 and the hour hand is at 3."},
+      {q:"A number doubled then increased by 6 is 20. What number?",a:"7",e:"2x + 6 = 20."},
+      {q:"What is the next letter: A, C, F, J, O, ?",a:"U",e:"Letter gaps grow by one: 2, 3, 4, 5, 6."},
+      {q:"If a fair coin is flipped twice, what is the chance of two heads?",a:"1/4",e:"There are four equally likely outcomes."},
+      {q:"A drawer has red and blue socks. Minimum picks to guarantee a matching pair?",a:"3",e:"With two colors, three socks force one matching pair."},
+      {q:"If yesterday was Monday, what day is tomorrow?",a:"Wednesday",e:"Today is Tuesday."},
+      {q:"What is the missing number: 3, 6, 11, 18, 27, ?",a:"38",e:"The differences are 3, 5, 7, 9, 11."},
+      {q:"Two fathers and two sons share three apples, one each. How?",a:"Grandfather, father, son",e:"The father is both a father and a son."},
+      {q:"What comes next: 81, 27, 9, 3, ?",a:"1",e:"Divide by 3 each time."},
+      {q:"If P or Q is true, and P is false, what must be true?",a:"Q",e:"At least one has to hold."},
+      {q:"Three consecutive integers total 48. What is the middle?",a:"16",e:"Their average is the middle integer."},
+      {q:"How many squares are in a 2×2 grid, counting the big square?",a:"5",e:"Four small squares and one large square."},
+      {q:"A cube has 6 faces. How many vertices?",a:"8",e:"A cube has eight corners."},
+      {q:"What's next: 1, 1, 2, 6, 24, ?",a:"120",e:"These are factorials."},
+      {q:"A train takes 2 hours for 120 km at constant speed. How far in 30 minutes?",a:"30 km",e:"The speed is 60 km/h."},
+      {q:"What is the smallest positive integer divisible by both 6 and 8?",a:"24",e:"Their least common multiple is 24."},
+      {q:"If NOT (A AND B) is false, what are A and B?",a:"Both true",e:"A AND B must be true."},
+      {q:"Find the missing number: 4, 7, 13, 25, 49, ?",a:"97",e:"Each next term is double the previous minus one."},
+      {q:"With three identical coins, how many different total head counts can you get?",a:"4",e:"0, 1, 2 or 3 heads."},
+      {q:"What is the next number: 1, 8, 27, 64, ?",a:"125",e:"These are cubes."},
+      {q:"A rectangle has perimeter 30 and width 5. Length?",a:"10",e:"2(L+5)=30."},
+      {q:"You have a 3-liter and 5-liter jug. Can you measure exactly 1 liter?",a:"Yes",e:"Fill the 3L jug, pour into 5L, fill the 3L again and top up the 5L; 1L remains."}
+    );
     let logicIdx = 0;
 
     const tidyAreas = [
@@ -193,6 +304,7 @@ button:disabled:hover,button:disabled:active{filter:none!important;transform:non
         tidy:"Micro tidy",
         plan:"One-step plan",
         jamalese:"Jamalese exercise",
+        sudoku:"Mini Sudoku", chain:"Word Chain", wonder:"Wonder",
         shift:"Shift Mode"
       })[name] || "Pick one";
     }
@@ -205,6 +317,9 @@ button:disabled:hover,button:disabled:active{filter:none!important;transform:non
       $("shiftTaskBox").classList.add("hidden");
       $("shiftInput").classList.add("hidden");
       $("shiftInput").value = "";
+      $("shiftBible").classList.add("hidden");
+      shiftLastTask = null;
+      resetBible("shift", false);
       $("shiftNextPhysicalBtn").classList.add("hidden");
       $("shiftGoNextBtn").classList.add("hidden");
       $("shiftTimerText").textContent = "00:00";
@@ -225,6 +340,8 @@ button:disabled:hover,button:disabled:active{filter:none!important;transform:non
 
       // shift
       stopShiftInternal();
+      resetBible("calm", false);
+      resetBible("shift", false);
 
       // reset counters (your original behavior)
       tasksDone = 0;
@@ -263,6 +380,7 @@ button:disabled:hover,button:disabled:active{filter:none!important;transform:non
       jamCount = 0;
       $("jamCount").textContent = "0";
       loadJamaleseGuess();
+      resetBible("calm", true);
 
       running = true;
       setStatus("Running");
@@ -543,6 +661,8 @@ $("toggleUltra").disabled = false;
       $("shiftTaskText").textContent = task.text;
 
       // textbox rules
+      $("shiftBible").classList.add("hidden");
+      $("shiftDoneBtn").classList.remove("hidden");
       if (task.type === "write" || task.type === "answer"){
         $("shiftInput").classList.remove("hidden");
         $("shiftInput").value = "";
@@ -562,41 +682,70 @@ $("toggleUltra").disabled = false;
       }
     }
 
+    // The last 60 seconds are for Repeat and Reflect.
+    // Before that: Physical/Creative/Trivia = 20/40/40 when moving,
+    // otherwise Creative/Trivia = 50/50.
+    function shiftBoundaries(){
+      const activitySeconds = Math.max(0, shiftDurationSec - 60);
+      const physicalEnd = shiftCanMove ? Math.round(activitySeconds * .20) : 0;
+      const creativeEnd = shiftCanMove
+        ? physicalEnd + Math.round(activitySeconds * .40)
+        : Math.round(activitySeconds * .50);
+      return {physicalEnd, creativeEnd, bibleStart:activitySeconds};
+    }
+
     function shiftUpdateTimer(){
       const elapsed = Math.floor((Date.now() - shiftStartTime)/1000);
       const left = shiftDurationSec - elapsed;
       $("shiftTimerText").textContent = fmt(left*1000);
       $("timeLeft").textContent = fmt(left*1000);
 
-      if (left <= 0){
-        // end shift -> end session overlay
-        shiftRunning = false;
-        endSession();
-        return;
+      if (shiftRunning && shiftPhase !== 4){
+        const {physicalEnd, creativeEnd, bibleStart} = shiftBoundaries();
+        // Never interrupt the current Trivia/Logic question at the Bible boundary.
+        // Repeat and Reflect starts when the user presses Done on that question.
+        if (shiftPhase === 1 && elapsed >= physicalEnd){
+          shiftPhase = 2;
+          shiftNextTask();
+        } else if (shiftPhase === 2 && elapsed >= creativeEnd){
+          shiftPhase = 3;
+          shiftNextTask();
+        }
       }
-      if (shiftRunning){
-        shiftTimerTick = setTimeout(shiftUpdateTimer, 1000);
-      }
+      // If reading/reflection takes longer than a minute, allow completion.
+      if (shiftRunning) shiftTimerTick = setTimeout(shiftUpdateTimer, 1000);
+    }
+
+    function shiftBeginBible(){
+      if (!shiftRunning || shiftPhase === 4) return;
+      shiftPhase = 4;
+      $("shiftTaskText").textContent = "Repeat and Reflect";
+      $("shiftInput").classList.add("hidden");
+      $("shiftDoneBtn").classList.add("hidden");
+      $("shiftNextPhysicalBtn").classList.add("hidden");
+      $("shiftGoNextBtn").classList.add("hidden");
+      $("shiftBible").classList.remove("hidden");
+      resetBible("shift", true);
     }
 
     function shiftNextTask(){
+      if (shiftPhase === 4) return;
       const elapsed = Math.floor((Date.now() - shiftStartTime)/1000);
-
-      // Phase rules:
-      // If phase 1 (physical), tasks are controlled by buttons (another/go next).
-      // Phase 2 until 2:00 elapsed, then phase 3 for rest of time.
-      if (shiftPhase === 1){
+      const {physicalEnd, creativeEnd, bibleStart} = shiftBoundaries();
+      if (shiftPhase === 3 && elapsed >= bibleStart){ shiftBeginBible(); return; }
+      if (shiftPhase === 1 && elapsed < physicalEnd){
         shiftShowTask(shiftPick(shiftPhysicalPool), true);
         return;
       }
-
-      if (elapsed < 120){
-        shiftPhase = 2;
-        shiftShowTask(shiftPick(shiftCreativePool), false);
-      } else {
-        shiftPhase = 3;
-        shiftShowTask(shiftPick(shiftTriviaPool), false);
+      // Allow manually leaving physical early, but never going back to it.
+      shiftPhase = elapsed >= creativeEnd ? 3 : 2;
+      const pool = shiftPhase === 2 ? shiftCreativePool : shiftTriviaPool;
+      let task = shiftPick(pool);
+      if (pool.length > 1 && task.text === shiftLastTask){
+        task = pool[(pool.indexOf(task)+1)%pool.length];
       }
+      shiftLastTask = task.text;
+      shiftShowTask(task, false);
     }
 
     function startShiftRun(){
@@ -651,8 +800,13 @@ $("toggleUltra").disabled = false;
         return;
       }
 
-      // phase 2 or 3:
-      shiftNextTask();
+      // Completing the current trivia question at or after the final-minute
+      // boundary opens Repeat and Reflect. The timer never interrupts it.
+      if (shiftPhase === 3 && Math.floor((Date.now() - shiftStartTime)/1000) >= shiftBoundaries().bibleStart){
+        shiftBeginBible();
+      } else {
+        shiftNextTask();
+      }
     });
 
     $("shiftNextPhysicalBtn").addEventListener("click", ()=>{
@@ -670,6 +824,271 @@ $("toggleUltra").disabled = false;
       $("shiftGoNextBtn").classList.add("hidden");
       shiftNextTask();
     });
+
+    // --------- Repeat and Reflect (shared by Calm and Shift) ----------
+    const BIBLE_URL = "https://bible-api.com/data/web/random/MAT,MRK,LUK,JHN";
+    const bibleState = {
+      calm: {verse:null, loadedAt:0, stage:"repeat", request:0, counted:false},
+      shift: {verse:null, loadedAt:0, stage:"repeat", request:0, counted:false}
+    };
+    function biblePart(context, part){
+      return document.querySelector(`[data-bible="${context}"] [data-part="${part}"]`);
+    }
+    function normalizeVerse(str){
+      return String(str).toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[’‘]/g,"'").replace(/[^a-z0-9]+/g," ").trim().split(/\s+/).filter(Boolean);
+    }
+    function wordDistance(a,b){
+      if (a===b) return 0;
+      if (Math.abs(a.length-b.length)>2) return 3;
+      let previous = Array.from({length:b.length+1},(_,i)=>i);
+      for(let i=1;i<=a.length;i++){
+        const current=[i];
+        for(let j=1;j<=b.length;j++) current[j]=Math.min(current[j-1]+1,previous[j]+1,previous[j-1]+(a[i-1]===b[j-1]?0:1));
+        previous=current;
+      }
+      return previous[b.length];
+    }
+    function repetitionMatches(expected, typed){
+      const a=normalizeVerse(expected), b=normalizeVerse(typed);
+      if (!a.length || !b.length) return false;
+      if (b.length < Math.ceil(a.length*.84) || b.length > Math.ceil(a.length*1.20)) return false;
+      // Ordered, word-by-word alignment prevents fragments or copied filler
+      // while tolerating a small number of omissions and spelling errors.
+      let prev=Array.from({length:b.length+1},(_,i)=>i);
+      for(let i=1;i<=a.length;i++){
+        const next=[i];
+        for(let j=1;j<=b.length;j++){
+          const typo=wordDistance(a[i-1],b[j-1]);
+          const match=typo===0 ? 0 : (a[i-1].length>=5 && typo<=1 ? .28 : 1);
+          next[j]=Math.min(next[j-1]+1,prev[j]+1,prev[j-1]+match);
+        }
+        prev=next;
+      }
+      return prev[b.length] <= Math.max(.65,a.length*.13);
+    }
+    function bibleMessage(context, message){ biblePart(context,"message").textContent=message; }
+    function resetBible(context, fetchVerse){
+      const state=bibleState[context];
+      state.request++;
+      state.verse=null; state.loadedAt=0; state.stage="repeat";state.counted=false;
+      biblePart(context,"repeatStage").classList.remove("hidden");
+      biblePart(context,"reflectStage").classList.add("hidden");
+      biblePart(context,"repeatInput").value="";
+      biblePart(context,"reflectInput").value="";
+      biblePart(context,"repeatSubmit").disabled=true;
+      biblePart(context,"newVerse").disabled=true;
+      biblePart(context,"reference").textContent="Matthew, Mark, Luke & John";
+      biblePart(context,"verse").textContent=fetchVerse ? "Loading a verse…" : "Choose Repeat and Reflect to begin.";
+      bibleMessage(context,"");
+      if (fetchVerse) loadBibleVerse(context, state.request);
+    }
+    async function loadBibleVerse(context, request){
+      const state=bibleState[context];
+      try{
+        const response=await fetch(BIBLE_URL,{cache:"no-store"});
+        if(!response.ok) throw new Error("Bible service unavailable");
+        const payload=await response.json();
+        if(request!==state.request) return;
+        const verse=payload.random_verse;
+        if(!verse || !verse.text || !verse.book || !verse.chapter || !verse.verse) throw new Error("Invalid verse");
+        state.verse=verse;state.loadedAt=Date.now();
+        biblePart(context,"reference").textContent=`${verse.book} ${verse.chapter}:${verse.verse} · WEB`;
+        biblePart(context,"verse").textContent=verse.text.trim();
+        biblePart(context,"repeatSubmit").disabled=false;
+        biblePart(context,"newVerse").disabled=false;
+      }catch(e){
+        if(request!==state.request) return;
+        biblePart(context,"verse").textContent="Couldn't load a verse. Check your connection and try again.";
+        biblePart(context,"newVerse").disabled=false;
+        bibleMessage(context,"The Bible API needs an internet connection.");
+      }
+    }
+    function submitBibleRepeat(context){
+      const state=bibleState[context];
+      if(!state.verse || state.stage!=="repeat") return;
+      if(Date.now()-state.loadedAt<12000){
+        bibleMessage(context,"Spend a little more time reading the verse before submitting.");return;
+      }
+      const value=biblePart(context,"repeatInput").value;
+      if(!repetitionMatches(state.verse.text,value)){
+        bibleMessage(context,"Not quite yet. Try repeating the full verse, in order. Small typos are okay.");return;
+      }
+      state.stage="reflect";
+      biblePart(context,"repeatStage").classList.add("hidden");
+      biblePart(context,"reflectStage").classList.remove("hidden");
+      bibleMessage(context,"Repetition complete. Now take a moment to reflect.");
+      biblePart(context,"reflectInput").focus();
+    }
+    function submitBibleReflection(context){
+      const state=bibleState[context];
+      if(state.stage!=="reflect" || state.counted) return;
+      // Free-form reflection: any nonempty response is accepted.
+      if (!biblePart(context,"reflectInput").value.trim()) {
+        bibleMessage(context,"Write whatever comes to mind before finishing.");
+        return;
+      }
+      state.counted=true;
+      bibleMessage(context,"Reflection complete.");
+      biblePart(context,"reflectSubmit").disabled=true;
+      if(context==="calm"){
+        countTaskDone();
+      } else if(shiftRunning){
+        endSession();
+      }
+    }
+    for(const context of ["calm","shift"]){
+      biblePart(context,"repeatSubmit").addEventListener("click",()=>submitBibleRepeat(context));
+      biblePart(context,"newVerse").addEventListener("click",()=>resetBible(context,true));
+      biblePart(context,"reflectSubmit").addEventListener("click",()=>submitBibleReflection(context));
+    }
+
+    // --------- Point 2.0: Mini Sudoku, Word Chain, Wonder ----------
+    const sudokuBase = [
+      [1,2,3,4], [3,4,1,2], [2,1,4,3], [4,3,2,1]
+    ];
+    let sudokuSolution = null, sudokuGiven = null, sudokuFinished = false;
+    function shuffled(items){
+      const copy = [...items];
+      for(let i=copy.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [copy[i],copy[j]]=[copy[j],copy[i]]; }
+      return copy;
+    }
+    function sudokuSolutionCount(){
+      const board=sudokuSolution.flat().map((v,i)=>sudokuGiven[i]?v:0);
+      let solutions=0;
+      function search(){
+        if(solutions>=2)return;
+        let best=-1, choices=null;
+        for(let i=0;i<16;i++){
+          if(board[i])continue;
+          const r=Math.floor(i/4),c=i%4, used=new Set();
+          for(let j=0;j<4;j++){ used.add(board[r*4+j]);used.add(board[j*4+c]); }
+          for(let rr=2*Math.floor(r/2);rr<2*Math.floor(r/2)+2;rr++)
+            for(let cc=2*Math.floor(c/2);cc<2*Math.floor(c/2)+2;cc++)used.add(board[rr*4+cc]);
+          const opts=[1,2,3,4].filter(n=>!used.has(n));
+          if(!opts.length)return;
+          if(!choices || opts.length<choices.length){best=i;choices=opts;}
+        }
+        if(best===-1){solutions++;return;}
+        for(const n of choices){board[best]=n;search();board[best]=0;if(solutions>=2)break;}
+      }
+      search();return solutions;
+    }
+    function newSudoku(){
+      const nums=shuffled([1,2,3,4]);
+      const rows=[...shuffled([0,1]),...shuffled([2,3])];
+      const cols=[...shuffled([0,1]),...shuffled([2,3])];
+      if(Math.random()<.5){ rows.reverse(); cols.reverse(); }
+      sudokuSolution=rows.map(r=>cols.map(c=>nums[sudokuBase[r][c]-1]));
+      sudokuGiven = Array.from({length:16},()=>false);
+      // Add clues until the board has a unique solution.
+      const positions=shuffled([...Array(16).keys()]);
+      for(const i of positions){
+        sudokuGiven[i]=true;
+        if(sudokuGiven.filter(Boolean).length>=7 && sudokuSolutionCount()===1) break;
+      }
+      const grid=$("sudokuGrid"); grid.replaceChildren(); sudokuFinished=false;
+      for(let i=0;i<16;i++){
+        const input=document.createElement('input');
+        input.className='sudoku-cell'+(sudokuGiven[i]?' given':'');
+        input.setAttribute('aria-label',`Row ${Math.floor(i/4)+1}, column ${i%4+1}`);
+        input.inputMode='numeric'; input.maxLength=1; input.pattern='[1-4]';
+        input.value=sudokuGiven[i]?sudokuSolution[Math.floor(i/4)][i%4]:'';
+        input.readOnly=sudokuGiven[i];
+        input.addEventListener('input',()=>{input.value=input.value.replace(/[^1-4]/g,'').slice(0,1);input.classList.remove('conflict');});
+        grid.appendChild(input);
+      }
+      $("sudokuStatus").textContent='Take your time — there is no penalty for checking.';
+    }
+    function checkSudoku(){
+      if(!sudokuSolution || sudokuFinished) return;
+      const cells=[...$("sudokuGrid").children];
+      let filled=true, valid=true;
+      cells.forEach((input,i)=>{
+        const value=Number(input.value), expected=sudokuSolution[Math.floor(i/4)][i%4];
+        const wrong=!!value && value!==expected;
+        input.classList.toggle('conflict',wrong);
+        if(!value) filled=false;
+        if(wrong) valid=false;
+      });
+      if(!filled || !valid){ $("sudokuStatus").textContent=!filled?'Some cells are still empty. Keep going!':'A few numbers need another look.';return; }
+      sudokuFinished=true; cells.forEach(c=>c.readOnly=true);
+      $("sudokuStatus").textContent='Puzzle complete! Nicely done.';
+      if(running && mode==='calm') countTaskDone();
+    }
+    const chainDictionary = new Set(`apple elephant tree eagle earth house egg grape engine evening garden night tiger river rose echo orange ocean notebook kite energy yellow window water rabbit table emerald dream moon nature envelope exit train nest turtle easy year rain number road dance east tea ant tomato owl lemon north honey yarn new winter ring gold door robot travel leaf forest town name empty yogurt top paper radio oceanic cloud dragon needle event tulip piano olive envelope edge enjoy young green never right time ear rabbit hole English school lamp pencil lion nose earthen needlework kitchen neighbor red desk king game elk key zebra animal library yellowish hill lake evening star rocket telephone envelope quiz zebraic calm map painting goal light treehouse every yesterday yield dam music cat train station natured dance floor room memory yard dear redwood drum mirror round dawn nearby yellowfin nightfall lemony yacht thinker route equal lucky yonder rock koala arm mouse era after rainbow white everyone echoing goldfish hat tap peace easygoing gate eveningly yarns simple earthworm middle early yellowtail lantern nestling gardenia amber raincoat take elevator rockstar romantic clock kitchenware evergreen northern nightingale everywhere earthling gardeners sunshine elegant topic crown napkin needlepoint trail love emeralds song giant title empire evermore excuse emerge either rosewood duck kettle endless silver radioactivity youngish holiday yawn neat tigerish hello oak kind dove echo`.toLowerCase().split(/\s+/));
+    let chainWords=[],chainFinished=false;
+    function renderChain(){
+      const area=$("chainHistory"); area.replaceChildren();
+      chainWords.forEach(w=>{const node=document.createElement('span');node.textContent=w;area.appendChild(node);});
+      $("chainComplete").disabled=chainFinished || chainWords.length<6;
+    }
+    function resetChain(){
+      chainWords=[shuffled(['apple','tree','house','garden','river','night','music','cloud'])[0]];
+      chainFinished=false; $("chainWord").value='';
+      $("chainStatus").textContent='Start with the last letter of '+chainWords[0]+'. Five new words completes the activity.';
+      renderChain();
+    }
+    function addChainWord(){
+      if(chainFinished)return;
+      const word=$("chainWord").value.trim().toLowerCase().replace(/[^a-z]/g,'');
+      if(!word || word!==$("chainWord").value.trim().toLowerCase()){$("chainStatus").textContent='Enter one English word (letters only).';return;}
+      if(word[0]!==chainWords.at(-1).slice(-1)){$("chainStatus").textContent=`Your word must begin with “${chainWords.at(-1).slice(-1)}”.`;return;}
+      if(!chainDictionary.has(word)){$("chainStatus").textContent='Not in the small offline word list. Try another word.';return;}
+      if(chainWords.includes(word)){$("chainStatus").textContent='That word has already been used.';return;}
+      chainWords.push(word); $("chainWord").value='';
+      $("chainStatus").textContent=chainWords.length>=6?'You can finish now, or keep the chain going.':`${chainWords.length-1} of 5 new words. Next starts with “${word.slice(-1)}”.`;
+      renderChain();
+    }
+    function finishChain(){
+      if(chainFinished || chainWords.length<6)return;
+      chainFinished=true;renderChain();$("chainStatus").textContent='Chain complete!';
+      if(running && mode==='calm')countTaskDone();
+    }
+    let wonderIndex=-1,wonderCompleted=false;
+    function nextWonder(){
+      let i=Math.floor(Math.random()*wonderPrompts.length);
+      if(i===wonderIndex)i=(i+1)%wonderPrompts.length;
+      wonderIndex=i; wonderCompleted=false;
+      $("wonderQuestion").textContent=wonderPrompts[i];
+      $("wonderAnswer").value='';$("wonderStatus").textContent='No need to write anything unless you want to.';
+    }
+    function completeWonder(){
+      if(wonderCompleted)return;
+      wonderCompleted=true;
+      if(running && mode==='calm')countTaskDone();
+    }
+    function saveWonder(){
+      const answer=$("wonderAnswer").value.trim();
+      if(!answer){$("wonderStatus").textContent='Write something first, or choose “Thought about it”.';return;}
+      try {
+        const entries=JSON.parse(localStorage.getItem('point_wonder_notes')||'[]');
+        entries.push({question:wonderPrompts[wonderIndex],answer,date:new Date().toISOString()});
+        localStorage.setItem('point_wonder_notes',JSON.stringify(entries.slice(-30)));
+        $("wonderStatus").textContent='Saved locally on this device.';
+        refreshWonderSaved();
+      }catch(e){$("wonderStatus").textContent='Could not save on this device.';}
+      completeWonder();
+    }
+    function refreshWonderSaved(){
+      try {
+        const notes=JSON.parse(localStorage.getItem('point_wonder_notes')||'[]');
+        const holder=$("savedWonder");holder.replaceChildren();
+        notes.slice(-5).reverse().forEach(n=>{
+          const para=document.createElement('p');para.textContent=n.question+' — '+n.answer;holder.appendChild(para);
+        });
+      }catch(e){}
+    }
+    $("sudokuCheck").addEventListener('click',checkSudoku);
+    $("sudokuNew").addEventListener('click',newSudoku);
+    $("chainAdd").addEventListener('click',addChainWord);
+    $("chainWord").addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addChainWord();}});
+    $("chainRestart").addEventListener('click',resetChain);
+    $("chainComplete").addEventListener('click',finishChain);
+    $("wonderNext").addEventListener('click',nextWonder);
+    $("wonderSave").addEventListener('click',saveWonder);
+    $("wonderThought").addEventListener('click',()=>{ $("wonderStatus").textContent='Thought complete.';completeWonder(); });
+    newSudoku();resetChain();nextWonder();refreshWonderSaved();
 
     // --------- Wiring (buttons) ----------
     $("startBtn").addEventListener("click", startSession);
@@ -690,6 +1109,7 @@ $("toggleUltra").disabled = false;
         }
         const act = btn.dataset.act;
         showPanel(act);
+        if (act === "bible" && !bibleState.calm.verse) resetBible("calm", true);
       });
     });
 
